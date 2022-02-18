@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -26,6 +27,7 @@ class AuthController extends Controller
         try {
 
             $user = new User;
+            $user->id = Str::slug($request->input('name')).'-'.Str::random(6);
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $plainPassword = $request->input('password');
