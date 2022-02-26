@@ -103,11 +103,17 @@ class UserController extends Controller
                 $user->no_hp = $request->input('no_hp');
 
                 if (isset($request->image)) {
-                    $image_path = 'storage/' . $user->image;
-                    if (File::exists($image_path)) {
-                        File::delete($image_path);
+                    // Delete Old Image ( Still Not Working I Guess)
+                    if (isset($user->image)) {
+                        if (File::exists($user->image)) {
+                            File::delete($user->image);
+                        }
                     }
-                    $user->photo = Storage::disk('public')->put('profile', $request->file('image'));
+                    // Upload Image
+                    $image = $request->file('image');
+                    $image_name = Str::random(15) . "." . $image->getClientOriginalExtension();
+                    $image->move(public_path('/images'), $image_name);
+                    $user->image = "/images/" . $image_name;
                 }
 
                 $user->save();
