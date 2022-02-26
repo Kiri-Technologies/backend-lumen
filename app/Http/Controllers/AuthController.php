@@ -24,7 +24,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'birthdate' => 'required|date',
-            'role' => 'required|in:penumpang,pemilik,supir',
+            'role' => 'required|in:admin,penumpang,owner,supir',
             'no_hp' => 'required',
         ]);
 

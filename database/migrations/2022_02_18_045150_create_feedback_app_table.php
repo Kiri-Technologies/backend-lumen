@@ -18,6 +18,7 @@ class CreateFeedbackAppTable extends Migration
             $table->unsignedInteger('user_id');
             $table->text('review');
             $table->text('tanggapan');
+            $table->string('status');
             $table->timestamps();
         });
     }

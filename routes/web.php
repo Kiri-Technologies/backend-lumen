@@ -27,6 +27,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // Matches "/api/profile
     $router->get('profile', 'UserController@profile');
+    $router->post('profile/update', 'UserController@updateUser');
 
     // Matches "/api/users/1
     //get one user by id

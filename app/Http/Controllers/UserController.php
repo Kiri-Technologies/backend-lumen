@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -36,27 +42,90 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function allUsers()
-    {
-         return response()->json(['users' =>  User::all()], 200);
-    }
+    // public function allUsers()
+    // {
+    //      return response()->json(['users' =>  User::all()], 200);
+    // }
 
     /**
      * Get one user.
      *
      * @return Response
      */
-    public function singleUser($id)
+    // public function singleUser($id)
+    // {
+    //     try {
+    //         $user = User::findOrFail($id);
+
+    //         return response()->json(['user' => $user], 200);
+
+    //     } catch (\Exception $e) {
+
+    //         return response()->json(['message' => 'user not found!'], 404);
+    //     }
+
+    // }
+
+    /**
+     * Get one user.
+     *
+     * @return Response
+     */
+    public function updateUser(Request $request)
     {
-        try {
-            $user = User::findOrFail($id);
+        $user = Auth::user();
 
-            return response()->json(['user' => $user], 200);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
+            'password' => 'required',
+            'birthdate' => 'required|date',
+            'role' => 'required|in:penumpang,pemilik,supir',
+            'no_hp' => 'required',
+            'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-        } catch (\Exception $e) {
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $user = User::find(Auth::user()->id);
+                $user->name = $request->input('name');
+                $user->email = $request->input('email');
+                $user->password = app('hash')->make($request->input('password'));
+                $user->birthdate = $request->input('birthdate');
+                $user->role = $request->input('role');
+                $user->no_hp = $request->input('no_hp');
 
-            return response()->json(['message' => 'user not found!'], 404);
+                if (isset($request->image)) {
+                    $image_path = 'storage/' . $user->image;
+                    if (File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                    $user->photo = Storage::disk('public')->put('profile', $request->file('image'));
+                }
+
+                $user->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Updated !',
+                    'data' => $user,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User Update Failed!',
+                    'data' => [],
+                ], 409);
+            }
         }
-
     }
 }

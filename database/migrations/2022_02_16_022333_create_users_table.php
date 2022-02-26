@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('birthdate');
             $table->string('role');
             $table->string('no_hp');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
