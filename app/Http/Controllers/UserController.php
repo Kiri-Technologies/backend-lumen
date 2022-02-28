@@ -80,7 +80,7 @@ class UserController extends Controller
             'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
             'password' => 'required',
             'birthdate' => 'required|date',
-            'role' => 'required|in:penumpang,pemilik,supir',
+            'role' => 'required|in:admin,penumpang,owner,supir',
             'no_hp' => 'required',
             'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
         ]);
