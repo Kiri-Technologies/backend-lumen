@@ -39,17 +39,48 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function singleUser()
+    public function deleteUser($id)
     {
-        // try {
-        //     $user = User::findOrFail($id);
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User Deleted !',
+                'data' => [],
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
 
-        //     return response()->json(['user' => $user], 200);
-        // } catch (\Exception $e) {
+    /**
+     * Get one user.
+     *
+     * @return Response
+     */
+    public function findUser()
+    {
+        if (isset($_GET['role']) && isset($_GET['id'])) {
+            $role = $_GET['role'];
+            $id = $_GET['id'];
+            $user = User::where("role", "like", '%' . $role . '%')->where("id", "like", '%' . $id . '%')->get();
+        } elseif (isset($_GET['role'])) {
+            $role = $_GET['role'];
+            $user = User::where("role", "like", '%' . $role . '%')->get();
+        } elseif (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $user = User::where("id", "like", '%' . $id . '%')->get();
+        }
 
-        //     return response()->json(['message' => 'user not found!'], 404);
-        // }
-
-        return "lol";
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Requested !',
+            'data' => $user,
+        ], 201);
     }
 }

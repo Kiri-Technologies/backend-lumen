@@ -50,7 +50,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
         // Matches /api/admin/admin
-        $router->get('admin', 'AdminController@singleUser');
+        $router->delete('deleteUser/{id}', 'AdminController@deleteUser');
+        $router->get('findUser', 'AdminController@findUser');
     });
 
 
