@@ -31,31 +31,52 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // Matches /api/login
     $router->post('login', 'AuthController@login');
 
-    // Matches /api/profile
-    $router->get('profile', 'UserController@profile');
-
-    // Matches /api/update
-    $router->post('profile/update', 'UserController@updateUser');
-
-    // Matches /api/users/1
-    //get one user by id
-    // $router->get('users/{id}', 'UserController@singleUser');
-
-    // Matches /api/users
-    // $router->get('users', 'UserController@allUsers');
-
-    // ==============================================================
-    //  ======================== ADMIN ==============================
+    //  =============================================================
+    //  ========================= AUTH ==============================
     //  =============================================================
 
-    $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
-        // Matches /api/admin/admin
-        $router->delete('deleteUser/{id}', 'AdminController@deleteUser');
-        $router->get('findUser', 'AdminController@findUser');
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+
+        // Matches /api/profile
+        $router->get('profile', 'UserController@profile');
+
+        // Matches /api/update
+        $router->post('profile/update', 'UserController@updateUser');
+
+        // Matches /api/users/1
+        //get one user by id
+        // $router->get('users/{id}', 'UserController@singleUser');
+
+        // Matches /api/users
+        // $router->get('users', 'UserController@allUsers');
+
+        // ==============================================================
+        //  ======================== SUPIR ==============================
+        //  =============================================================
+
+        $router->group(['prefix' => 'supir', 'middleware' => 'supir_auth'], function () use ($router) {
+            //
+        });
+
+        // ==============================================================
+        //  ======================== OWNER ==============================
+        //  =============================================================
+
+        $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
+            //
+        });
+
+        // ==============================================================
+        //  ======================== ADMIN ==============================
+        //  =============================================================
+
+        $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
+
+            // Matches /api/admin/deleteUser/{id}
+            $router->delete('deleteUser/{id}', 'AdminController@deleteUser');
+
+            // Matches /api/admin/findUser
+            $router->get('findUser', 'AdminController@findUser');
+        });
     });
-
-
-    // Matches /api/admin/admin
-    // $router->get('admin', 'AdminController@singleUser');
-    // });
 });

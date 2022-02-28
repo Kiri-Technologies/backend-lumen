@@ -78,6 +78,8 @@ $app->configure('app');
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'supir_auth' => App\Http\Middleware\SupirAuthenticate::class,
+    'owner_auth' => App\Http\Middleware\OwnerAuthenticate::class,
     'admin_auth' => App\Http\Middleware\AdminAuthenticate::class,
 ]);
 $app->middleware([
