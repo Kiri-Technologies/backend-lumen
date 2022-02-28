@@ -78,6 +78,7 @@ $app->configure('app');
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'admin_auth' => App\Http\Middleware\AdminAuthenticate::class,
 ]);
 $app->middleware([
     App\Http\Middleware\CorsMiddleware::class

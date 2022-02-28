@@ -20,19 +20,41 @@ $router->get('/', function () use ($router) {
 
 // API route group
 $router->group(['prefix' => 'api'], function () use ($router) {
-    // Matches "/api/register
-   $router->post('register', 'AuthController@register');
-     // Matches "/api/login
+
+    // ==============================================================
+    //  ======================== PUBLIC =============================
+    //  =============================================================
+
+    // Matches /api/register
+    $router->post('register', 'AuthController@register');
+
+    // Matches /api/login
     $router->post('login', 'AuthController@login');
 
-    // Matches "/api/profile
+    // Matches /api/profile
     $router->get('profile', 'UserController@profile');
+
+    // Matches /api/update
     $router->post('profile/update', 'UserController@updateUser');
 
-    // Matches "/api/users/1
+    // Matches /api/users/1
     //get one user by id
     // $router->get('users/{id}', 'UserController@singleUser');
 
-    // Matches "/api/users
+    // Matches /api/users
     // $router->get('users', 'UserController@allUsers');
+
+    // ==============================================================
+    //  ======================== ADMIN ==============================
+    //  =============================================================
+
+    $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
+        // Matches /api/admin/admin
+        $router->get('admin', 'AdminController@singleUser');
+    });
+
+
+    // Matches /api/admin/admin
+    // $router->get('admin', 'AdminController@singleUser');
+    // });
 });
