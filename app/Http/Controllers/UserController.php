@@ -128,7 +128,7 @@ class UserController extends Controller
                 //return error message
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Update Failed!',
+                    'message' => $e,
                     'data' => [],
                 ], 409);
             }

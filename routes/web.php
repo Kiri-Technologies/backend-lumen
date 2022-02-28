@@ -63,7 +63,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         //  =============================================================
 
         $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
-            //
+
+            // Matches /api/owner/angkot/create
+            $router->post('angkot/create', 'OwnerController@create');
+
         });
 
         // ==============================================================

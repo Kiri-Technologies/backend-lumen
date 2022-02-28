@@ -20,12 +20,12 @@ class CreateAngkotTable extends Migration
             // $table->unsignedInteger('supir_id');
             $table->unsignedInteger('route_id');
             $table->string('plat_nomor');
-            $table->text('qr_code');
+            $table->text('qr_code')->nullable();
             $table->date('pajak_tahunan');
             $table->date('pajak_stnk');
             $table->date('kir_bulanan');
-            $table->boolean('is_beroperasi');
-            $table->unsignedInteger('supir_id');
+            $table->boolean('is_beroperasi')->nullable();
+            $table->unsignedInteger('supir_id')->nullable();
             $table->string('status');
             $table->timestamps();
         });

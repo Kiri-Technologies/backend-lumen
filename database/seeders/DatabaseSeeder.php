@@ -4,16 +4,58 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed the application's database.
      *
      * @return void
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        $user = [
+            [
+                'id' => 'user-123456',
+                'name' => 'user',
+                'email' => 'user@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'no_hp' => '081234567890',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'id' => 'supir-123456',
+                'name' => 'supir',
+                'email' => 'supir@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'no_hp' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'id' => 'owner-123456',
+                'name' => 'owner',
+                'email' => 'owner@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'no_hp' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'id' => 'admin-123456',
+                'name' => 'admin',
+                'email' => 'admin@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'admin',
+                'no_hp' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+        ];
+
+        foreach ($user as $key => $value) {
+            User::create($value);
+        }
     }
 }
