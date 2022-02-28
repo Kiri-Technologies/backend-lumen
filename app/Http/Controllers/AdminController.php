@@ -10,6 +10,7 @@ use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Angkot;
 
 class AdminController  extends Controller
 {
@@ -29,13 +30,17 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    // public function allUsers()
-    // {
-    //      return response()->json(['users' =>  User::all()], 200);
-    // }
+    public function allUsers()
+    {
+         return response()->json([
+            'status' => 'success',
+            'message' => 'All User Requested !',
+            'data' => User::all(),
+        ], 200);
+    }
 
     /**
-     * Get one user.
+     * Delete user.
      *
      * @return Response
      */
@@ -48,7 +53,7 @@ class AdminController  extends Controller
                 'status' => 'success',
                 'message' => 'User Deleted !',
                 'data' => [],
-            ], 201);
+            ], 200);
         } else {
             return response()->json([
                 'status' => 'failed',
@@ -59,7 +64,7 @@ class AdminController  extends Controller
     }
 
     /**
-     * Get one user.
+     * Get find user.
      *
      * @return Response
      */
@@ -81,6 +86,20 @@ class AdminController  extends Controller
             'status' => 'success',
             'message' => 'User Requested !',
             'data' => $user,
-        ], 201);
+        ], 200);
+    }
+
+    /**
+     * Get all angkot.
+     *
+     * @return Response
+     */
+    public function allAngkot()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Requested !',
+            'data' => Angkot::all(),
+        ], 200);
     }
 }

@@ -15,7 +15,7 @@
 
 // Hit Point
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return "Dont't forget to add '/api' after base url :D";
 });
 
 // API route group
@@ -24,6 +24,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // ==============================================================
     //  ======================== PUBLIC =============================
     //  =============================================================
+
+    $router->get('/', function () use ($router) {
+        return $router->app->version();
+    });
 
     // Matches /api/register
     $router->post('register', 'AuthController@register');
@@ -47,9 +51,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         //get one user by id
         // $router->get('users/{id}', 'UserController@singleUser');
 
-        // Matches /api/users
-        // $router->get('users', 'UserController@allUsers');
-
         // ==============================================================
         //  ======================== SUPIR ==============================
         //  =============================================================
@@ -66,7 +67,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/owner/angkot/create
             $router->post('angkot/create', 'OwnerController@create');
-
         });
 
         // ==============================================================
@@ -75,11 +75,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
 
+            // Matches /api/admin/users
+            $router->get('users', 'AdminController@allUsers');
+
             // Matches /api/admin/deleteUser/{id}
             $router->delete('deleteUser/{id}', 'AdminController@deleteUser');
 
             // Matches /api/admin/findUser
             $router->get('findUser', 'AdminController@findUser');
+
+            // Matches /api/admin/angkot
+            $router->get('angkot', 'AdminController@allAngkot');
         });
     });
 });
