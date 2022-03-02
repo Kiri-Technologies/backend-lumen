@@ -26,13 +26,37 @@ class AdminController  extends Controller
 
 
     /**
+     * Get one user.
+     *
+     * @return Response
+     */
+    public function singleUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User Profile Requested !',
+                'data' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
+
+    /**
      * Get all User.
      *
      * @return Response
      */
     public function allUsers()
     {
-         return response()->json([
+        return response()->json([
             'status' => 'success',
             'message' => 'All User Requested !',
             'data' => User::all(),

@@ -42,14 +42,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
         // Matches /api/profile
+        // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
 
         // Matches /api/update
+        // Function : Update User Profile
         $router->post('profile/update', 'UserController@updateUser');
-
-        // Matches /api/users/1
-        //get one user by id
-        // $router->get('users/{id}', 'UserController@singleUser');
 
         // ==============================================================
         //  ======================== SUPIR ==============================
@@ -66,6 +64,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
 
             // Matches /api/owner/angkot/create
+            // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
         });
 
@@ -75,16 +74,32 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
 
+            //  ===================== U S E R =====================
+
             // Matches /api/admin/users
+            // Function : Get All Users
             $router->get('users', 'AdminController@allUsers');
 
-            // Matches /api/admin/deleteUser/{id}
-            $router->delete('deleteUser/{id}', 'AdminController@deleteUser');
+            // Matches /api/admin/users/find
+            // Function : Find All Users by id / roles
+            $router->get('users/find', 'AdminController@findUser');
 
-            // Matches /api/admin/findUser
-            $router->get('findUser', 'AdminController@findUser');
+            // Matches /api/admin/{id}/update
+            // Function : Update specific users by id
+            $router->delete('users/{id}/update', 'AdminController@updateUser');
+
+            // Matches /api/admin/{id}/delete
+            // Function : Delete specific user by id
+            $router->delete('users/{id}/delete', 'AdminController@deleteUser');
+
+            // Matches /api/admin/users/{id}
+            // Function : Find specific user by id
+            $router->get('users/{id}', 'AdminController@singleUser');
+
+            //  ===================== A N G K O T =====================
 
             // Matches /api/admin/angkot
+            // Function : Get All Angkot
             $router->get('angkot', 'AdminController@allAngkot');
         });
     });

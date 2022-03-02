@@ -48,26 +48,7 @@ class UserController extends Controller
     // }
 
     /**
-     * Get one user.
-     *
-     * @return Response
-     */
-    // public function singleUser($id)
-    // {
-    //     try {
-    //         $user = User::findOrFail($id);
-
-    //         return response()->json(['user' => $user], 200);
-
-    //     } catch (\Exception $e) {
-
-    //         return response()->json(['message' => 'user not found!'], 404);
-    //     }
-
-    // }
-
-    /**
-     * Get one user.
+     * Update one user.
      *
      * @return Response
      */

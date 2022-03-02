@@ -24,6 +24,11 @@ class OwnerController  extends Controller
         $this->middleware('owner_auth');
     }
 
+    /**
+     * Create a new Angkot
+     *
+     * @return void
+     */
     public function create(Request $request)
     {
         //validate incoming request
