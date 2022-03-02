@@ -68,6 +68,73 @@ class AdminController  extends Controller
      *
      * @return Response
      */
+    public function updateUser($id, Request $request)
+    {
+        $user = User::find($id);
+        if ($user) {
+            // $user->delete();
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
+                'password' => 'required',
+                'birthdate' => 'required|date',
+                'role' => 'required|in:admin,penumpang,owner,supir',
+                'no_hp' => 'required',
+                'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            if ($validator->fails()) {
+                //return failed response
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors(),
+                    'data' => [],
+                ], 400);
+            }
+
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = app('hash')->make($request->input('password'));
+            $user->birthdate = $request->input('birthdate');
+            $user->role = $request->input('role');
+            $user->no_hp = $request->input('no_hp');
+
+            if (isset($request->image)) {
+                // Delete Old Image ( Still Not Working I Guess)
+                if (isset($user->image)) {
+                    if (File::exists($user->image)) {
+                        File::delete($user->image);
+                    }
+                }
+                // Upload Image
+                $image = $request->file('image');
+                $image_name = Str::random(15) . "." . $image->getClientOriginalExtension();
+                $image->move(public_path('/images'), $image_name);
+                $user->image = "/images/" . $image_name;
+            }
+
+            $user->save();
+
+            //return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User Updated !',
+                'data' => $user,
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
+
+    /**
+     * Delete user.
+     *
+     * @return Response
+     */
     public function deleteUser($id)
     {
         $user = User::find($id);

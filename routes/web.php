@@ -25,6 +25,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  ======================== PUBLIC =============================
     //  =============================================================
 
+    // API Main Point
     $router->get('/', function () use ($router) {
         return $router->app->version();
     });
@@ -45,9 +46,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
 
-        // Matches /api/update
+        // Matches /api/profile/update
         // Function : Update User Profile
         $router->post('profile/update', 'UserController@updateUser');
+
+        // Matches /api/logout
+        // Function : Logout
+        $router->post('logout', 'UserController@updateUser');
 
         // ==============================================================
         //  ======================== SUPIR ==============================
