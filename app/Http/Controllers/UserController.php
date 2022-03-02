@@ -10,6 +10,7 @@ use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Angkot;
 
 class UserController extends Controller
 {
@@ -131,4 +132,19 @@ class UserController extends Controller
             'data' => [],
         ], 200);
     }
+
+    /**
+     * Get Angkot By ID.
+     *
+     * @return Response
+     */
+    public function getAngkotByID($id) {
+        $angkot = Angkot::find($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Angkot Requested !',
+            'data' => [$angkot],
+        ], 200);
+    }
+    
 }

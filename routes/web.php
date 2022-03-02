@@ -42,6 +42,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
+
+        // Matches /api/admin/angkot/{id}
+        // Function : Find specific angkot by id
+        $router->get('angkot/{id}', 'UserController@getAngkotByID');
+
         // Matches /api/profile
         // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
@@ -106,6 +111,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/admin/angkot
             // Function : Get All Angkot
             $router->get('angkot', 'AdminController@allAngkot');
+
         });
     });
 });
