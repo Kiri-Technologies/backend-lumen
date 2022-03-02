@@ -127,7 +127,8 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'logout'
+            'message' => 'User Logout!',
+            'data' => [],
         ], 200);
     }
 }

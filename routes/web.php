@@ -52,7 +52,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         // Matches /api/logout
         // Function : Logout
-        $router->post('logout', 'UserController@updateUser');
+        $router->get('logout', 'UserController@logout');
 
         // ==============================================================
         //  ======================== SUPIR ==============================
@@ -91,7 +91,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/admin/{id}/update
             // Function : Update specific users by id
-            $router->delete('users/{id}/update', 'AdminController@updateUser');
+            $router->post('users/{id}/update', 'AdminController@updateUser');
 
             // Matches /api/admin/{id}/delete
             // Function : Delete specific user by id
