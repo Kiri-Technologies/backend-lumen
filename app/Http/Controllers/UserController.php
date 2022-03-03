@@ -160,7 +160,13 @@ class UserController extends Controller
      * @return Response
      */
     public function getAngkotSorting() {
-        $angkot = Angkot::orderBy('owner_id', 'asc')->get();
+        $angkot = Angkot::orderBy('id', 'asc')->get();
+        if (!$angkot) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Angkot Not Found!',
+            ], 404);
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Sorting Requested !',

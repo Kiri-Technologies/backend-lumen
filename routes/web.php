@@ -47,6 +47,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Find specific angkot by id
         $router->get('angkot/{id}', 'UserController@getAngkotByID');
 
+        // Matches /api/admin/angkot/getAngkotSorting
+        // Function : Get all angkot sorted by owner_id
+        $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
+
+        // Matches /api/admin/angkot/owner_id/{id}
+        // Function : Find specific angkot by owner_id
+        $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
+
         // Matches /api/profile
         // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
