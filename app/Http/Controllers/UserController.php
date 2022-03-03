@@ -140,11 +140,31 @@ class UserController extends Controller
      */
     public function getAngkotByID($id) {
         $angkot = Angkot::find($id);
+        if (!$angkot) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Angkot Not Found!',
+            ], 404);
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
             'data' => [$angkot],
         ], 200);
     }
-    
+
+    /**
+     * Get Angkot Sorting.
+     * Sort by owner_id
+     *
+     * @return Response
+     */
+    public function getAngkotSorting() {
+        $angkot = Angkot::orderBy('owner_id', 'asc')->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Angkot Sorting Requested !',
+            'data' => [$angkot],
+        ], 200);
+    }
 }
