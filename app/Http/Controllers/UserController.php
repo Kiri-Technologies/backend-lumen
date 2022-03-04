@@ -165,6 +165,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
+                'data' => [],
             ], 404);
         }
         return response()->json([
