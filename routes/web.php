@@ -55,6 +55,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Find specific angkot by owner_id
         $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
 
+        // Matches /api/user/angkot/createPerjalanan
+        // Function : Create new perjalanan
+        $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
+
         // Matches /api/profile
         // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
@@ -84,6 +88,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/owner/angkot/create
             // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
+
+            // Matches /api/owner/createSupir
+            // Function : Create Supir
+            $router->post('supir/create', 'OwnerController@createSupir');
+
+            // Matches /api/owner/angkot/getListSupir
+            // Function : Get List Supir
+            $router->get('angkot/getListSupir', 'OwnerController@getListSupir');
+
+            // Matches /api/owner/angkot/deleteSupir/{id}
+            // Function : Delete Supir
+            $router->get('angkot/deleteSupir/{id}', 'OwnerController@deleteSupir');
         });
 
         // ==============================================================

@@ -173,4 +173,59 @@ class UserController extends Controller
             'data' => [$angkot],
         ], 200);
     }
+
+    /**
+     * Create new Perjalanan
+     * 
+     * @return Response
+     */
+    public function createPerjalanan(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'angkot_id' => 'required|integer',
+            'supir_id' => 'required|integer',
+            'titik_naik' => 'required|string',
+            'titik_turun' => 'required|string',
+            'jarak' => 'required|integer',
+            'rekomendasi_harga' => 'required|integer',
+            'is_done' => 'required|boolean',
+            'is_connected_with_driver' => 'required|boolean',
+        ]);
+        if ($validator->isValid($request->all())) {
+            try {
+                $perjalanan = new Perjalanan;
+                $perjalanan->user_id = $request->input('user_id');
+                $perjalanan->angkot_id = $request->input('angkot_id');
+                $perjalanan->supir_id = $request->input('supir_id');
+                $perjalanan->titik_naik = $request->input('titik_naik');
+                $perjalanan->titik_turun = $request->input('titik_turun');
+                $perjalanan->jarak = $request->input('jarak');
+                $perjalanan->rekomendasi_harga = $request->input('rekomendasi_harga');
+                $perjalanan->is_done = $request->input('is_done');
+                $perjalanan->is_connected_with_driver = $request->input('is_connected_with_driver');
+                $perjalanan->save();
+                
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Perjalanan Created !',
+                    'data' => [$perjalanan],
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        } else {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        }
+    }
+        
 }

@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
+use App\Models\ListSupir;
 
 class AdminController  extends Controller
 {
@@ -192,5 +193,27 @@ class AdminController  extends Controller
             'message' => 'User Requested !',
             'data' => Angkot::all(),
         ], 200);
+    }
+
+    /**
+     * Get list supir
+     * 
+     * @return Response
+     */
+    public function getListSupir() {
+        $list_supir = ListSupir::all();
+        if ($list_supir) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'List Supir Requested !',
+                'data' => $list_supir,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'List Supir Not Found!',
+                'data' => [],
+            ], 400);
+        }
     }
 }
