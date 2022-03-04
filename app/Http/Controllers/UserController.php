@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
+use App\Models\Perjalanan;
 
 class UserController extends Controller
 {
