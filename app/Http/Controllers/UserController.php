@@ -138,6 +138,7 @@ class UserController extends Controller
      * Get Angkot By ID.
      *
      * @return Response
+     * @param $id
      */
     public function getAngkotByID($id) {
         $angkot = Angkot::find($id);
@@ -145,6 +146,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
+                'data' => [],
             ], 404);
         }
         return response()->json([
@@ -166,6 +168,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
+                'data' => [],
             ], 404);
         }
         return response()->json([
@@ -182,17 +185,25 @@ class UserController extends Controller
      */
     public function createPerjalanan(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|integer',
-            'angkot_id' => 'required|integer',
-            'supir_id' => 'required|integer',
+            'user_id' => 'required|string',
+            'angkot_id' => 'required|string',
+            'supir_id' => 'required|string',
             'titik_naik' => 'required|string',
             'titik_turun' => 'required|string',
-            'jarak' => 'required|integer',
-            'rekomendasi_harga' => 'required|integer',
-            'is_done' => 'required|boolean',
-            'is_connected_with_driver' => 'required|boolean',
+            'jarak' => 'required|string',
+            'rekomendasi_harga' => 'required|string',
+            'is_done' => 'required|string',
+            'is_connected_with_driver' => 'required|string',
         ]);
-        if ($validator->isValid($request->all())) {
+
+        if ($validator->fails()) {
+            // return fails response
+            return response()->json([
+                'status' => 'fails',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
             try {
                 $perjalanan = new Perjalanan;
                 $perjalanan->user_id = $request->input('user_id');
@@ -205,28 +216,23 @@ class UserController extends Controller
                 $perjalanan->is_done = $request->input('is_done');
                 $perjalanan->is_connected_with_driver = $request->input('is_connected_with_driver');
                 $perjalanan->save();
-                
+
+                // return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Perjalanan Created !',
-                    'data' => [$perjalanan],
+                    'data' => $perjalanan,
                 ], 201);
             } catch (\Exception $e) {
-                //return error message
+                // return error message
                 return response()->json([
                     'status' => 'failed',
                     'message' => $e,
                     'data' => [],
                 ], 409);
             }
-        } else {
-            //return failed response
-            return response()->json([
-                'status' => 'failed',
-                'message' => $validator->errors(),
-                'data' => [],
-            ], 400);
         }
+
     }
         
 }

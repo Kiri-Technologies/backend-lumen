@@ -43,19 +43,19 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
 
-        // Matches /api/admin/angkot/{id}
+        // Matches /api/angkot/searchID/{id}
         // Function : Find specific angkot by id
-        $router->get('angkot/{id}', 'UserController@getAngkotByID');
+        $router->get('angkot/searchID/{id}', 'UserController@getAngkotByID');
 
-        // Matches /api/admin/angkot/getAngkotSorting
+        // Matches /api//angkot/getAngkotSorting
         // Function : Get all angkot sorted by owner_id
         $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
 
-        // Matches /api/admin/angkot/owner_id/{id}
+        // Matches /api/angkot/owner_id/{id}
         // Function : Find specific angkot by owner_id
         $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
 
-        // Matches /api/user/angkot/createPerjalanan
+        // Matches /apiangkot/createPerjalanan
         // Function : Create new perjalanan
         $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
 
