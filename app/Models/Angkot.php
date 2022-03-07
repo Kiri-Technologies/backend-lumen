@@ -13,8 +13,7 @@ class Angkot extends Model
      * @var array
      */
     protected $fillable = [
-        'owner_id',
-        'supir_id',
+        'user_id',
         'route_id',
         'plat_nomor',
         'qr_code',
@@ -22,6 +21,7 @@ class Angkot extends Model
         'pajak_stnk',
         'kir_bulanan',
         'is_beroperasi',
+        'supir_id',
         'status',
     ];
 
@@ -33,4 +33,34 @@ class Angkot extends Model
     protected $hidden = [
         //
     ];
+
+    public function list_supir()
+    {
+        return $this->hasMany(ListSupir::class, 'angkot_id');
+    }
+
+    public function perjalanan()
+    {
+        return $this->hasMany(ListSupir::class, 'angkot_id');
+    }
+
+    public function riwayat()
+    {
+        return $this->hasMany(Riwayat::class, 'angkot_id');
+    }
+
+    public function user_pengumpang(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Routes::class, 'route_id', 'id');
+    }
+
+    public function user_supir(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supir_id', 'id');
+    }
 }

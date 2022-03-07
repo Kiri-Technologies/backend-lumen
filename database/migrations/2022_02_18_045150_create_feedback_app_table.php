@@ -15,7 +15,7 @@ class CreateFeedbackAppTable extends Migration
     {
         Schema::create('feedback_app', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->string('user_id');
             $table->text('review');
             $table->text('tanggapan');
             $table->string('status');

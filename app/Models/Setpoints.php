@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Setpoints extends Model
@@ -27,4 +28,9 @@ class Setpoints extends Model
     protected $hidden = [
         //
     ];
+
+    public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Routes::class, 'route_id', 'id');
+    }
 }

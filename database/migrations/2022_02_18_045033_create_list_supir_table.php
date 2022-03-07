@@ -15,7 +15,7 @@ class CreateListSupirTable extends Migration
     {
         Schema::create('list_supir', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('supir_id');
+            $table->string('supir_id');
             $table->unsignedInteger('angkot_id');
             $table->boolean('is_confirmed');
             $table->timestamps();

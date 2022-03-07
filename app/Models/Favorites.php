@@ -27,4 +27,14 @@ class Favorites extends Model
     protected $hidden = [
         //
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Routes::class, 'route_id', 'id');
+    }
 }

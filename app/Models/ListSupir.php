@@ -15,6 +15,7 @@ class ListSupir extends Model
     protected $fillable = [
         'supir_id',
         'angkot_id',
+        'is_confirmed',
     ];
 
     /**
@@ -25,4 +26,13 @@ class ListSupir extends Model
     protected $hidden = [
         //
     ];
+    public function angkot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Angkot::class, 'angkot_id', 'id');
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supir_id', 'id');
+    }
 }

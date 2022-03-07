@@ -15,7 +15,7 @@ class CreateRiwayatTable extends Migration
     {
         Schema::create('riwayat', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->string('user_id');
             $table->unsignedInteger('angkot_id');
             $table->string('jumlah_pendapatan');
             $table->date('waktu_narik');

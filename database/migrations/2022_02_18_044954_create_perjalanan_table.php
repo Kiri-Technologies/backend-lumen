@@ -15,9 +15,9 @@ class CreatePerjalananTable extends Migration
     {
         Schema::create('perjalanan', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('penumpang_id');
+            $table->string('penumpang_id');
             $table->unsignedInteger('angkot_id');
-            $table->unsignedInteger('supir_id');
+            $table->string('supir_id');
             $table->string('titik_naik');
             $table->string('titik_turun');
             $table->string('jarak');
