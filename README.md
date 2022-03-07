@@ -1,3 +1,5 @@
+# Tolong Abaikan Folder .laravel itu buat contekan aku 
+
 # Docs
 Jwt Build -> https://dev.to/ndiecodes/build-a-jwt-authenticated-api-with-lumen-2afm
 Jwt Probs -> https://dev.to/dhavaldignizant/comment/ghno
