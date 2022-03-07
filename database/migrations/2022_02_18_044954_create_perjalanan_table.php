@@ -25,6 +25,21 @@ class CreatePerjalananTable extends Migration
             $table->boolean('is_done');
             $table->boolean('is_connected_with_driver');
             $table->timestamps();
+
+            $table->foreign('penumpang_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('angkot_id')
+                ->references('id')
+                ->on('angkot')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('supir_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

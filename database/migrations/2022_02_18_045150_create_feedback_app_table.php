@@ -20,6 +20,11 @@ class CreateFeedbackAppTable extends Migration
             $table->text('tanggapan');
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

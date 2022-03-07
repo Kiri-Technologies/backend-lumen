@@ -19,6 +19,16 @@ class CreateListSupirTable extends Migration
             $table->unsignedInteger('angkot_id');
             $table->boolean('is_confirmed');
             $table->timestamps();
+
+            $table->foreign('supir_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('angkot_id')
+                ->references('id')
+                ->on('angkot')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

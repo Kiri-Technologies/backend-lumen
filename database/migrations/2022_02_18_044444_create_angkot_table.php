@@ -28,6 +28,21 @@ class CreateAngkotTable extends Migration
             $table->unsignedInteger('supir_id')->nullable();
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('route_id')
+                ->references('id')
+                ->on('routes')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('supir_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -21,6 +21,16 @@ class CreateRiwayatTable extends Migration
             $table->date('waktu_narik');
             $table->boolean('selesai_narik');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('angkot_id')
+                ->references('id')
+                ->on('angkot')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
