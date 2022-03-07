@@ -13,4 +13,4 @@ Jwt Probs -> https://dev.to/dhavaldignizant/comment/ghno
 # Update dariku
 - Aku tambahin untuk user di DatabaseSeeder nya karena migrasi yang baru error
 - Aku tambahin untuk seeder nya biar mudah untuk testing nya
-- Udah aku tambahin komentar yang sekiranya codingannya rumit biar bang faiz bisa baca
+- Udah aku tambahin komentar yang sekiranya yang codingannya rumit biar bang faiz bisa baca
