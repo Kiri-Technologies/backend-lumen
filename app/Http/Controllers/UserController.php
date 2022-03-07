@@ -10,6 +10,7 @@ use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Angkot;
 
 class UserController extends Controller
 {
@@ -129,6 +130,48 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'User Logout!',
             'data' => [],
+        ], 200);
+    }
+
+    /**
+     * Get Angkot By ID.
+     *
+     * @return Response
+     */
+    public function getAngkotByID($id) {
+        $angkot = Angkot::find($id);
+        if (!$angkot) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Angkot Not Found!',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Angkot Requested !',
+            'data' => [$angkot],
+        ], 200);
+    }
+
+    /**
+     * Get Angkot Sorting.
+     * Sort by owner_id
+     *
+     * @return Response
+     */
+    public function getAngkotSorting() {
+        $angkot = Angkot::orderBy('id', 'asc')->get();
+        if (!$angkot) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Angkot Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Angkot Sorting Requested !',
+            'data' => [$angkot],
         ], 200);
     }
 }
