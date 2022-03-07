@@ -15,9 +15,9 @@ class CreatePerjalananTable extends Migration
     {
         Schema::create('perjalanan', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('penumpang_id');
+            $table->string('penumpang_id');
             $table->unsignedInteger('angkot_id');
-            $table->unsignedInteger('supir_id');
+            $table->string('supir_id');
             $table->string('titik_naik');
             $table->string('titik_turun');
             $table->string('jarak');
@@ -25,6 +25,21 @@ class CreatePerjalananTable extends Migration
             $table->boolean('is_done');
             $table->boolean('is_connected_with_driver');
             $table->timestamps();
+
+            $table->foreign('penumpang_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('angkot_id')
+                ->references('id')
+                ->on('angkot')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('supir_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

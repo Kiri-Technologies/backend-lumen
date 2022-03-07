@@ -62,4 +62,49 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public $incrementing = false;
+
+    public function angkot_user()
+    {
+        return $this->hasMany(Angkot::class, 'user_id');
+    }
+
+    public function angkot_supir()
+    {
+        return $this->hasMany(Angkot::class, 'supir_id');
+    }
+
+    public function feedback_app_user()
+    {
+        return $this->hasMany(FeedbackApp::class, 'user_id');
+    }
+
+    public function perjalanan_penumpang()
+    {
+        return $this->hasMany(Perjalanan::class, 'penumpang_id');
+    }
+
+    public function perjalanan_supir()
+    {
+        return $this->hasMany(Perjalanan::class, 'supir_id');
+    }
+
+    public function riwayat()
+    {
+        return $this->hasMany(Riwayat::class, 'user_id');
+    }
+
+    public function list_supir()
+    {
+        return $this->hasMany(ListSupir::class, 'supir_id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorites::class, 'user_id');
+    }
+
+    public function feedback_app_owner()
+    {
+        return $this->hasMany(Favorites::class, 'user_id');
+    }
 }

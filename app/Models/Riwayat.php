@@ -15,7 +15,9 @@ class Riwayat extends Model
     protected $fillable = [
         'user_id',
         'angkot_id',
-        'jumlah',
+        'jumlah_pendapatan',
+        'waktu_narik',
+        'selesai_narik',
     ];
 
     /**
@@ -26,4 +28,14 @@ class Riwayat extends Model
     protected $hidden = [
         //
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function angkot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Angkot::class, 'angkot_id', 'id');
+    }
 }
