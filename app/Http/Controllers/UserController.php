@@ -185,15 +185,15 @@ class UserController extends Controller
      */
     public function createPerjalanan(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string',
+            'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
             'supir_id' => 'required|string',
             'titik_naik' => 'required|string',
             'titik_turun' => 'required|string',
             'jarak' => 'required|string',
             'rekomendasi_harga' => 'required|string',
-            'is_done' => 'required|string',
-            'is_connected_with_driver' => 'required|string',
+            'is_done' => 'required|boolean',
+            'is_connected_with_driver' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -206,7 +206,7 @@ class UserController extends Controller
         } else {
             try {
                 $perjalanan = new Perjalanan;
-                $perjalanan->user_id = $request->input('user_id');
+                $perjalanan->penumpang_id = $request->input('penumpang_id');
                 $perjalanan->angkot_id = $request->input('angkot_id');
                 $perjalanan->supir_id = $request->input('supir_id');
                 $perjalanan->titik_naik = $request->input('titik_naik');

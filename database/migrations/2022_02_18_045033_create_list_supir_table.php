@@ -17,7 +17,7 @@ class CreateListSupirTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('supir_id');
             $table->unsignedInteger('angkot_id');
-            $table->boolean('is_confirmed');
+            $table->boolean('is_confirmed')->nullable();
             $table->timestamps();
         });
     }

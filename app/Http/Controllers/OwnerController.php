@@ -84,14 +84,11 @@ class OwnerController  extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function createSupir(Request $request, $id) {
+    public function createSupir(Request $request) {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string',
-            'angkot_id' => 'required|string',
-            'nama' => 'required|string',
-            'no_hp' => 'required|string',
-            'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
+            'supir_id' => 'required|int',
+            'angkot_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
@@ -104,11 +101,9 @@ class OwnerController  extends Controller
         } else {
             try {
                 $supir = new ListSupir;
-                $supir->user_id = $request->input('user_id');
+                $supir->supir_id = $request->input('supir_id');
                 $supir->angkot_id = $request->input('angkot_id');
-                $supir->nama = $request->input('nama');
-                $supir->no_hp = $request->input('no_hp');
-                $supir->status = "pending";
+                $supir->is_confirmed = null;
                 $supir->save();
 
                 // return successful response
@@ -168,6 +163,7 @@ class OwnerController  extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'supir not found!',
+                'data' => [],
             ], 404);
         }
     }

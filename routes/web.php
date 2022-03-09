@@ -91,15 +91,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/owner/createSupir
             // Function : Create Supir
-            $router->post('supir/create', 'OwnerController@createSupir');
+            $router->post('driver/createSupir', 'OwnerController@createSupir');
 
             // Matches /api/owner/angkot/getListSupir
             // Function : Get List Supir
-            $router->get('angkot/getListSupir', 'OwnerController@getListSupir');
+            $router->get('driver/getListSupir', 'OwnerController@getListSupir');
 
             // Matches /api/owner/angkot/deleteSupir/{id}
             // Function : Delete Supir
-            $router->get('angkot/deleteSupir/{id}', 'OwnerController@deleteSupir');
+            $router->delete('driver/deleteSupir/{id}', 'OwnerController@deleteSupir');
         });
 
         // ==============================================================

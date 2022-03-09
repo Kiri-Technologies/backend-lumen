@@ -13,7 +13,7 @@ class Perjalanan extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'penumpang_id',
         'angkot_id',
         'supir_id',
         'titik_naik',

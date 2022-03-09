@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Angkot;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -56,6 +58,25 @@ class DatabaseSeeder extends Seeder
 
         foreach ($user as $key => $value) {
             User::create($value);
+        }
+        $angkot = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'route_id' => 1,
+                'plat_nomor' => 'B 12345',
+                'qr_code' => null,
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'aktif',
+            ],
+                
+        ];
+        foreach ($angkot as $key => $value) {
+            Angkot::create($value);
         }
     }
 }
