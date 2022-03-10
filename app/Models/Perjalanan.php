@@ -32,4 +32,24 @@ class Perjalanan extends Model
     protected $hidden = [
         //
     ];
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'perjalanan_id');
+    }
+
+    public function user_pengumpang(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function angkot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Angkot::class, 'angkot_id', 'id');
+    }
+
+    public function user_supir(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supir_id', 'id');
+    }
 }

@@ -21,6 +21,11 @@ class CreateFeedbackTable extends Migration
             $table->text('review');
             $table->text('komentar');
             $table->timestamps();
+
+            $table->foreign('perjalanan_id')
+                ->references('id')
+                ->on('perjalanan')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
