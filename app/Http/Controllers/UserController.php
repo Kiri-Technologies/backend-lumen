@@ -232,7 +232,104 @@ class UserController extends Controller
                 ], 409);
             }
         }
-
     }
-        
+
+    /**
+     * Update Perjalanan.
+     *
+     * @return Response
+     * 
+     */
+    public function updatePerjalanan(Request $request, $id) {
+        $perjalanan = Perjalanan::find($id);
+        if (!$perjalanan) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Perjalanan Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        if(isset($request->is_connected_with_driver)){
+            $perjalanan->is_connected_with_driver = $request->is_connected_with_driver;
+        }
+        if(isset($request->is_done)){
+            $perjalanan->is_done = $request->is_done;
+        }
+        // $perjalanan->is_done = true;
+        // $perjalanan->is_connected_with_driver = true;
+        $perjalanan->save();
+
+        // return success response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Perjalanan Updated !',
+            'data' => $perjalanan,
+        ], 201);
+    }
+
+    /**
+     * Get Perjalanan Sorting.
+     *
+     * @return Response
+     *
+     */
+    public function getPerjalananSorting() {
+        $perjalanan = Perjalanan::orderBy('penumpang_id', 'asc')->get();
+        if (!$perjalanan) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Perjalanan Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Perjalanan Sorting Requested !',
+            'data' => [$perjalanan],
+        ], 200);
+    }
+
+    /**
+     * Get Perjalanan By ID.
+     *
+     * @return Response
+     * @param $id
+     */
+    public function getPerjalananByID($id) {
+        $perjalanan = Perjalanan::find($id);
+        if (!$perjalanan) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Perjalanan Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Perjalanan Requested !',
+            'data' => [$perjalanan],
+        ], 200);
+    }
+
+    /**
+     * Get All Perjalanan.
+     * 
+     * @return Response
+     * 
+     */
+    public function getAllPerjalanan() {
+        $perjalanan = Perjalanan::all();
+        if (!$perjalanan) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Perjalanan Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Perjalanan Requested !',
+            'data' => [$perjalanan],
+        ], 200);
+    }
 }
