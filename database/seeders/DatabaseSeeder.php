@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Riwayat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -15,6 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        Riwayat::factory(5)->create();
+
         $user = [
             [
                 'id' => 'user-123456',
@@ -52,6 +56,29 @@ class DatabaseSeeder extends Seeder
                 'no_hp' => '081234567891',
                 'password' => bcrypt('password'),
             ],
+
+            // ========================================================
+            // ========= User Tambahan Soalnya migrasi error ==========
+            // ========================================================
+            [
+                'id' => '1',
+                'name' => 'supir',
+                'email' => 'supir1@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'no_hp' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'id' => '2',
+                'name' => 'supir',
+                'email' => 'supir2@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'no_hp' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+            
         ];
 
         foreach ($user as $key => $value) {

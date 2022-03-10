@@ -1,0 +1,21 @@
+body{
+    color: white;
+    background-color: black;
+}
+
+a{
+    color: white !important;
+}
+
+.navbar{
+   
+    background-color:red;
+}
+
+.active{
+    color:blue !important;
+}
+
+.p{
+    color: black !important
+}

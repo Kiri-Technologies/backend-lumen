@@ -18,7 +18,7 @@ class CreateRiwayatTable extends Migration
             $table->string('user_id');
             $table->unsignedInteger('angkot_id');
             $table->string('jumlah_pendapatan');
-            $table->date('waktu_narik');
+            $table->time('waktu_narik');
             $table->boolean('selesai_narik');
             $table->timestamps();
 
