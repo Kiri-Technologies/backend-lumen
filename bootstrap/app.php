@@ -80,6 +80,7 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'supir_auth' => App\Http\Middleware\SupirAuthenticate::class,
     'owner_auth' => App\Http\Middleware\OwnerAuthenticate::class,
+    'owner_supir_auth' => App\Http\Middleware\SupirOwnerAuthenticate::class,
     'admin_auth' => App\Http\Middleware\AdminAuthenticate::class,
 ]);
 $app->middleware([

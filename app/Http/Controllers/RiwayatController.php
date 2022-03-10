@@ -18,7 +18,7 @@ class RiwayatController extends Controller
         $this->middleware('supir_auth');
     }
 
-    
+
 // ==============================================================
 //  ================= Get All And Get By Params =================
 //  =============================================================
@@ -33,7 +33,7 @@ class RiwayatController extends Controller
                 ], 400);
             }
         }
-        
+
         // fungsi method filter sebenar nya bukan ngequery tapi untuk memfilter sesuai params
         // makanya aku taruh di models aja biar aku gak pusing
         // untuk proses query tetap disini dan disimpan ke dalam $riwayat
@@ -43,9 +43,9 @@ class RiwayatController extends Controller
             'status' => 'success',
             'message' => 'ok',
             'data' => $riwayat
-        ], 200); 
+        ], 200);
     }
-    
+
 
     // ==============================================================
     //  ========================= Get By Id =========================
@@ -67,18 +67,19 @@ class RiwayatController extends Controller
             $jumlah_pendapatan = $request->input('jumlah_pendapatan');
             $waktu_narik = $request->input('waktu_narik');
             $selesai_narik = $request->input('selesai_narik');
-    
-            Riwayat::create([
-                'user_id' => $user_id,
-                'angkot_id' => $angkot_id,
-                'jumlah_pendapatan' => $jumlah_pendapatan,
-                'waktu_narik' => $waktu_narik,
-                'selesai_narik' => $selesai_narik
-            ]);
-    
+
+            $riwayat = new Riwayat();
+            $riwayat->user_id = $user_id;
+            $riwayat->angkot_id = $angkot_id;
+            $riwayat->jumlah_pendapatan = $jumlah_pendapatan;
+            $riwayat->waktu_narik = $waktu_narik;
+            $riwayat->selesai_narik = $selesai_narik;
+            $riwayat->save();
+
             return response()->json([
+                'status' => 'success',
                 'message' => 'Data created',
-                'data' => []
+                'data' => $riwayat,
             ], 201);
         } catch (\Exception $e) {
             //return error message
@@ -89,13 +90,13 @@ class RiwayatController extends Controller
                 ], 409);
             }
     }
-    
+
     // ==============================================================
     //  ================ Update Data History By Id ==================
     //  =============================================================
     public function UpdateHistory(Request $request, $id){
         Riwayat::find($id)->update($request->all());
-        
+
         return response()->json([
             'status' => 'ok',
             'message' => 'data updated'

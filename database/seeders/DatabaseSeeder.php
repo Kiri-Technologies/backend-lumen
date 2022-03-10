@@ -23,8 +23,12 @@ class DatabaseSeeder extends Seeder
     {
         // Riwayat::factory(5)->create();
 
-        // Routes Seeder
+        // ========================================================
+        // ===================== Dummy Routes =====================
+        // ========================================================
+
         $faker = Faker::create();
+
         foreach (range(1, 10) as $index) {
             DB::table('routes')->insert([
                 'kode_angkot' => $faker->areaCode,
@@ -32,6 +36,7 @@ class DatabaseSeeder extends Seeder
                 'titik_akhir' => $faker->name,
             ]);
         }
+
         // Riwayat Seeder
         // foreach (range(1, 10) as $index) {
         //     DB::table('routes')->insert([
@@ -40,6 +45,10 @@ class DatabaseSeeder extends Seeder
         //         'titik_akhir' => $faker->name,
         //     ]);
         // }
+
+        // ========================================================
+        // ===================== Seeder User ======================
+        // ========================================================
 
         $user = [
             [
@@ -82,34 +91,38 @@ class DatabaseSeeder extends Seeder
             // ========================================================
             // ========= User Tambahan Soalnya migrasi error ==========
             // ========================================================
-            [
-                'id' => '1',
-                'name' => 'supir',
-                'email' => 'supir1@kiri.id',
-                'birthdate' => '2017-06-15',
-                'role' => 'supir',
-                'no_hp' => '081234567891',
-                'password' => bcrypt('password'),
-            ],
-            [
-                'id' => '2',
-                'name' => 'supir',
-                'email' => 'supir2@kiri.id',
-                'birthdate' => '2017-06-15',
-                'role' => 'supir',
-                'no_hp' => '081234567891',
-                'password' => bcrypt('password'),
-            ],
+            // [
+            //     'id' => '1',
+            //     'name' => 'supir',
+            //     'email' => 'supir1@kiri.id',
+            //     'birthdate' => '2017-06-15',
+            //     'role' => 'supir',
+            //     'no_hp' => '081234567891',
+            //     'password' => bcrypt('password'),
+            // ],
+            // [
+            //     'id' => '2',
+            //     'name' => 'supir',
+            //     'email' => 'supir2@kiri.id',
+            //     'birthdate' => '2017-06-15',
+            //     'role' => 'supir',
+            //     'no_hp' => '081234567891',
+            //     'password' => bcrypt('password'),
+            // ],
 
         ];
 
         foreach ($user as $key => $value) {
             User::create($value);
         }
+
+        // ========================================================
+        // ==================== Seeder Angkot =====================
+        // ========================================================
         $angkot = [
             [
                 'id' => 1,
-                'user_id' => 1,
+                'user_id' => 'owner-123456',
                 'route_id' => 1,
                 'plat_nomor' => 'B 12345',
                 'qr_code' => null,
@@ -120,7 +133,7 @@ class DatabaseSeeder extends Seeder
                 'supir_id' => null,
                 'status' => 'aktif',
             ],
-                
+
         ];
         foreach ($angkot as $key => $value) {
             Angkot::create($value);

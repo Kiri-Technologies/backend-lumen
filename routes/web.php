@@ -23,38 +23,6 @@ $router->get('/', function () use ($router) {
 //  ====================== Module History =======================
 //  =============================================================
 
-// ==============================================================
-//  ====================== By Wahyu =============================
-//  =============================================================
-
-$router->group(["prefix" => 'driverhistory'], function () use ($router) {
-
-    $router->group(['middleware' => 'auth'], function () use ($router) {
-
-        // Matches /driverhistory & /driverhistory?angkot_id = {id} || ?supir_id = {id}
-        // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-        $router->get('/', 'RiwayatController@getAll');
-
-        // Matches /driverhistory/{id}
-        // Function : Get Data History By Id
-        $router->get('/{id}', 'RiwayatController@getById');
-
-        // Matches /driverhistory/create
-        // Function : Create a new data
-        $router->post('/create', 'RiwayatController@CreateHistory');
-
-        // Matches /driverhistory/{id}/update
-        // Function : Update data by Id
-        $router->patch('/{id}/update', 'RiwayatController@UpdateHistory');
-    });
-});
-
-
-// ==============================================================
-//  ================= Default From Bang Faiz ===================
-//  =============================================================
-
-
 // API route group
 $router->group(['prefix' => 'api'], function () use ($router) {
 
@@ -89,14 +57,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Update User Profile
         $router->post('profile/update', 'UserController@updateUser');
 
-        // Matches /api/profile/update/image
-        // Function : Update User Profile
-        $router->post('profile/update/image', 'UserController@updateImage');
-
-        // Matches /api/profile/update/password
-        // Function : Update User Profile
-        $router->post('profile/update/password', 'UserController@updatePassword');
-
         // Matches /api/logout
         // Function : Logout
         $router->get('logout', 'UserController@logout');
@@ -120,41 +80,35 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Create new perjalanan
         $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
 
-        // Matches /api/perjalanan/updatePerjalanan/{id}
-        // Function : Update perjalanan
-        $router->post('perjalanan/updatePerjalanan/{id}', 'UserController@updatePerjalanan');
+        // Matches /api/admin/angkot/{id}
+        // Function : Find specific angkot by id -> REVISI
+        // $router->get('angkot/{id}', 'UserController@getAngkotByID');
 
-        // Matches /api/perjalanan/getPerjalananSorting
-        // Function : Get all perjalanan sorted by owner_id
-        $router->get('perjalanan/getPerjalananSorting', 'UserController@getPerjalananSorting');
+        //  ====================== PERJALANAN ============================
 
         // Matches /api/perjalanan/getPerjalananByID/{id}
         // Function : Get all perjalanan by owner_id
         $router->get('perjalanan/getPerjalananByID/{id}', 'UserController@getPerjalananByID');
 
-        // Matches /api/perjalanan/getAllPerjalanan
-        // Function : Get all perjalanan
-        $router->get('perjalanan/getAllPerjalanan', 'UserController@getAllPerjalanan');
+        // Matches /api/perjalanan/updatePerjalanan/{id}
+        // Function : Update perjalanan
+        $router->post('perjalanan/updatePerjalanan/{id}', 'UserController@updatePerjalanan');
 
-        // Matches /api/profile
-        // Function : Get User Profile
-        $router->get('profile', 'UserController@profile');
-
-        // Matches /api/profile/update
-        // Function : Update User Profile
-        $router->post('profile/update', 'UserController@updateUser');
-
-        // Matches /api/logout
-        // Function : Logout
-        $router->get('logout', 'UserController@logout');
+        // Matches /api/perjalanan/getPerjalananSorting
+        // Function : Get all perjalanan sorted by owner_id -> REVISI
+        // $router->get('perjalanan/getPerjalananSorting', 'UserController@getPerjalananSorting');
 
         // ==============================================================
         //  ======================== SUPIR ==============================
         //  =============================================================
 
         $router->group(['prefix' => 'supir', 'middleware' => 'supir_auth'], function () use ($router) {
-            //
 
+            //  ====================== Riwayat ============================
+
+            // Matches /api/supir/create
+            // Function : Create a new data
+            $router->post('/riwayat/create', 'RiwayatController@CreateHistory');
         });
 
         // ==============================================================
@@ -167,17 +121,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
 
+            //  ===================== A N G K O T =====================
+
             // Matches /api/owner/angkot/create
             // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
 
+            //  ===================== D R I V E R =====================
+
             // Matches /api/owner/createSupir
             // Function : Create Supir
             $router->post('driver/createSupir', 'OwnerController@createSupir');
-
-            // Matches /api/owner/angkot/getListSupir
-            // Function : Get List Supir
-            $router->get('driver/getListSupir', 'OwnerController@getListSupir');
 
             // Matches /api/owner/angkot/deleteSupir/{id}
             // Function : Delete Supir
@@ -192,12 +146,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         //  ======================== SUPIR & OWNER ======================
         //  =============================================================
 
-        // $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
+        $router->group(['prefix' => 'ownersupir', 'middleware' => 'owner_supir_auth'], function () use ($router) {
 
-        //     // Matches /api/owner/angkot/create
-        //     // Function : Create Angkot
-        //     $router->post('angkot/create', 'OwnerController@create');
-        // });
+            //  ===================== D R I V E R =====================
+
+            // Matches /api/owner/angkot/getListSupir
+            // Function : Get List Supir
+            $router->get('driver/getListSupir', 'OwnerController@getListSupir');
+
+        });
 
         // ==============================================================
         //  ==================== END SUPIR & OWNER ======================
@@ -237,17 +194,23 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/admin/angkot
             // Function : Get All Angkot
             $router->get('angkot', 'AdminController@allAngkot');
+
+            //  ===================== R I W A Y A T =====================
+
+            // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
+            // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
+            $router->get('/riwayat', 'RiwayatController@getAll');
+
+            //  ================== P E R J A L A N A N ==================
+
+            // Matches /api/perjalanan/getAllPerjalanan
+            // Function : Get all perjalanan
+            $router->get('perjalanan/getAllPerjalanan', 'UserController@getAllPerjalanan');
         });
 
         // ==============================================================
         //  ====================== END ADMIN ============================
         //  =============================================================
-
-
-
-        // Matches /api/admin/angkot/{id}
-        // Function : Find specific angkot by id
-        $router->get('angkot/{id}', 'UserController@getAngkotByID');
     });
 
     //  =============================================================
@@ -258,3 +221,25 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // ==============================================================
     //  ======================== END API ============================
     //  =============================================================
+
+// =====================================================================================================================================================================================================
+// =====================================================================================================================================================================================================
+// =====================================================================================================================================================================================================
+
+// ==============================================================
+//  ====================== By Wahyu =============================
+//  =============================================================
+
+// $router->group(["prefix" => 'driverhistory'], function () use ($router) {
+
+//     $router->group(['middleware' => 'auth'], function () use ($router) {
+
+//         // Matches /driverhistory/{id}
+//         // Function : Get Data History By Id
+//         $router->get('/{id}', 'RiwayatController@getById');
+
+//         // Matches /driverhistory/{id}/update
+//         // Function : Update data by Id
+//         $router->patch('/{id}/update', 'RiwayatController@UpdateHistory');
+//     });
+// });
