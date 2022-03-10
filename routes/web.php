@@ -79,8 +79,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
-<<<<<<< Updated upstream
-=======
         //  ====================== PROFILE ============================
 
         // Matches /api/profile
@@ -104,7 +102,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('logout', 'UserController@logout');
 
         //  ====================== ANGKOT ============================
->>>>>>> Stashed changes
 
         // Matches /api/angkot/searchID/{id}
         // Function : Find specific angkot by id
