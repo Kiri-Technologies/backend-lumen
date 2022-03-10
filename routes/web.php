@@ -57,6 +57,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Update User Profile
         $router->post('profile/update', 'UserController@updateUser');
 
+        // Matches /api/profile/update/image
+        // Function : Update User Profile
+        $router->post('profile/update/image', 'UserController@updateImage');
+
+        // Matches /api/profile/update/password
+        // Function : Update User Profile
+        $router->post('profile/update/password', 'UserController@updatePassword');
+
         // Matches /api/logout
         // Function : Logout
         $router->get('logout', 'UserController@logout');
@@ -81,8 +89,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
 
         // Matches /api/admin/angkot/{id}
-        // Function : Find specific angkot by id -> REVISI
-        // $router->get('angkot/{id}', 'UserController@getAngkotByID');
+        // Function : Find specific angkot by id
+        $router->get('angkot/{id}', 'UserController@getAngkotByID');
 
         //  ====================== PERJALANAN ============================
 
@@ -153,7 +161,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/owner/angkot/getListSupir
             // Function : Get List Supir
             $router->get('driver/getListSupir', 'OwnerController@getListSupir');
-
         });
 
         // ==============================================================

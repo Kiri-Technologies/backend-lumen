@@ -61,11 +61,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
-            'password' => 'required',
             'birthdate' => 'required|date',
             'role' => 'required|in:admin,penumpang,owner,supir',
             'no_hp' => 'required',
-            'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -80,10 +78,46 @@ class UserController extends Controller
                 $user = User::find(Auth::user()->id);
                 $user->name = $request->input('name');
                 $user->email = $request->input('email');
-                $user->password = app('hash')->make($request->input('password'));
                 $user->birthdate = $request->input('birthdate');
                 $user->role = $request->input('role');
                 $user->no_hp = $request->input('no_hp');
+                $user->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Updated !',
+                    'data' => $user,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function updateImage(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $user = User::find(Auth::user()->id);
 
                 if (isset($request->image)) {
                     // Delete Old Image ( Still Not Working I Guess)
@@ -104,7 +138,47 @@ class UserController extends Controller
                 //return successful response
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Updated !',
+                    'message' => 'User Image Updated !',
+                    'data' => $user,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $user = User::find(Auth::user()->id);
+                $user->password = app('hash')->make($request->input('password'));
+                $user->save();
+
+                Auth::guard('api')->logout();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Password Updated ! Please Login Again',
                     'data' => $user,
                 ], 201);
             } catch (\Exception $e) {
@@ -180,7 +254,7 @@ class UserController extends Controller
 
     /**
      * Create new Perjalanan
-     * 
+     *
      * @return Response
      */
     public function createPerjalanan(Request $request) {
@@ -238,7 +312,7 @@ class UserController extends Controller
      * Update Perjalanan.
      *
      * @return Response
-     * 
+     *
      */
     public function updatePerjalanan(Request $request, $id) {
         $perjalanan = Perjalanan::find($id);
@@ -313,9 +387,9 @@ class UserController extends Controller
 
     /**
      * Get All Perjalanan.
-     * 
+     *
      * @return Response
-     * 
+     *
      */
     public function getAllPerjalanan() {
         $perjalanan = Perjalanan::all();
