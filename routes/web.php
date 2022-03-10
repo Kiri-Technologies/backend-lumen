@@ -20,15 +20,15 @@ $router->get('/', function () use ($router) {
 });
 
 // ==============================================================
-//  ====================== Module History ===========================
+//  ====================== Module History =======================
 //  =============================================================
 
 // ==============================================================
 //  ====================== By Wahyu =============================
 //  =============================================================
 
-$router->group(["prefix" => 'driverhistory'], function () use ($router){
-    
+$router->group(["prefix" => 'driverhistory'], function () use ($router) {
+
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
         // Matches /driverhistory & /driverhistory?angkot_id = {id} || ?supir_id = {id}
@@ -38,11 +38,11 @@ $router->group(["prefix" => 'driverhistory'], function () use ($router){
         // Matches /driverhistory/{id}
         // Function : Get Data History By Id
         $router->get('/{id}', 'RiwayatController@getById');
-        
+
         // Matches /driverhistory/create
         // Function : Create a new data
         $router->post('/create', 'RiwayatController@CreateHistory');
-        
+
         // Matches /driverhistory/{id}/update
         // Function : Update data by Id
         $router->patch('/{id}/update', 'RiwayatController@UpdateHistory');
@@ -59,7 +59,7 @@ $router->group(["prefix" => 'driverhistory'], function () use ($router){
 $router->group(['prefix' => 'api'], function () use ($router) {
 
     // ==============================================================
-    //  ======================== PUBLIC =============================
+    //  ========================== API ==============================
     //  =============================================================
 
     // API Main Point
@@ -78,11 +78,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  =============================================================
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
-
-
-        // Matches /api/admin/angkot/{id}
-        // Function : Find specific angkot by id
-        $router->get('angkot/{id}', 'UserController@getAngkotByID');
 
         // Matches /api/admin/angkot/getAngkotSorting
         // Function : Get all angkot sorted by owner_id
@@ -110,24 +105,43 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'supir', 'middleware' => 'supir_auth'], function () use ($router) {
             //
- 
+
         });
+
+        // ==============================================================
+        //  ====================== END SUPIR ============================
+        //  =============================================================
 
         // ==============================================================
         //  ======================== OWNER ==============================
         //  =============================================================
 
         $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
-   
+
             // Matches /api/owner/angkot/create
             // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
         });
 
         // ==============================================================
-        //  ======================== SUPIR & Owner ==============================
+        //  ====================== END OWNER ============================
         //  =============================================================
-        
+
+        // ==============================================================
+        //  ======================== SUPIR & OWNER ======================
+        //  =============================================================
+
+        // $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
+
+        //     // Matches /api/owner/angkot/create
+        //     // Function : Create Angkot
+        //     $router->post('angkot/create', 'OwnerController@create');
+        // });
+
+        // ==============================================================
+        //  ==================== END SUPIR & OWNER ======================
+        //  =============================================================
+
 
         // ==============================================================
         //  ======================== ADMIN ==============================
@@ -162,11 +176,24 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/admin/angkot
             // Function : Get All Angkot
             $router->get('angkot', 'AdminController@allAngkot');
-
         });
 
-        
+        // ==============================================================
+        //  ====================== END ADMIN ============================
+        //  =============================================================
+
+
+
+        // Matches /api/admin/angkot/{id}
+        // Function : Find specific angkot by id
+        $router->get('angkot/{id}', 'UserController@getAngkotByID');
     });
-    
-    
+
+    //  =============================================================
+    //  ======================= END AUTH ============================
+    //  =============================================================
 });
+
+    // ==============================================================
+    //  ======================== END API ============================
+    //  =============================================================

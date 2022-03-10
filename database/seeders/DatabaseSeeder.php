@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Riwayat;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,8 +19,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Riwayat::factory(5)->create();
 
-        Riwayat::factory(5)->create();
+        // Routes Seeder
+        $faker = Faker::create();
+        foreach (range(1, 10) as $index) {
+            DB::table('routes')->insert([
+                'kode_angkot' => $faker->areaCode,
+                'titik_awal' => $faker->name,
+                'titik_akhir' => $faker->name,
+            ]);
+        }
+        // Riwayat Seeder
+        // foreach (range(1, 10) as $index) {
+        //     DB::table('routes')->insert([
+        //         'kode_angkot' => $faker->areaCode,
+        //         'titik_awal' => $faker->name,
+        //         'titik_akhir' => $faker->name,
+        //     ]);
+        // }
 
         $user = [
             [
@@ -78,7 +98,7 @@ class DatabaseSeeder extends Seeder
                 'no_hp' => '081234567891',
                 'password' => bcrypt('password'),
             ],
-            
+
         ];
 
         foreach ($user as $key => $value) {
