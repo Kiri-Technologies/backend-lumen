@@ -87,8 +87,8 @@ class OwnerController  extends Controller
     public function createSupir(Request $request) {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'supir_id' => 'required|int',
-            'angkot_id' => 'required|int',
+            'supir_id' => 'required',
+            'angkot_id' => 'required',
         ]);
 
         if ($validator->fails()) {
