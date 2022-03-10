@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
 use App\Models\ListSupir;
 
-class OwnerController  extends Controller
+class OwnerSupirController  extends Controller
 {
     /**
      * Instantiate a new UserController instance.

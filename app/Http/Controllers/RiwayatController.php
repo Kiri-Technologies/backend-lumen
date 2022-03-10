@@ -15,7 +15,7 @@ class RiwayatController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('supir_auth');
+        $this->middleware('auth');
     }
 
 

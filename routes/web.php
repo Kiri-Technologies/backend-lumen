@@ -158,9 +158,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== D R I V E R =====================
 
+            // Matches /api/ownersupir/driver
+            // Function : Get List Supir
+            $router->get('driver', 'OwnerController@getListSupir');
+
             // Matches /api/owner/angkot/getListSupir
             // Function : Get List Supir
-            $router->get('driver/getListSupir', 'OwnerController@getListSupir');
+            // $router->get('driver/getListSupir', 'OwnerController@getListSupir');
         });
 
         // ==============================================================
@@ -172,7 +176,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         //  ======================== ADMIN ==============================
         //  =============================================================
 
-        $router->group(['prefix' => 'admin', 'middleware' => 'supir_auth'], function () use ($router) {
+        $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
 
             //  ===================== U S E R =====================
 
