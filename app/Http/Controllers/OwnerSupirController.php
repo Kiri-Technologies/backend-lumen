@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
 use App\Models\ListSupir;
 
-class OwnerController  extends Controller
+class OwnerSupirController  extends Controller
 {
     /**
      * Instantiate a new UserController instance.
@@ -87,8 +87,8 @@ class OwnerController  extends Controller
     public function createSupir(Request $request) {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'supir_id' => 'required',
-            'angkot_id' => 'required',
+            'supir_id' => 'required|int',
+            'angkot_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {

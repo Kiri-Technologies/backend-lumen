@@ -22,7 +22,7 @@ class AdminController  extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin_auth');
+        $this->middleware('auth');
     }
 
 
@@ -197,7 +197,7 @@ class AdminController  extends Controller
 
     /**
      * Get list supir
-     * 
+     *
      * @return Response
      */
     public function getListSupir() {
