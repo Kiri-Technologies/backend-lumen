@@ -97,6 +97,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Function : Create new perjalanan
         $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
 
+        // Matches /api/perjalanan/updatePerjalanan/{id}
+        // Function : Update perjalanan
+        $router->post('perjalanan/updatePerjalanan/{id}', 'UserController@updatePerjalanan');
+
+        // Matches /api/perjalanan/getPerjalananSorting
+        // Function : Get all perjalanan sorted by owner_id
+        $router->get('perjalanan/getPerjalananSorting', 'UserController@getPerjalananSorting');
+
+        // Matches /api/perjalanan/getPerjalananByID/{id}
+        // Function : Get all perjalanan by owner_id
+        $router->get('perjalanan/getPerjalananByID/{id}', 'UserController@getPerjalananByID');
+
+        // Matches /api/perjalanan/getAllPerjalanan
+        // Function : Get all perjalanan
+        $router->get('perjalanan/getAllPerjalanan', 'UserController@getAllPerjalanan');
+
         // Matches /api/profile
         // Function : Get User Profile
         $router->get('profile', 'UserController@profile');
