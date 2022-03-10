@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
+use App\Models\ListSupir;
 
 class OwnerController  extends Controller
 {
@@ -74,6 +75,96 @@ class OwnerController  extends Controller
                     'data' => [],
                 ], 409);
             }
+        }
+    }
+
+    /**
+     * Create a supir on the specified angkot.
+     * 
+     * @param  int  $id
+     * @return Response
+     */
+    public function createSupir(Request $request) {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'supir_id' => 'required|int',
+            'angkot_id' => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $supir = new ListSupir;
+                $supir->supir_id = $request->input('supir_id');
+                $supir->angkot_id = $request->input('angkot_id');
+                $supir->is_confirmed = null;
+                $supir->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Supir Created !',
+                    'data' => $supir,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get list supir on the specified angkot.
+     * 
+     * @return Response
+     */
+    public function getListSupir() {
+        $list_supir = ListSupir::all();
+        if ($list_supir) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'List Supir Requested !',
+                'data' => $list_supir,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'List Supir Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
+
+    /**
+     * Delete supir on the specified angkot.
+     * 
+     * @param int $id
+     * @return Response
+     */
+    public function deleteSupir($id) {
+        $supir = ListSupir::find($id);
+        if ($supir) {
+            $supir->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'supir deleted successfully!',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'supir not found!',
+                'data' => [],
+            ], 404);
         }
     }
 }

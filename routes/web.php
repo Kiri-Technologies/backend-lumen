@@ -80,17 +80,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
 
-        // Matches /api/admin/angkot/{id}
+        // Matches /api/angkot/searchID/{id}
         // Function : Find specific angkot by id
-        $router->get('angkot/{id}', 'UserController@getAngkotByID');
+        $router->get('angkot/searchID/{id}', 'UserController@getAngkotByID');
 
-        // Matches /api/admin/angkot/getAngkotSorting
+        // Matches /api//angkot/getAngkotSorting
         // Function : Get all angkot sorted by owner_id
         $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
 
-        // Matches /api/admin/angkot/owner_id/{id}
+        // Matches /api/angkot/owner_id/{id}
         // Function : Find specific angkot by owner_id
         $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
+
+        // Matches /apiangkot/createPerjalanan
+        // Function : Create new perjalanan
+        $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
 
         // Matches /api/profile
         // Function : Get User Profile
@@ -122,6 +126,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/owner/angkot/create
             // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
+
+            // Matches /api/owner/createSupir
+            // Function : Create Supir
+            $router->post('driver/createSupir', 'OwnerController@createSupir');
+
+            // Matches /api/owner/angkot/getListSupir
+            // Function : Get List Supir
+            $router->get('driver/getListSupir', 'OwnerController@getListSupir');
+
+            // Matches /api/owner/angkot/deleteSupir/{id}
+            // Function : Delete Supir
+            $router->delete('driver/deleteSupir/{id}', 'OwnerController@deleteSupir');
         });
 
         // ==============================================================

@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
+use App\Models\Perjalanan;
 
 class UserController extends Controller
 {
@@ -137,6 +138,7 @@ class UserController extends Controller
      * Get Angkot By ID.
      *
      * @return Response
+     * @param $id
      */
     public function getAngkotByID($id) {
         $angkot = Angkot::find($id);
@@ -144,6 +146,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
+                'data' => [],
             ], 404);
         }
         return response()->json([
@@ -174,4 +177,62 @@ class UserController extends Controller
             'data' => [$angkot],
         ], 200);
     }
+
+    /**
+     * Create new Perjalanan
+     * 
+     * @return Response
+     */
+    public function createPerjalanan(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'penumpang_id' => 'required|string',
+            'angkot_id' => 'required|string',
+            'supir_id' => 'required|string',
+            'titik_naik' => 'required|string',
+            'titik_turun' => 'required|string',
+            'jarak' => 'required|string',
+            'rekomendasi_harga' => 'required|string',
+            'is_done' => 'required|boolean',
+            'is_connected_with_driver' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            // return fails response
+            return response()->json([
+                'status' => 'fails',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $perjalanan = new Perjalanan;
+                $perjalanan->penumpang_id = $request->input('penumpang_id');
+                $perjalanan->angkot_id = $request->input('angkot_id');
+                $perjalanan->supir_id = $request->input('supir_id');
+                $perjalanan->titik_naik = $request->input('titik_naik');
+                $perjalanan->titik_turun = $request->input('titik_turun');
+                $perjalanan->jarak = $request->input('jarak');
+                $perjalanan->rekomendasi_harga = $request->input('rekomendasi_harga');
+                $perjalanan->is_done = $request->input('is_done');
+                $perjalanan->is_connected_with_driver = $request->input('is_connected_with_driver');
+                $perjalanan->save();
+
+                // return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Perjalanan Created !',
+                    'data' => $perjalanan,
+                ], 201);
+            } catch (\Exception $e) {
+                // return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+
+    }
+        
 }
