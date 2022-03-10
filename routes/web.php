@@ -79,6 +79,32 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
+<<<<<<< Updated upstream
+=======
+        //  ====================== PROFILE ============================
+
+        // Matches /api/profile
+        // Function : Get User Profile
+        $router->get('profile', 'UserController@profile');
+
+        // Matches /api/profile/update
+        // Function : Update User Profile
+        $router->post('profile/update', 'UserController@updateUser');
+
+        // Matches /api/profile/update/image
+        // Function : Update User Profile
+        $router->post('profile/update/image', 'UserController@updateImage');
+
+        // Matches /api/profile/update/password
+        // Function : Update User Profile
+        $router->post('profile/update/password', 'UserController@updatePassword');
+
+        // Matches /api/logout
+        // Function : Logout
+        $router->get('logout', 'UserController@logout');
+
+        //  ====================== ANGKOT ============================
+>>>>>>> Stashed changes
 
         // Matches /api/angkot/searchID/{id}
         // Function : Find specific angkot by id
