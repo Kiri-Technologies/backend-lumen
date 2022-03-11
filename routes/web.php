@@ -73,20 +73,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         // Matches /api/angkot/searchID/{id}
         // Function : Find specific angkot by id
-        $router->get('angkot/searchID/{id}', 'UserController@getAngkotByID');
+        // $router->get('angkot/searchID/{id}', 'UserController@getAngkotByID');
 
         // Matches /api//angkot/getAngkotSorting
         // Matches /api/admin/angkot/getAngkotSorting
         // Function : Get all angkot sorted by owner_id
-        $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
+        // $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
 
         // Matches /api/angkot/owner_id/{id}
-        // Function : Find specific angkot by owner_id
-        $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
-
-        // Matches /apiangkot/createPerjalanan
-        // Function : Create new perjalanan
-        $router->post('angkot/createPerjalanan', 'UserController@createPerjalanan');
+        // Function : Find specific angkot by owner_id -> REVISI
+        // $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
 
         // Matches /api/angkot/{id}
         // Function : Find specific angkot by id
@@ -94,13 +90,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         //  ====================== PERJALANAN ============================
 
-        // Matches /api/perjalanan/getPerjalananByID/{id}
+        // Matches /api/perjalanan/{id}
         // Function : Get all perjalanan by owner_id
-        $router->get('perjalanan/getPerjalananByID/{id}', 'UserController@getPerjalananByID');
+        $router->get('perjalanan/{id}', 'UserController@getPerjalananByID');
 
-        // Matches /api/perjalanan/updatePerjalanan/{id}
+        // Matches /api/perjalanan/create
+        // Function : Create new perjalanan
+        $router->post('perjalanan/create', 'UserController@createPerjalanan');
+
+        // Matches /api/perjalanan/{id}/update
         // Function : Update perjalanan
-        $router->post('perjalanan/updatePerjalanan/{id}', 'UserController@updatePerjalanan');
+        $router->post('perjalanan/{id}/update', 'UserController@updatePerjalanan');
 
         // Matches /api/perjalanan/getPerjalananSorting
         // Function : Get all perjalanan sorted by owner_id -> REVISI
@@ -114,7 +114,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ====================== Riwayat ============================
 
-            // Matches /api/supir/create
+            // Matches /api/supir/riwayat/create
             // Function : Create a new data
             $router->post('/riwayat/create', 'RiwayatController@CreateHistory');
         });
@@ -137,13 +137,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== D R I V E R =====================
 
-            // Matches /api/owner/createSupir
+            // Matches /api/owner/driver/create
             // Function : Create Supir
-            $router->post('driver/createSupir', 'OwnerController@createSupir');
+            $router->post('driver/create', 'OwnerController@createSupir');
 
-            // Matches /api/owner/angkot/deleteSupir/{id}
+            // Matches /api/owner/driver/create{id}
             // Function : Delete Supir
-            $router->delete('driver/deleteSupir/{id}', 'OwnerController@deleteSupir');
+            $router->delete('driver/delete/{id}', 'OwnerController@deleteSupir');
         });
 
         // ==============================================================
@@ -210,7 +210,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ================== P E R J A L A N A N ==================
 
-            // Matches /api/perjalanan/getAllPerjalanan
+            // Matches /api/admin/perjalanan
             // Function : Get all perjalanan
             $router->get('perjalanan', 'UserController@getAllPerjalanan');
         });
