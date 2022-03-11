@@ -135,6 +135,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Function : Create Angkot
             $router->post('angkot/create', 'OwnerController@create');
 
+            // Matches /api/owner/angkot/{id}/update
+            // Function : Create Angkot
+            $router->post('angkot/{id}/update', 'OwnerController@update');
+
             //  ===================== D R I V E R =====================
 
             // Matches /api/owner/driver/create
