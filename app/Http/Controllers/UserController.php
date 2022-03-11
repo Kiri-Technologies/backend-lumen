@@ -231,13 +231,20 @@ class UserController extends Controller
     }
 
     /**
-     * Get Angkot Sorting.
-     * Sort by owner_id
+     * Get Angkot Find.
+     * 
      *
      * @return Response
      */
-    public function getAngkotSorting() {
-        $angkot = Angkot::orderBy('id', 'asc')->get();
+    public function getAngkotFind(Request $request) {
+        $angkot = Angkot::when($request->owner_id, function ($query, $owner_id) {
+            return $query->where('user_id', $owner_id);
+        })->when($request->route_id, function ($query, $route_id) {
+            return $query->where('route_id', $route_id);
+        })->when($request->status, function ($query, $status) {
+            return $query->where('status', $status);
+        })->get();
+
         if (!$angkot) {
             return response()->json([
                 'status' => 'failed',
@@ -247,9 +254,10 @@ class UserController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Angkot Sorting Requested !',
+            'message' => 'Angkot Requested !',
             'data' => [$angkot],
         ], 200);
+        
     }
 
     /**
