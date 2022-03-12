@@ -128,21 +128,24 @@ class OwnerSupirController  extends Controller
      *
      * @return Response
      */
-    public function getListSupir() {
-        $list_supir = ListSupir::all();
-        if ($list_supir) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'List Supir Requested !',
-                'data' => $list_supir,
-            ], 200);
-        } else {
+    public function getListSupir(Request $request) {
+        $list_supir = ListSupir::when($request->supir_id, function($query, $supir_id) {
+            return $query->where('supir_id', $supir_id);
+        })->when($request->angkot_id, function($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->get();
+        if (!$list_supir) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'List Supir Not Found!',
+                'message' => 'List supir not found !',
                 'data' => [],
-            ], 400);
+            ], 404);
         }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'List supir found !',
+            'data' => $list_supir,
+        ], 200);
     }
 
     /**

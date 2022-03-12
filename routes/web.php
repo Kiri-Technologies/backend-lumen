@@ -159,8 +159,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             //  ===================== D R I V E R =====================
 
             // Matches /api/ownersupir/driver
-            // Function : Get List Supir -> REVISI
-            // $router->get('driver', 'OwnerController@getListSupir');
+            // Function : Get List Supir ->
+            $router->get('driver', 'OwnerController@getListSupir');
         });
 
         // ==============================================================
