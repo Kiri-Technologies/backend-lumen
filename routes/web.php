@@ -112,6 +112,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'supir', 'middleware' => 'supir_auth'], function () use ($router) {
 
+            //  ====================== Angkot ============================
+
+            // Matches /api/supir/angkot/{id}/updateStatusApproval
+            // Function : Update angkot supir and operation status
+            $router->post('/angkot/{id}/updateStatusApproval', 'SupirController@updateStatusOperasi');
+
             //  ====================== Riwayat ============================
 
             // Matches /api/supir/riwayat/create
@@ -205,6 +211,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/admin/angkot
             // Function : Get All Angkot
             $router->get('angkot', 'AdminController@allAngkot');
+
+            // Matches /api/admin/angkot/{id}/updateStatusApproval
+            // Function : Update angkot status
+            $router->post('/angkot/{id}/updateStatusApproval', 'AdminController@updateStatusApproval');
+
+            // Matches /api/owner/angkot/{id}/delete
+            // Function : Delete angkot by id
+            $router->post('angkot/{id}/delete', 'AdminController@DeleteAngkotById');
 
             //  ===================== R I W A Y A T =====================
 
