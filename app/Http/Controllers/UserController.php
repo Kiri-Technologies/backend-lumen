@@ -231,28 +231,6 @@ class UserController extends Controller
     }
 
     /**
-     * Get Angkot Sorting.
-     * Sort by owner_id
-     *
-     * @return Response
-     */
-    public function getAngkotSorting() {
-        $angkot = Angkot::orderBy('id', 'asc')->get();
-        if (!$angkot) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Angkot Not Found!',
-                'data' => [],
-            ], 404);
-        }
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Angkot Sorting Requested !',
-            'data' => [$angkot],
-        ], 200);
-    }
-
-    /**
      * Create new Perjalanan
      *
      * @return Response
@@ -342,13 +320,20 @@ class UserController extends Controller
     }
 
     /**
-     * Get Perjalanan Sorting.
+     * Get Perjalanan Find.
      *
      * @return Response
      *
      */
-    public function getPerjalananSorting() {
-        $perjalanan = Perjalanan::orderBy('penumpang_id', 'asc')->get();
+    public function getPerjalananFind(Request $request) {
+        $perjalanan = Perjalanan::when($request->penumpang_id, function ($query, $penumpang_id) {
+            return $query->where('penumpang_id', $penumpang_id);
+        })->when($request->angkot_id, function ($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->when($request->supir_id, function ($query, $supir_id) {
+            return $query->where('supir_id', $supir_id);
+        })->get();
+
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -358,9 +343,10 @@ class UserController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Perjalanan Sorting Requested !',
-            'data' => [$perjalanan],
+            'message' => 'Perjalanan Requested !',
+            'data' => $perjalanan,
         ], 200);
+        
     }
 
     /**
