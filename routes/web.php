@@ -49,9 +49,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         //  ====================== LOGOUT ============================
 
-            // Matches /api/logout
-            // Function : Logout
-            $router->get('logout', 'UserController@logout');
+        // Matches /api/logout
+        // Function : Logout
+        $router->get('logout', 'UserController@logout');
 
         //  ====================== PROFILE ============================
 
@@ -139,7 +139,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/supir/riwayat/create
                 // Function : Create a new data
-                $router->post('/create', 'RiwayatController@CreateHistory');
+                $router->post('/create', 'SupirController@CreateHistory');
+
+                // Matches /api/supir/riwayat/{id}/update
+                // Function : Update data by Id
+                $router->patch('/{id}/update', 'SupirController@UpdateHistory');
             });
         });
 
@@ -192,9 +196,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== D R I V E R =====================
 
-            // Matches /api/ownersupir/driver
-            // Function : Get List Supir -> REVISI
-            // $router->get('driver', 'OwnerController@getListSupir');
+            $router->group(["prefix" => 'driver'], function () use ($router) {
+
+                // Matches /api/ownersupir/driver
+                // Function : Get List Supir
+                $router->get('/', 'OwnerSupirController@getListSupir');
+            });
+
+            //  ===================== R I W A Y A T =====================
+
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/ownersupir/riwayat/{id}
+                // Function : Get Data History By Id
+                $router->get('/{id}', 'OwnerSupirController@getById');
+            });
         });
 
         // ==============================================================
@@ -256,7 +272,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
                 // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-                $router->get('/', 'RiwayatController@getAll');
+                $router->get('/', 'AdminController@getAll');
             });
 
             //  ================== P E R J A L A N A N ==================
@@ -307,21 +323,3 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
-
-// ==============================================================
-//  ====================== By Wahyu =============================
-//  =============================================================
-
-// $router->group(["prefix" => 'driverhistory'], function () use ($router) {
-
-//     $router->group(['middleware' => 'auth'], function () use ($router) {
-
-//         // Matches /driverhistory/{id}
-//         // Function : Get Data History By Id
-//         $router->get('/{id}', 'RiwayatController@getById');
-
-//         // Matches /driverhistory/{id}/update
-//         // Function : Update data by Id
-//         $router->patch('/{id}/update', 'RiwayatController@UpdateHistory');
-//     });
-// });

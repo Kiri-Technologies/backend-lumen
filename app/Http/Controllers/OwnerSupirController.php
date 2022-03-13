@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
+
 use App\Models\Angkot;
+use App\Models\Favorites;
+use App\Models\FeedbackApp;
 use App\Models\ListSupir;
+use App\Models\Perjalanan;
+use App\Models\Riwayat;
+use App\Models\Routes;
+use App\Models\Setpoints;
+use App\Models\User;
 
 class OwnerSupirController  extends Controller
 {
@@ -26,109 +34,12 @@ class OwnerSupirController  extends Controller
     }
 
     /**
-     * Create a new Angkot
-     *
-     * @return void
-     */
-    public function create(Request $request)
-    {
-        //validate incoming request
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string',
-            'route_id' => 'required|string',
-            'plat_nomor' => 'required|string',
-            'pajak_tahunan' => 'required|date',
-            'pajak_stnk' => 'required|date',
-            'kir_bulanan' => 'required|date',
-        ]);
-
-        if ($validator->fails()) {
-            //return failed response
-            return response()->json([
-                'status' => 'failed',
-                'message' => $validator->errors(),
-                'data' => [],
-            ], 400);
-        } else {
-            try {
-                $angkot = new Angkot;
-                $angkot->user_id = $request->input('user_id');
-                $angkot->route_id = $request->input('route_id');
-                $angkot->plat_nomor = $request->input('plat_nomor');
-                $angkot->pajak_tahunan = $request->input('pajak_tahunan');
-                $angkot->pajak_stnk = $request->input('pajak_stnk');
-                $angkot->kir_bulanan = $request->input('kir_bulanan');
-                $angkot->status = "pending";
-                $angkot->save();
-
-                //return successful response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Angkot Created !',
-                    'data' => $angkot,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
-        }
-    }
-
-    /**
-     * Create a supir on the specified angkot.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function createSupir(Request $request) {
-        //validate incoming request
-        $validator = Validator::make($request->all(), [
-            'supir_id' => 'required|int',
-            'angkot_id' => 'required|int',
-        ]);
-
-        if ($validator->fails()) {
-            //return failed response
-            return response()->json([
-                'status' => 'failed',
-                'message' => $validator->errors(),
-                'data' => [],
-            ], 400);
-        } else {
-            try {
-                $supir = new ListSupir;
-                $supir->supir_id = $request->input('supir_id');
-                $supir->angkot_id = $request->input('angkot_id');
-                $supir->is_confirmed = null;
-                $supir->save();
-
-                // return successful response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Supir Created !',
-                    'data' => $supir,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
-        }
-    }
-
-    /**
      * Get list supir on the specified angkot.
      *
      * @return Response
      */
-    public function getListSupir() {
+    public function getListSupir()
+    {
         $list_supir = ListSupir::all();
         if ($list_supir) {
             return response()->json([
@@ -151,7 +62,8 @@ class OwnerSupirController  extends Controller
      * @param int $id
      * @return Response
      */
-    public function deleteSupir($id) {
+    public function deleteSupir($id)
+    {
         $supir = ListSupir::find($id);
         if ($supir) {
             $supir->delete();
@@ -166,5 +78,19 @@ class OwnerSupirController  extends Controller
                 'data' => [],
             ], 404);
         }
+    }
+
+    /**
+     * get riwayat supir narik by id
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function getById(Riwayat $riwayat, $id)
+    {
+        $riwayat =  Riwayat::with('supir')->get();
+        return response()->json([
+            'data' => $riwayat->find($id)
+        ]);
     }
 }

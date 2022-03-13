@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
+
 use App\Models\Angkot;
+use App\Models\Favorites;
+use App\Models\FeedbackApp;
 use App\Models\ListSupir;
 use App\Models\Perjalanan;
+use App\Models\Riwayat;
 use App\Models\Routes;
+use App\Models\Setpoints;
+use App\Models\User;
 
 class AdminController  extends Controller
 {
@@ -459,5 +465,34 @@ class AdminController  extends Controller
                 'data' => [],
             ], 409);
         }
+    }
+
+    /**
+     * Get all riwayat
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function getAll(){
+        // memvalidasi jika bukan params angkot_id or supir_id
+        if(request()->all()){
+            if(!request(['angkot_id', 'supir_id'])){
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'params not available',
+                ], 400);
+            }
+        }
+
+        // fungsi method filter sebenar nya bukan ngequery tapi untuk memfilter sesuai params
+        // makanya aku taruh di models aja biar aku gak pusing
+        // untuk proses query tetap disini dan disimpan ke dalam $riwayat
+        $riwayat =  Riwayat::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $riwayat
+        ], 200);
     }
 }
