@@ -84,8 +84,9 @@ class SupirController  extends Controller
      *
      * @return $angkot
      */
-    public function createHistory(Request $request){
-        try{
+    public function createHistory(Request $request)
+    {
+        try {
             $user_id = $request->input('user_id');
             $angkot_id = $request->input('angkot_id');
             $jumlah_pendapatan = $request->input('jumlah_pendapatan');
@@ -111,7 +112,22 @@ class SupirController  extends Controller
                 'status' => 'failed',
                 'message' => $e,
                 'data' => [],
-                ], 409);
-            }
+            ], 409);
+        }
+    }
+
+    /**
+     * Update Riwayat
+     *
+     * @return $angkot
+     */
+    public function UpdateHistory(Request $request, $id)
+    {
+        Riwayat::find($id)->update($request->all());
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'data updated'
+        ], 201);
     }
 }

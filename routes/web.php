@@ -139,7 +139,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/supir/riwayat/create
                 // Function : Create a new data
-                $router->post('/create', 'RiwayatController@CreateHistory');
+                $router->post('/create', 'SupirController@CreateHistory');
+
+                // Matches /api/supir/riwayat/{id}/update
+                // Function : Update data by Id
+                $router->patch('/{id}/update', 'SupirController@UpdateHistory');
             });
         });
 
@@ -199,6 +203,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/', 'OwnerSupirController@getListSupir');
             });
 
+            //  ===================== R I W A Y A T =====================
+
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/ownersupir/riwayat/{id}
+                // Function : Get Data History By Id
+                $router->get('/{id}', 'OwnerSupirController@getById');
+            });
         });
 
         // ==============================================================
@@ -311,21 +323,3 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
-
-// ==============================================================
-//  ====================== By Wahyu =============================
-//  =============================================================
-
-// $router->group(["prefix" => 'driverhistory'], function () use ($router) {
-
-//     $router->group(['middleware' => 'auth'], function () use ($router) {
-
-//         // Matches /driverhistory/{id}
-//         // Function : Get Data History By Id
-//         $router->get('/{id}', 'RiwayatController@getById');
-
-//         // Matches /driverhistory/{id}/update
-//         // Function : Update data by Id
-//         $router->patch('/{id}/update', 'RiwayatController@UpdateHistory');
-//     });
-// });

@@ -38,7 +38,8 @@ class OwnerSupirController  extends Controller
      *
      * @return Response
      */
-    public function getListSupir() {
+    public function getListSupir()
+    {
         $list_supir = ListSupir::all();
         if ($list_supir) {
             return response()->json([
@@ -61,7 +62,8 @@ class OwnerSupirController  extends Controller
      * @param int $id
      * @return Response
      */
-    public function deleteSupir($id) {
+    public function deleteSupir($id)
+    {
         $supir = ListSupir::find($id);
         if ($supir) {
             $supir->delete();
@@ -76,5 +78,19 @@ class OwnerSupirController  extends Controller
                 'data' => [],
             ], 404);
         }
+    }
+
+    /**
+     * get riwayat supir narik by id
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function getById(Riwayat $riwayat, $id)
+    {
+        $riwayat =  Riwayat::with('supir')->get();
+        return response()->json([
+            'data' => $riwayat->find($id)
+        ]);
     }
 }
