@@ -83,22 +83,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(["prefix" => 'angkot'], function () use ($router) {
 
 
-          // Matches /api//angkot/getAngkotFind
+          // Matches /api/angkot/getAngkotFind
           // Function : Get all find by owner_id or route_id or status
-          $router->get('angkot/getAngkotFind', 'UserController@getAngkotFind');
-
-            // Matches /api/angkot/searchID/{id}
-            // Function : Find specific angkot by id
-            // $router->get('/searchID/{id}', 'UserController@getAngkotByID');
-
-            // Matches /api//angkot/getAngkotSorting
-            // Matches /api/admin/angkot/getAngkotSorting
-            // Function : Get all angkot sorted by owner_id
-            // $router->get('/getAngkotSorting', 'UserController@getAngkotSorting');
-
-            // Matches /api/angkot/owner_id/{id}
-            // Function : Find specific angkot by owner_id -> REVISI
-            // $router->get('/owner_id/{id}', 'UserController@getAngkotByOwnerID');
+          $router->get('/find', 'UserController@getAngkotFind');
 
             // Matches /api/angkot/{id}
             // Function : Find specific angkot by id
@@ -122,8 +109,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->post('/{id}/update', 'UserController@updatePerjalanan');
 
             // Matches /api/perjalanan/getPerjalananSorting
-            // Function : Get all perjalanan sorted by owner_id -> REVISI
-            // $router->get('/getPerjalananSorting', 'UserController@getPerjalananSorting');
+            // Function : Get all perjalanan sorted by owner_id
+            $router->get('/find', 'UserController@getPerjalananFind');
 
         });
 
