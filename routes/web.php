@@ -153,7 +153,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/supir/angkot/{id}/updateStatusApproval
                 // Function : Update angkot supir and operation status
-                $router->post('/{id}/updateStatusApproval', 'SupirController@updateStatusOperasi');
+                $router->post('/{id}/updateStatusOperasi', 'SupirController@updateStatusOperasi');
             });
 
             //  ====================== RIWAYAT ============================
@@ -191,6 +191,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/owner/angkot/{id}/update
                 // Function : Create Angkot
                 $router->post('/{id}/update', 'OwnerController@update');
+
+                // Matches /api/owner/angkot/{id}/delete
+                // Function : Create Angkot
+                $router->delete('/{id}/delete', 'OwnerController@deleteAgkot');
             });
 
             //  ========================= DRIVER =========================
@@ -201,7 +205,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Create Supir
                 $router->post('/create', 'OwnerController@createSupir');
 
-                // Matches /api/owner/driver/create{id}
+                // Matches /api/owner/driver/delete/{id}
                 // Function : Delete Supir
                 $router->delete('/delete/{id}', 'OwnerController@deleteSupir');
             });

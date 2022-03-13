@@ -131,6 +131,28 @@ class OwnerController  extends Controller
         }
     }
 
+    public function deleteAgkot(Request $request, $id)
+    {
+        try {
+            $angkot = Angkot::find($id);
+            $angkot->delete();
+
+            //return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Angkot Deleted !',
+                'data' => $angkot,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
     /**
      * Create a supir on the specified angkot.
      *

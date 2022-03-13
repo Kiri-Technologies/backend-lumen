@@ -198,7 +198,7 @@ class AdminController  extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'message' => 'User Requested !',
+            'message' => 'Angkot Requested !',
             'data' => Angkot::all(),
         ], 200);
     }
