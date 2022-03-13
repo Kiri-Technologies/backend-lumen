@@ -346,7 +346,7 @@ class UserController extends Controller
             'message' => 'Perjalanan Requested !',
             'data' => $perjalanan,
         ], 200);
-        
+
     }
 
     /**
@@ -357,28 +357,6 @@ class UserController extends Controller
      */
     public function getPerjalananByID($id) {
         $perjalanan = Perjalanan::find($id);
-        if (!$perjalanan) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Perjalanan Not Found!',
-                'data' => [],
-            ], 404);
-        }
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Perjalanan Requested !',
-            'data' => [$perjalanan],
-        ], 200);
-    }
-
-    /**
-     * Get All Perjalanan.
-     *
-     * @return Response
-     *
-     */
-    public function getAllPerjalanan() {
-        $perjalanan = Perjalanan::all();
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
