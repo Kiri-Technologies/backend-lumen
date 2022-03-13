@@ -82,6 +82,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(["prefix" => 'angkot'], function () use ($router) {
 
+
+          // Matches /api//angkot/getAngkotFind
+          // Function : Get all find by owner_id or route_id or status
+          $router->get('angkot/getAngkotFind', 'UserController@getAngkotFind');
+
             // Matches /api/angkot/searchID/{id}
             // Function : Find specific angkot by id
             // $router->get('/searchID/{id}', 'UserController@getAngkotByID');

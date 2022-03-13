@@ -241,6 +241,36 @@ class UserController extends Controller
     }
 
     /**
+     * Get Angkot Find.
+     * 
+     *
+     * @return Response
+     */
+    public function getAngkotFind(Request $request) {
+        $angkot = Angkot::when($request->owner_id, function ($query, $owner_id) {
+            return $query->where('user_id', $owner_id);
+        })->when($request->route_id, function ($query, $route_id) {
+            return $query->where('route_id', $route_id);
+        })->when($request->status, function ($query, $status) {
+            return $query->where('status', $status);
+        })->get();
+
+        if (!$angkot) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Angkot Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Angkot Requested !',
+            'data' => $angkot,
+        ], 200);
+        
+    }
+
+    /**
      * Create new Perjalanan
      *
      * @return Response
