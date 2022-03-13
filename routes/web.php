@@ -47,64 +47,76 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
+        //  ====================== LOGOUT ============================
+
+            // Matches /api/logout
+            // Function : Logout
+            $router->get('logout', 'UserController@logout');
+
         //  ====================== PROFILE ============================
 
-        // Matches /api/profile
-        // Function : Get User Profile
-        $router->get('profile', 'UserController@profile');
+        $router->group(["prefix" => 'profile'], function () use ($router) {
 
-        // Matches /api/profile/update
-        // Function : Update User Profile
-        $router->post('profile/update', 'UserController@updateUser');
+            // Matches /api/profile
+            // Function : Get User Profile
+            $router->get('/', 'UserController@profile');
 
-        // Matches /api/profile/update/image
-        // Function : Update User Profile
-        $router->post('profile/update/image', 'UserController@updateImage');
+            // Matches /api/profile/update
+            // Function : Update User Profile
+            $router->post('/update', 'UserController@updateUser');
 
-        // Matches /api/profile/update/password
-        // Function : Update User Profile
-        $router->post('profile/update/password', 'UserController@updatePassword');
+            // Matches /api/profile/update/image
+            // Function : Update User Profile
+            $router->post('/update/image', 'UserController@updateImage');
 
-        // Matches /api/logout
-        // Function : Logout
-        $router->get('logout', 'UserController@logout');
+            // Matches /api/profile/update/password
+            // Function : Update User Profile
+            $router->post('/update/password', 'UserController@updatePassword');
+        });
 
         //  ====================== ANGKOT ============================
 
-        // Matches /api/angkot/searchID/{id}
-        // Function : Find specific angkot by id
-        // $router->get('angkot/searchID/{id}', 'UserController@getAngkotByID');
+        $router->group(["prefix" => 'angkot'], function () use ($router) {
 
-        // Matches /api//angkot/getAngkotSorting
-        // Matches /api/admin/angkot/getAngkotSorting
-        // Function : Get all angkot sorted by owner_id
-        // $router->get('angkot/getAngkotSorting', 'UserController@getAngkotSorting');
+            // Matches /api/angkot/searchID/{id}
+            // Function : Find specific angkot by id
+            // $router->get('/searchID/{id}', 'UserController@getAngkotByID');
 
-        // Matches /api/angkot/owner_id/{id}
-        // Function : Find specific angkot by owner_id -> REVISI
-        // $router->get('angkot/owner_id/{id}', 'UserController@getAngkotByOwnerID');
+            // Matches /api//angkot/getAngkotSorting
+            // Matches /api/admin/angkot/getAngkotSorting
+            // Function : Get all angkot sorted by owner_id
+            // $router->get('/getAngkotSorting', 'UserController@getAngkotSorting');
 
-        // Matches /api/angkot/{id}
-        // Function : Find specific angkot by id
-        $router->get('angkot/{id}', 'UserController@getAngkotByID');
+            // Matches /api/angkot/owner_id/{id}
+            // Function : Find specific angkot by owner_id -> REVISI
+            // $router->get('/owner_id/{id}', 'UserController@getAngkotByOwnerID');
+
+            // Matches /api/angkot/{id}
+            // Function : Find specific angkot by id
+            $router->get('/{id}', 'UserController@getAngkotByID');
+        });
 
         //  ====================== PERJALANAN ============================
 
-        // Matches /api/perjalanan/{id}
-        // Function : Get all perjalanan by owner_id
-        $router->get('perjalanan/{id}', 'UserController@getPerjalananByID');
+        $router->group(["prefix" => 'perjalanan'], function () use ($router) {
 
-        // Matches /api/perjalanan/create
-        // Function : Create new perjalanan
-        $router->post('perjalanan/create', 'UserController@createPerjalanan');
+            // Matches /api/perjalanan/{id}
+            // Function : Get all perjalanan by owner_id
+            $router->get('/{id}', 'UserController@getPerjalananByID');
 
-        // Matches /api/perjalanan/{id}/update
-        // Function : Update perjalanan
-        $router->post('perjalanan/{id}/update', 'UserController@updatePerjalanan');
+            // Matches /api/perjalanan/create
+            // Function : Create new perjalanan
+            $router->post('/create', 'UserController@createPerjalanan');
 
-        // Matches /api/perjalanan/getPerjalananSorting
-        // Function : Get all perjalanan sorted by owner_id -> REVISI
-        // $router->get('perjalanan/getPerjalananSorting', 'UserController@getPerjalananSorting');
+            // Matches /api/perjalanan/{id}/update
+            // Function : Update perjalanan
+            $router->post('/{id}/update', 'UserController@updatePerjalanan');
+
+            // Matches /api/perjalanan/getPerjalananSorting
+            // Function : Get all perjalanan sorted by owner_id -> REVISI
+            // $router->get('/getPerjalananSorting', 'UserController@getPerjalananSorting');
+
+        });
 
         // ==============================================================
         //  ======================== SUPIR ==============================
@@ -114,15 +126,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ====================== Angkot ============================
 
-            // Matches /api/supir/angkot/{id}/updateStatusApproval
-            // Function : Update angkot supir and operation status
-            $router->post('/angkot/{id}/updateStatusApproval', 'SupirController@updateStatusOperasi');
+            $router->group(["prefix" => 'angkot'], function () use ($router) {
+
+                // Matches /api/supir/angkot/{id}/updateStatusApproval
+                // Function : Update angkot supir and operation status
+                $router->post('/{id}/updateStatusApproval', 'SupirController@updateStatusOperasi');
+            });
 
             //  ====================== Riwayat ============================
 
-            // Matches /api/supir/riwayat/create
-            // Function : Create a new data
-            $router->post('/riwayat/create', 'RiwayatController@CreateHistory');
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/supir/riwayat/create
+                // Function : Create a new data
+                $router->post('/create', 'RiwayatController@CreateHistory');
+            });
         });
 
         // ==============================================================
@@ -137,23 +155,29 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== A N G K O T =====================
 
-            // Matches /api/owner/angkot/create
-            // Function : Create Angkot
-            $router->post('angkot/create', 'OwnerController@create');
+            $router->group(["prefix" => 'angkot'], function () use ($router) {
 
-            // Matches /api/owner/angkot/{id}/update
-            // Function : Create Angkot
-            $router->post('angkot/{id}/update', 'OwnerController@update');
+                // Matches /api/owner/angkot/create
+                // Function : Create Angkot
+                $router->post('/create', 'OwnerController@create');
+
+                // Matches /api/owner/angkot/{id}/update
+                // Function : Create Angkot
+                $router->post('/{id}/update', 'OwnerController@update');
+            });
 
             //  ===================== D R I V E R =====================
 
-            // Matches /api/owner/driver/create
-            // Function : Create Supir
-            $router->post('driver/create', 'OwnerController@createSupir');
+            $router->group(["prefix" => 'driver'], function () use ($router) {
 
-            // Matches /api/owner/driver/create{id}
-            // Function : Delete Supir
-            $router->delete('driver/delete/{id}', 'OwnerController@deleteSupir');
+                // Matches /api/owner/driver/create
+                // Function : Create Supir
+                $router->post('/create', 'OwnerController@createSupir');
+
+                // Matches /api/owner/driver/create{id}
+                // Function : Delete Supir
+                $router->delete('/delete/{id}', 'OwnerController@deleteSupir');
+            });
         });
 
         // ==============================================================
@@ -186,51 +210,84 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== U S E R =====================
 
-            // Matches /api/admin/users
-            // Function : Get All Users
-            $router->get('users', 'AdminController@allUsers');
+            $router->group(["prefix" => 'users'], function () use ($router) {
 
-            // Matches /api/admin/users/find
-            // Function : Find All Users by id / roles
-            $router->get('users/find', 'AdminController@findUser');
+                // Matches /api/admin/users
+                // Function : Get All Users
+                $router->get('/', 'AdminController@allUsers');
 
-            // Matches /api/admin/{id}/update
-            // Function : Update specific users by id
-            $router->post('users/{id}/update', 'AdminController@updateUser');
+                // Matches /api/admin/users/find
+                // Function : Find All Users by id / roles
+                $router->get('/find', 'AdminController@findUser');
 
-            // Matches /api/admin/{id}/delete
-            // Function : Delete specific user by id
-            $router->delete('users/{id}/delete', 'AdminController@deleteUser');
+                // Matches /api/admin/{id}/update
+                // Function : Update specific users by id
+                $router->post('/{id}/update', 'AdminController@updateUser');
 
-            // Matches /api/admin/users/{id}
-            // Function : Find specific user by id
-            $router->get('users/{id}', 'AdminController@singleUser');
+                // Matches /api/admin/{id}/delete
+                // Function : Delete specific user by id
+                $router->delete('/{id}/delete', 'AdminController@deleteUser');
+
+                // Matches /api/admin/users/{id}
+                // Function : Find specific user by id
+                $router->get('/{id}', 'AdminController@singleUser');
+            });
 
             //  ===================== A N G K O T =====================
 
-            // Matches /api/admin/angkot
-            // Function : Get All Angkot
-            $router->get('angkot', 'AdminController@allAngkot');
+            $router->group(["prefix" => 'angkot'], function () use ($router) {
 
-            // Matches /api/admin/angkot/{id}/updateStatusApproval
-            // Function : Update angkot status
-            $router->post('/angkot/{id}/updateStatusApproval', 'AdminController@updateStatusApproval');
+                // Matches /api/admin/angkot
+                // Function : Get All Angkot
+                $router->get('/', 'AdminController@allAngkot');
 
-            // Matches /api/owner/angkot/{id}/delete
-            // Function : Delete angkot by id
-            $router->post('angkot/{id}/delete', 'AdminController@DeleteAngkotById');
+                // Matches /api/admin/angkot/{id}/updateStatusApproval
+                // Function : Update angkot status
+                $router->post('/{id}/updateStatusApproval', 'AdminController@updateStatusApproval');
+
+                // Matches /api/owner/angkot/{id}/delete
+                // Function : Delete angkot by id
+                $router->post('/{id}/delete', 'AdminController@DeleteAngkotById');
+            });
 
             //  ===================== R I W A Y A T =====================
 
-            // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
-            // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-            $router->get('/riwayat', 'RiwayatController@getAll');
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
+                // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
+                $router->get('/', 'RiwayatController@getAll');
+            });
 
             //  ================== P E R J A L A N A N ==================
 
-            // Matches /api/admin/perjalanan
-            // Function : Get all perjalanan
-            $router->get('perjalanan', 'UserController@getAllPerjalanan');
+            $router->group(["prefix" => 'perjalanan'], function () use ($router) {
+
+                // Matches /api/admin/perjalanan
+                // Function : Get all perjalanan
+                $router->get('/', 'AdminController@getAllPerjalanan');
+            });
+
+            //  ========================= R U T E ========================
+
+            $router->group(["prefix" => 'routes'], function () use ($router) {
+
+                // Matches /api/admin/routes
+                // Function : Get all routes
+                $router->get('/', 'AdminController@getAllRoutes');
+
+                // Matches /api/admin/routes/create
+                // Function : Update routes by id
+                $router->post('/create', 'AdminController@createRoutes');
+
+                // Matches /api/admin/routes/{id}/update
+                // Function : Update routes by id
+                $router->post('/{id}/update', 'AdminController@updateRoutes');
+
+                // Matches /api/admin/routes/{id}/delete
+                // Function : delete routes by id
+                $router->post('/{id}/delete', 'AdminController@deleteRoutes');
+            });
         });
 
         // ==============================================================
