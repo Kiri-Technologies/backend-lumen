@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Angkot;
 use App\Models\Favorites;
+use App\Models\Feedback;
 use App\Models\FeedbackApp;
 use App\Models\ListSupir;
 use App\Models\Perjalanan;
@@ -222,7 +223,8 @@ class UserController extends Controller
      * @return Response
      * @param $id
      */
-    public function getAngkotByID($id) {
+    public function getAngkotByID($id)
+    {
         $angkot = Angkot::find($id);
         if (!$angkot) {
             return response()->json([
@@ -234,7 +236,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => [$angkot],
+            'data' => $angkot,
         ], 200);
     }
 
@@ -243,7 +245,8 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function createPerjalanan(Request $request) {
+    public function createPerjalanan(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
@@ -300,7 +303,8 @@ class UserController extends Controller
      * @return Response
      *
      */
-    public function updatePerjalanan(Request $request, $id) {
+    public function updatePerjalanan(Request $request, $id)
+    {
         $perjalanan = Perjalanan::find($id);
         if (!$perjalanan) {
             return response()->json([
@@ -309,10 +313,10 @@ class UserController extends Controller
                 'data' => [],
             ], 404);
         }
-        if(isset($request->is_connected_with_driver)){
+        if (isset($request->is_connected_with_driver)) {
             $perjalanan->is_connected_with_driver = $request->is_connected_with_driver;
         }
-        if(isset($request->is_done)){
+        if (isset($request->is_done)) {
             $perjalanan->is_done = $request->is_done;
         }
         // $perjalanan->is_done = true;
@@ -333,7 +337,8 @@ class UserController extends Controller
      * @return Response
      *
      */
-    public function getPerjalananFind(Request $request) {
+    public function getPerjalananFind(Request $request)
+    {
         $perjalanan = Perjalanan::when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
@@ -354,7 +359,6 @@ class UserController extends Controller
             'message' => 'Perjalanan Requested !',
             'data' => $perjalanan,
         ], 200);
-
     }
 
     /**
@@ -363,7 +367,8 @@ class UserController extends Controller
      * @return Response
      * @param $id
      */
-    public function getPerjalananByID($id) {
+    public function getPerjalananByID($id)
+    {
         $perjalanan = Perjalanan::find($id);
         if (!$perjalanan) {
             return response()->json([
@@ -375,7 +380,128 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Perjalanan Requested !',
-            'data' => [$perjalanan],
+            'data' => $perjalanan,
         ], 200);
+    }
+
+    /**
+     * Get Feedback By ID.
+     *
+     * @return Response
+     * @param $id
+     */
+    public function getFeedbackByID($id)
+    {
+        $feedback = Feedback::find($id);
+        if (!$feedback) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Feedback Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Feedback Requested !',
+            'data' => $feedback,
+        ], 200);
+    }
+
+    /**
+     * Create a Feedback.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function createFeedback(Request $request)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'perjalanan_id' => 'required',
+            'rating' => 'required',
+            'review' => 'required',
+            'komentar' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $feedback = new Feedback();
+                $feedback->perjalanan_id = $request->input('perjalanan_id');
+                $feedback->rating = $request->input('rating');
+                $feedback->review = $request->input('review');
+                $feedback->komentar = $request->input('komentar');
+                $feedback->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Feedback Created !',
+                    'data' => $feedback,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Update a Feedback.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function updateFeedback(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'perjalanan_id' => 'required',
+            'rating' => 'required',
+            'review' => 'required',
+            'komentar' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $feedback = Feedback::find($id);
+                $feedback->perjalanan_id = $request->input('perjalanan_id');
+                $feedback->rating = $request->input('rating');
+                $feedback->review = $request->input('review');
+                $feedback->komentar = $request->input('komentar');
+                $feedback->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Feedback Updated !',
+                    'data' => $feedback,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
     }
 }

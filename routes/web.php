@@ -14,13 +14,14 @@
 |
 */
 
-// Hit Point
+// Matches /
+// Function : Hit Point
 $router->get('/', function () use ($router) {
     return "Dont't forget to add '/api' after base url :D";
 });
 
 // ==============================================================
-//  ====================== Module History =======================
+//  ====================== MODULE HISTORY =======================
 //  =============================================================
 
 // API route group
@@ -30,15 +31,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  ========================== API ==============================
     //  =============================================================
 
-    // API Main Point
+    // Matches /api
+    // Function : API Main Point
     $router->get('/', function () use ($router) {
         return $router->app->version();
     });
 
     // Matches /api/register
+    // Function : Register
     $router->post('register', 'AuthController@register');
 
     // Matches /api/login
+    // Function : Login
     $router->post('login', 'AuthController@login');
 
     //  =============================================================
@@ -118,13 +122,32 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         });
 
+        //  ====================== FEEDBACK ============================
+
+        $router->group(["prefix" => 'feedback'], function () use ($router) {
+
+            // Matches /api/feedback/{id}
+            // Function : get feedback find
+            $router->get('/{id}', 'UserController@getFeedbackByID');
+
+            // Matches /api/feedback/create
+            // Function : create feedback
+            $router->post('/create', 'UserController@createFeedback');
+
+            // Matches /api/feedback/{id}/update
+            // Function : update feedback
+            $router->post('/{id}/update', 'UserController@updateFeedback');
+
+
+        });
+
         // ==============================================================
         //  ======================== SUPIR ==============================
         //  =============================================================
 
         $router->group(['prefix' => 'supir', 'middleware' => 'supir_auth'], function () use ($router) {
 
-            //  ====================== Angkot ============================
+            //  ====================== ANGKOT ============================
 
             $router->group(["prefix" => 'angkot'], function () use ($router) {
 
@@ -133,7 +156,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->post('/{id}/updateStatusApproval', 'SupirController@updateStatusOperasi');
             });
 
-            //  ====================== Riwayat ============================
+            //  ====================== RIWAYAT ============================
 
             $router->group(["prefix" => 'riwayat'], function () use ($router) {
 
@@ -157,7 +180,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'owner', 'middleware' => 'owner_auth'], function () use ($router) {
 
-            //  ===================== A N G K O T =====================
+            //  ====================== ANGKOT ============================
 
             $router->group(["prefix" => 'angkot'], function () use ($router) {
 
@@ -170,7 +193,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->post('/{id}/update', 'OwnerController@update');
             });
 
-            //  ===================== D R I V E R =====================
+            //  ========================= DRIVER =========================
 
             $router->group(["prefix" => 'driver'], function () use ($router) {
 
@@ -194,7 +217,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'ownersupir', 'middleware' => 'owner_supir_auth'], function () use ($router) {
 
-            //  ===================== D R I V E R =====================
+            //  ========================= DRIVER =========================
 
             $router->group(["prefix" => 'driver'], function () use ($router) {
 
@@ -203,7 +226,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/', 'OwnerSupirController@getListSupir');
             });
 
-            //  ===================== R I W A Y A T =====================
+            //  ======================== RIWAYAT ========================
 
             $router->group(["prefix" => 'riwayat'], function () use ($router) {
 
@@ -224,7 +247,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () use ($router) {
 
-            //  ===================== U S E R =====================
+            //  ========================= USER =========================
 
             $router->group(["prefix" => 'users'], function () use ($router) {
 
@@ -249,7 +272,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/{id}', 'AdminController@singleUser');
             });
 
-            //  ===================== A N G K O T =====================
+            //  ========================= ANGKOT =========================
 
             $router->group(["prefix" => 'angkot'], function () use ($router) {
 
@@ -266,7 +289,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->post('/{id}/delete', 'AdminController@DeleteAngkotById');
             });
 
-            //  ===================== R I W A Y A T =====================
+            //  ========================= RIWAYAT =========================
 
             $router->group(["prefix" => 'riwayat'], function () use ($router) {
 
@@ -275,7 +298,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/', 'AdminController@getAll');
             });
 
-            //  ================== P E R J A L A N A N ==================
+            //  ========================= PERJALANAN =========================
 
             $router->group(["prefix" => 'perjalanan'], function () use ($router) {
 
@@ -284,7 +307,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/', 'AdminController@getAllPerjalanan');
             });
 
-            //  ========================= R U T E ========================
+            //  ========================= RUTE =========================
 
             $router->group(["prefix" => 'routes'], function () use ($router) {
 
