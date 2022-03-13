@@ -316,7 +316,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Perjalanan Requested !',
-            'data' => [$perjalanan],
+            'data' => $perjalanan,
         ], 200);
     }
 
@@ -339,7 +339,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Routes Requested !',
-            'data' => [$route],
+            'data' => $route,
         ], 200);
     }
 
@@ -473,10 +473,11 @@ class AdminController  extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function getAll(){
+    public function getAll()
+    {
         // memvalidasi jika bukan params angkot_id or supir_id
-        if(request()->all()){
-            if(!request(['angkot_id', 'supir_id'])){
+        if (request()->all()) {
+            if (!request(['angkot_id', 'supir_id'])) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'params not available',
