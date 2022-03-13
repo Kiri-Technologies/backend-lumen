@@ -49,9 +49,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         //  ====================== LOGOUT ============================
 
-            // Matches /api/logout
-            // Function : Logout
-            $router->get('logout', 'UserController@logout');
+        // Matches /api/logout
+        // Function : Logout
+        $router->get('logout', 'UserController@logout');
 
         //  ====================== PROFILE ============================
 
@@ -192,9 +192,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             //  ===================== D R I V E R =====================
 
-            // Matches /api/ownersupir/driver
-            // Function : Get List Supir -> REVISI
-            // $router->get('driver', 'OwnerController@getListSupir');
+            $router->group(["prefix" => 'driver'], function () use ($router) {
+
+                // Matches /api/ownersupir/driver
+                // Function : Get List Supir
+                $router->get('/', 'OwnerSupirController@getListSupir');
+            });
+
         });
 
         // ==============================================================
@@ -256,7 +260,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
                 // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-                $router->get('/', 'RiwayatController@getAll');
+                $router->get('/', 'AdminController@getAll');
             });
 
             //  ================== P E R J A L A N A N ==================

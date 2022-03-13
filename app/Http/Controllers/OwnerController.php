@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
+
 use App\Models\Angkot;
+use App\Models\Favorites;
+use App\Models\FeedbackApp;
 use App\Models\ListSupir;
+use App\Models\Perjalanan;
+use App\Models\Riwayat;
+use App\Models\Routes;
+use App\Models\Setpoints;
+use App\Models\User;
 
 class OwnerController  extends Controller
 {
