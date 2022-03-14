@@ -83,9 +83,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(["prefix" => 'angkot'], function () use ($router) {
 
 
-          // Matches /api/angkot/getAngkotFind
-          // Function : Get all find by owner_id or route_id or status
-          $router->get('/find', 'UserController@getAngkotFind');
+            // Matches /api/angkot/getAngkotFind
+            // Function : Get all find by owner_id or route_id or status
+            $router->get('/find', 'UserController@getAngkotFind');
 
             // Matches /api/angkot/{id}
             // Function : Find specific angkot by id
@@ -111,7 +111,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/perjalanan/getPerjalananSorting
             // Function : Get all perjalanan sorted by owner_id
             $router->get('/find', 'UserController@getPerjalananFind');
-
         });
 
         //  ====================== FEEDBACK ============================
@@ -129,8 +128,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/feedback/{id}/update
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
-
-
         });
 
         // ==============================================================
@@ -335,10 +332,28 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  =============================================================
 });
 
-    // ==============================================================
-    //  ======================== END API ============================
-    //  =============================================================
+// ==============================================================
+//  ======================== END API ============================
+//  =============================================================
 
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
+
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+$router->get('/qrcodes', function () use ($router) {
+    $qr_code = QrCode::format('svg')->generate('Make me into a QrCode!');
+    echo $qr_code;
+});
+
+// $router->get('/qrcodes', function () use ($router) {
+//     header('Content-Type: image/png');
+
+//     $qr_code = new QrCode();
+//     $qr_code->setText("Sample Text")
+//         ->setSize(300)
+//         ->setPadding(10)
+//         ->setErrorCorrection('high')
+//         ->render();
+// });
