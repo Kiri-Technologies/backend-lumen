@@ -130,7 +130,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
 
+        });
 
+        //  ====================== FEEDBACK APP ============================
+        $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+            // Matches /api/feedbackapp/create
+            // Function : create feedback for application
+            $router->post('/create', 'UserController@createFeedbackApp');
         });
 
         // ==============================================================

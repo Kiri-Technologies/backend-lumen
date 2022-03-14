@@ -21,6 +21,7 @@ use App\Models\Riwayat;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
+use App\Models\FeedbackApplication;
 
 class UserController extends Controller
 {
@@ -522,6 +523,51 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Feedback Updated !',
+                    'data' => $feedback,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Create App Feedback
+     * 
+     * @param Request $request
+     * 
+     */
+    public function createAppFeedback(Request $request) {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'review' => 'required',
+            'tanggapan' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $feedback = new FeedbackApplication();
+                $feedback->user_id = $request->input('user_id');
+                $feedback->review = $request->input('review');
+                $feedback->tanggapan = $request->input('tanggapan');
+                $feedback->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Feedback Created !',
                     'data' => $feedback,
                 ], 201);
             } catch (\Exception $e) {
