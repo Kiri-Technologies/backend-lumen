@@ -110,7 +110,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/perjalanan/getPerjalananSorting
             // Function : Get all perjalanan sorted by owner_id
-            $router->get('/find', 'UserController@getPerjalananFind');
+            // $router->get('/find', 'UserController@getPerjalananFind');
 
         });
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
+use App\Models\FeedbackApplication;
 use App\Models\ListSupir;
 use App\Models\Perjalanan;
 use App\Models\Riwayat;
@@ -516,15 +517,15 @@ class AdminController  extends Controller
             ], 400);
         } else {
             try {
-                $riwayat = Riwayat::find($id);
-                $riwayat->status = $request->input('status');
-                $riwayat->save();
+                $feedbackapp = FeedbackApplication::find($id);
+                $feedbackapp->status = $request->input('status');
+                $feedbackapp->save();
 
                 // return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Feedback Updated !',
-                    'data' => $riwayat,
+                    'data' => $feedbackapp,
                 ], 201);
             } catch (\Exception $e) {
                 //return error message
