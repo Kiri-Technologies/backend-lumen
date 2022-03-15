@@ -496,4 +496,44 @@ class AdminController  extends Controller
             'data' => $riwayat
         ], 200);
     }
+
+    /**
+     * Updatee Feedback App
+     *
+     * 
+     * @return Response
+     */
+    public function updateAppFeedback(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required |in:submitted,pending,processed',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $riwayat = Riwayat::find($id);
+                $riwayat->status = $request->input('status');
+                $riwayat->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Feedback Updated !',
+                    'data' => $riwayat,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
 }

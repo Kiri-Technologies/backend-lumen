@@ -562,6 +562,7 @@ class UserController extends Controller
                 $feedback->user_id = $request->input('user_id');
                 $feedback->review = $request->input('review');
                 $feedback->tanggapan = $request->input('tanggapan');
+                $feedback->status = "submitted";
                 $feedback->save();
 
                 // return successful response

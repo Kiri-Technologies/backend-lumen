@@ -83,9 +83,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(["prefix" => 'angkot'], function () use ($router) {
 
 
-          // Matches /api/angkot/getAngkotFind
-          // Function : Get all find by owner_id or route_id or status
-          $router->get('/find', 'UserController@getAngkotFind');
+            // Matches /api/angkot/getAngkotFind
+            // Function : Get all find by owner_id or route_id or status
+            $router->get('/find', 'UserController@getAngkotFind');
 
             // Matches /api/angkot/{id}
             // Function : Find specific angkot by id
@@ -137,7 +137,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/feedbackapp/create
             // Function : create feedback for application
-            $router->post('/create', 'UserController@createFeedbackApp');
+            $router->post('/create', 'UserController@createAppFeedback');
         });
 
         // ==============================================================
@@ -273,6 +273,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
+                
             });
 
             //  ========================= ANGKOT =========================
@@ -329,6 +330,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/routes/{id}/delete
                 // Function : delete routes by id
                 $router->post('/{id}/delete', 'AdminController@deleteRoutes');
+            });
+            //  ========================= FEEDBACK APP =========================
+
+            $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+                // Matches /api/admin/feedbackapp/{id}/update
+                // Function : Update feedback app by id
+                $router->post('/{id}/update', 'AdminController@updateAppFeedback');
             });
         });
 
