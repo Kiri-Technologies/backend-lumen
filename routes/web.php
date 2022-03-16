@@ -338,6 +338,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/feedbackapp/{id}/update
                 // Function : Update feedback app by id
                 $router->post('/{id}/update', 'AdminController@updateAppFeedback');
+
+                // Matches /api/feedbackapp
+                // Function : get all feedback for application
+                $router->get('/all', 'AdminController@getAllAppFeedback');
             });
         });
 
