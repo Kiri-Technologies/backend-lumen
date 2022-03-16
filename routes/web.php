@@ -96,21 +96,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(["prefix" => 'perjalanan'], function () use ($router) {
 
-            // Matches /api/perjalanan/{id}
-            // Function : Get all perjalanan by owner_id
-            $router->get('/{id}', 'UserController@getPerjalananByID');
-
             // Matches /api/perjalanan/create
             // Function : Create new perjalanan
             $router->post('/create', 'UserController@createPerjalanan');
+
+            // Matches /api/perjalanan/getPerjalananSorting
+            // Function : Get all perjalanan sorted by owner_id
+            $router->get('/find', 'UserController@getPerjalananFind');
 
             // Matches /api/perjalanan/{id}/update
             // Function : Update perjalanan
             $router->post('/{id}/update', 'UserController@updatePerjalanan');
 
-            // Matches /api/perjalanan/getPerjalananSorting
-            // Function : Get all perjalanan sorted by owner_id
-            // $router->get('/find', 'UserController@getPerjalananFind');
+            // Matches /api/perjalanan/{id}
+            // Function : Get all perjalanan by owner_id
+            $router->get('/{id}', 'UserController@getPerjalananByID');
 
         });
 
@@ -273,7 +273,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
-                
+
             });
 
             //  ========================= ANGKOT =========================
