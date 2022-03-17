@@ -83,9 +83,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(["prefix" => 'angkot'], function () use ($router) {
 
 
-          // Matches /api/angkot/getAngkotFind
-          // Function : Get all find by owner_id or route_id or status
-          $router->get('/find', 'UserController@getAngkotFind');
+            // Matches /api/angkot/getAngkotFind
+            // Function : Get all find by owner_id or route_id or status
+            $router->get('/find', 'UserController@getAngkotFind');
 
             // Matches /api/angkot/{id}
             // Function : Find specific angkot by id
@@ -96,21 +96,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(["prefix" => 'perjalanan'], function () use ($router) {
 
-            // Matches /api/perjalanan/{id}
-            // Function : Get all perjalanan by owner_id
-            $router->get('/{id}', 'UserController@getPerjalananByID');
-
             // Matches /api/perjalanan/create
             // Function : Create new perjalanan
             $router->post('/create', 'UserController@createPerjalanan');
+
+            // Matches /api/perjalanan/getPerjalananSorting
+            // Function : Get all perjalanan sorted by owner_id
+            $router->get('/find', 'UserController@getPerjalananFind');
 
             // Matches /api/perjalanan/{id}/update
             // Function : Update perjalanan
             $router->post('/{id}/update', 'UserController@updatePerjalanan');
 
-            // Matches /api/perjalanan/getPerjalananSorting
-            // Function : Get all perjalanan sorted by owner_id
-            $router->get('/find', 'UserController@getPerjalananFind');
+            // Matches /api/perjalanan/{id}
+            // Function : Get all perjalanan by owner_id
+            $router->get('/{id}', 'UserController@getPerjalananByID');
 
         });
 
@@ -130,7 +130,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
 
+        });
 
+        //  ====================== FEEDBACK APP ============================
+        $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+            // Matches /api/feedbackapp/create
+            // Function : create feedback for application
+            $router->post('/create', 'UserController@createAppFeedback');
         });
 
         // ==============================================================
@@ -266,6 +273,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
+
             });
 
             //  ========================= ANGKOT =========================
@@ -322,6 +330,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/routes/{id}/delete
                 // Function : delete routes by id
                 $router->post('/{id}/delete', 'AdminController@deleteRoutes');
+            });
+            //  ========================= FEEDBACK APP =========================
+
+            $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+                // Matches /api/admin/feedbackapp/{id}/update
+                // Function : Update feedback app by id
+                $router->post('/{id}/update', 'AdminController@updateAppFeedback');
+
+                // Matches /api/feedbackapp
+                // Function : get all feedback for application
+                $router->get('/all', 'AdminController@getAllAppFeedback');
+
+                // Matches /api/feedbackapp/find
+                // Function : find feedback app by status
+                $router->get('/find', 'AdminController@getAppFeedbackFind');
             });
         });
 

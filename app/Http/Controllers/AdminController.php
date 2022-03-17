@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Angkot;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
+use App\Models\FeedbackApplication;
 use App\Models\ListSupir;
 use App\Models\Perjalanan;
 use App\Models\Riwayat;
@@ -496,4 +497,108 @@ class AdminController  extends Controller
             'data' => $riwayat
         ], 200);
     }
+
+    /**
+     * Updatee Feedback App
+     *
+     * 
+     * @return Response
+     */
+    public function updateAppFeedback(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required |in:submitted,pending,processed',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $feedbackapp = FeedbackApplication::find($id);
+                $feedbackapp->status = $request->input('status');
+                $feedbackapp->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Feedback Updated !',
+                    'data' => $feedbackapp,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get All Application Feedback
+     * 
+     * @return Response
+     */
+    public function getAllAppFeedback() {
+        $feedbackapp = FeedbackApplication::all();
+        // check if feedbackapp is not empty
+        if (count($feedbackapp) > 0) {
+            // return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'ok',
+                'data' => $feedbackapp,
+            ], 200);
+        } else {
+            // return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Feedback Application not found !',
+                'data' => [],
+            ], 404);
+        }
+    }
+
+    /**
+     * Get Application Feedback find by status
+     * 
+     * @return Response
+     */
+    public function getAppFeedbackFind(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required |in:submitted,pending,processed',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            $feedbackapp = FeedbackApplication::where('status', $request->input('status'))->get();
+            // check if feedbackapp is not empty
+            if (count($feedbackapp) > 0) {
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'ok',
+                    'data' => $feedbackapp,
+                ], 200);
+            } else {
+                // return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Feedback Application not found !',
+                    'data' => [],
+                ], 404);
+            }
+        }
+        
+    }
+
 }
