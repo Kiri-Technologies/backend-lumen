@@ -342,6 +342,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/feedbackapp
                 // Function : get all feedback for application
                 $router->get('/all', 'AdminController@getAllAppFeedback');
+
+                // Matches /api/feedbackapp/find
+                // Function : find feedback app by status
+                $router->get('/find', 'AdminController@getAppFeedbackFind');
             });
         });
 

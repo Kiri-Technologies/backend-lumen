@@ -562,4 +562,32 @@ class AdminController  extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Get Application Feedback find by status
+     * 
+     * @return Response
+     */
+    public function getAppFeedbackFind(Request $request) {
+        $feedbackapp = FeedbackApplication::when($request->input('status'), function ($query) use ($request) {
+            return $query->where('status', $request->input('status'));
+        })->get();
+        if ($feedbackapp) {
+            // return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'ok',
+                'data' => $feedbackapp,
+            ], 200);
+        } else {
+            // return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Feedback Application not found !',
+                'data' => [],
+            ], 404);
+        }
+        
+    }
+
 }
