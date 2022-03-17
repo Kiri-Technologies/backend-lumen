@@ -569,23 +569,34 @@ class AdminController  extends Controller
      * @return Response
      */
     public function getAppFeedbackFind(Request $request) {
-        $feedbackapp = FeedbackApplication::when($request->input('status'), function ($query) use ($request) {
-            return $query->where('status', $request->input('status'));
-        })->get();
-        if ($feedbackapp) {
-            // return successful response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => $feedbackapp,
-            ], 200);
-        } else {
-            // return error message
+        $validator = Validator::make($request->all(), [
+            'status' => 'required |in:submitted,pending,processed',
+
+        ]);
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Feedback Application not found !',
+                'message' => $validator->errors(),
                 'data' => [],
-            ], 404);
+            ], 400);
+        } else {
+            $feedbackapp = FeedbackApplication::where('status', $request->input('status'))->get();
+            // check if feedbackapp is not empty
+            if (count($feedbackapp) > 0) {
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'ok',
+                    'data' => $feedbackapp,
+                ], 200);
+            } else {
+                // return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Feedback Application not found !',
+                    'data' => [],
+                ], 404);
+            }
         }
         
     }
