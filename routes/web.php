@@ -140,6 +140,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->post('/create', 'UserController@createAppFeedback');
         });
 
+        //  ====================== PERJALANAN FAVOURITES ============================
+        $router->group(["prefix" => 'perjalananfavorit'], function () use ($router) {
+
+            // Matches /api/perjalananfavorit/create
+            // Function : create feedback for application
+            $router->post('/create', 'UserController@createPerjalananFavorites');
+
+            // Matches /api/perjalananfavorit/
+            // Function : get all perjalanan favorites
+            $router->get('/', 'UserController@getPerjalananFavorites');
+
+            // Matches /api/perjalananfavorit/{id}/delete
+            // Function : delete perjalanan favorites
+            $router->delete('/delete', 'UserController@deletePerjalananFavorites');
+        });
+
         // ==============================================================
         //  ======================== SUPIR ==============================
         //  =============================================================
