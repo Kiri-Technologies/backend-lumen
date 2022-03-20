@@ -40,7 +40,8 @@ class OwnerSupirController  extends Controller
      */
     public function getListSupir()
     {
-        $list_supir = ListSupir::all();
+        //
+        $list_supir = ListSupir::with('user')->get();
         if ($list_supir) {
             return response()->json([
                 'status' => 'success',
