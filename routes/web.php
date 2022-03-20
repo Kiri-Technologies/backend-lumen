@@ -111,7 +111,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/perjalanan/{id}
             // Function : Get all perjalanan by owner_id
             $router->get('/{id}', 'UserController@getPerjalananByID');
-
         });
 
         //  ====================== FEEDBACK ============================
@@ -129,7 +128,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/feedback/{id}/update
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
-
         });
 
         //  ====================== FEEDBACK APP ============================
@@ -232,6 +230,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             //  ======================== RIWAYAT ========================
 
             $router->group(["prefix" => 'riwayat'], function () use ($router) {
+                // Matches /api/ownersupir/riwayat/find?angkot_id = {id} || ?supir_id = {id}
+                // Function: Get data berdasarkan parameter angkot_id atau supir_id
+                $router->get('/find', 'OwnerSupirController@findRiwayat');
 
                 // Matches /api/ownersupir/riwayat/{id}
                 // Function : Get Data History By Id
@@ -273,7 +274,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
-
             });
 
             //  ========================= ANGKOT =========================
@@ -291,15 +291,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/owner/angkot/{id}/delete
                 // Function : Delete angkot by id
                 $router->post('/{id}/delete', 'AdminController@DeleteAngkotById');
-            });
-
-            //  ========================= RIWAYAT =========================
-
-            $router->group(["prefix" => 'riwayat'], function () use ($router) {
-
-                // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
-                // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-                $router->get('/', 'AdminController@getAll');
             });
 
             //  ========================= PERJALANAN =========================
@@ -346,6 +337,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/feedbackapp/find
                 // Function : find feedback app by status
                 $router->get('/find', 'AdminController@getAppFeedbackFind');
+            });
+
+            //  ========================= FEEDBACK APP =========================
+
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/admin/riwayat
+                // Function : Get Data History
+                $router->get('/', 'AdminController@allRiwayat');
             });
         });
 
