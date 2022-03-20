@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 
 use App\Models\Angkot;
@@ -200,7 +201,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => Angkot::all(),
+            'data' => Angkot::with('user_owner','route')->get(),
         ], 200);
     }
 
@@ -306,7 +307,13 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $perjalanan = Perjalanan::all();
+        $perjalanan = Perjalanan::with('user_penumpang','angkot','user_supir')->get();
+        $routes = new Collection(Routes::all());
+        foreach($perjalanan as $pj){
+            $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
+        }
+
+
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -437,7 +444,7 @@ class AdminController  extends Controller
             }
         }
     }
-    
+
     /**
      * get riwayat supir narik by id
      *
