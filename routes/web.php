@@ -96,21 +96,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->group(["prefix" => 'perjalanan'], function () use ($router) {
 
-            // Matches /api/perjalanan/{id}
-            // Function : Get all perjalanan by owner_id
-            $router->get('/{id}', 'UserController@getPerjalananByID');
-
             // Matches /api/perjalanan/create
             // Function : Create new perjalanan
             $router->post('/create', 'UserController@createPerjalanan');
+
+            // Matches /api/perjalanan/getPerjalananSorting
+            // Function : Get all perjalanan sorted by owner_id
+            $router->get('/find', 'UserController@getPerjalananFind');
 
             // Matches /api/perjalanan/{id}/update
             // Function : Update perjalanan
             $router->post('/{id}/update', 'UserController@updatePerjalanan');
 
-            // Matches /api/perjalanan/getPerjalananSorting
-            // Function : Get all perjalanan sorted by owner_id
-            $router->get('/find', 'UserController@getPerjalananFind');
+            // Matches /api/perjalanan/{id}
+            // Function : Get all perjalanan by owner_id
+            $router->get('/{id}', 'UserController@getPerjalananByID');
+
         });
 
         //  ====================== FEEDBACK ============================
@@ -128,6 +129,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/feedback/{id}/update
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
+
+        });
+
+        //  ====================== FEEDBACK APP ============================
+        $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+            // Matches /api/feedbackapp/create
+            // Function : create feedback for application
+            $router->post('/create', 'UserController@createAppFeedback');
         });
 
         // ==============================================================
@@ -263,6 +273,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
+
             });
 
             //  ========================= ANGKOT =========================
@@ -320,6 +331,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : delete routes by id
                 $router->post('/{id}/delete', 'AdminController@deleteRoutes');
             });
+            //  ========================= FEEDBACK APP =========================
+
+            $router->group(["prefix" => 'feedbackapp'], function () use ($router) {
+
+                // Matches /api/admin/feedbackapp/{id}/update
+                // Function : Update feedback app by id
+                $router->post('/{id}/update', 'AdminController@updateAppFeedback');
+
+                // Matches /api/feedbackapp
+                // Function : get all feedback for application
+                $router->get('/all', 'AdminController@getAllAppFeedback');
+
+                // Matches /api/feedbackapp/find
+                // Function : find feedback app by status
+                $router->get('/find', 'AdminController@getAppFeedbackFind');
+            });
         });
 
         // ==============================================================
@@ -332,28 +359,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  =============================================================
 });
 
-// ==============================================================
-//  ======================== END API ============================
-//  =============================================================
+    // ==============================================================
+    //  ======================== END API ============================
+    //  =============================================================
 
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
 // =====================================================================================================================================================================================================
-
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
-$router->get('/qrcodes', function () use ($router) {
-    $qr_code = QrCode::format('svg')->generate('Make me into a QrCode!');
-    echo $qr_code;
-});
-
-// $router->get('/qrcodes', function () use ($router) {
-//     header('Content-Type: image/png');
-
-//     $qr_code = new QrCode();
-//     $qr_code->setText("Sample Text")
-//         ->setSize(300)
-//         ->setPadding(10)
-//         ->setErrorCorrection('high')
-//         ->render();
-// });
