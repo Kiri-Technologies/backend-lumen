@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 
 use App\Models\Angkot;
@@ -226,7 +227,7 @@ class UserController extends Controller
      */
     public function getAngkotByID($id)
     {
-        $angkot = Angkot::find($id);
+        $angkot = Angkot::with('user_owner','route')->find($id);
         if (!$angkot) {
             return response()->json([
                 'status' => 'failed',
@@ -243,12 +244,12 @@ class UserController extends Controller
 
     /**
      * Get Angkot Find.
-     * 
+     *
      *
      * @return Response
      */
     public function getAngkotFind(Request $request) {
-        $angkot = Angkot::when($request->owner_id, function ($query, $owner_id) {
+        $angkot = Angkot::with('user_owner','route')->when($request->owner_id, function ($query, $owner_id) {
             return $query->where('user_id', $owner_id);
         })->when($request->route_id, function ($query, $route_id) {
             return $query->where('route_id', $route_id);
@@ -268,7 +269,7 @@ class UserController extends Controller
             'message' => 'Angkot Requested !',
             'data' => $angkot,
         ], 200);
-        
+
     }
 
     /**
@@ -370,13 +371,20 @@ class UserController extends Controller
      */
     public function getPerjalananFind(Request $request)
     {
-        $perjalanan = Perjalanan::when($request->penumpang_id, function ($query, $penumpang_id) {
+        $perjalanan = Perjalanan::with('user_penumpang','angkot','user_supir')->when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
             return $query->where('angkot_id', $angkot_id);
         })->when($request->supir_id, function ($query, $supir_id) {
             return $query->where('supir_id', $supir_id);
         })->get();
+
+        $routes = new Collection(Routes::all());
+        foreach($perjalanan as $pj){
+            $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
+        }
+
+
 
         if (!$perjalanan) {
             return response()->json([
@@ -400,7 +408,11 @@ class UserController extends Controller
      */
     public function getPerjalananByID($id)
     {
-        $perjalanan = Perjalanan::find($id);
+        $perjalanan = Perjalanan::with('user_penumpang','angkot','user_supir')->find($id);
+        $routes = new Collection(Routes::all());
+        foreach($perjalanan as $pj){
+            $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
+        }
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -538,9 +550,9 @@ class UserController extends Controller
 
     /**
      * Create App Feedback
-     * 
+     *
      * @param Request $request
-     * 
+     *
      */
     public function createAppFeedback(Request $request) {
         //validate incoming request
