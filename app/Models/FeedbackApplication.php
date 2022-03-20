@@ -3,7 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class FeedbackApp extends Model
+class FeedbackApplication extends Model
 {
     protected $table = 'feedback_app';
 

@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
+
 use App\Models\Angkot;
+use App\Models\Favorites;
+use App\Models\FeedbackApp;
 use App\Models\ListSupir;
+use App\Models\Perjalanan;
+use App\Models\Riwayat;
+use App\Models\Routes;
+use App\Models\Setpoints;
+use App\Models\User;
 
 class OwnerController  extends Controller
 {
@@ -78,13 +86,81 @@ class OwnerController  extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'route_id' => 'required|string',
+            'plat_nomor' => 'required|string',
+            'pajak_tahunan' => 'required|date',
+            'pajak_stnk' => 'required|date',
+            'kir_bulanan' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $angkot = Angkot::find($id);
+                $angkot->route_id = $request->input('route_id');
+                $angkot->plat_nomor = $request->input('plat_nomor');
+                $angkot->pajak_tahunan = $request->input('pajak_tahunan');
+                $angkot->pajak_stnk = $request->input('pajak_stnk');
+                $angkot->kir_bulanan = $request->input('kir_bulanan');
+                $angkot->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Angkot Updated !',
+                    'data' => $angkot,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function deleteAgkot(Request $request, $id)
+    {
+        try {
+            $angkot = Angkot::find($id);
+            $angkot->delete();
+
+            //return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Angkot Deleted !',
+                'data' => $angkot,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
     /**
      * Create a supir on the specified angkot.
      *
      * @param  int  $id
      * @return Response
      */
-    public function createSupir(Request $request) {
+    public function createSupir(Request $request)
+    {
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'supir_id' => 'required',
@@ -128,7 +204,8 @@ class OwnerController  extends Controller
      *
      * @return Response
      */
-    public function getListSupir() {
+    public function getListSupir()
+    {
         $list_supir = ListSupir::all();
         if ($list_supir) {
             return response()->json([
@@ -151,7 +228,8 @@ class OwnerController  extends Controller
      * @param int $id
      * @return Response
      */
-    public function deleteSupir($id) {
+    public function deleteSupir($id)
+    {
         $supir = ListSupir::find($id);
         if ($supir) {
             $supir->delete();
