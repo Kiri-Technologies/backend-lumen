@@ -538,22 +538,11 @@ class AdminController  extends Controller
      */
     public function getAllAppFeedback() {
         $feedbackapp = FeedbackApplication::all();
-        // check if feedbackapp is not empty
-        if (count($feedbackapp) > 0) {
-            // return successful response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => $feedbackapp,
-            ], 200);
-        } else {
-            // return error message
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Feedback Application not found !',
-                'data' => [],
-            ], 404);
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $feedbackapp
+        ], 200);
     }
 
     /**

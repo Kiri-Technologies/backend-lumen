@@ -593,4 +593,126 @@ class UserController extends Controller
             }
         }
     }
+
+    /**
+     * Create Perjalanan Favorites
+     * 
+     * @param Request $request
+     */
+    public function createPerjalananFavorites(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'route_id' => 'required', 
+            'titik_naik' => 'required',
+            'titik_turun' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $favorites = new Favorites();
+                $favorites->user_id = $request->input('user_id');
+                $favorites->route_id = $request->input('route_id');
+                $favorites->titik_naik = $request->input('titik_naik');
+                $favorites->titik_turun = $request->input('titik_turun');
+                $favorites->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Perjalanan Favorites Created !',
+                    'data' => $favorites,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get all Perjalanan Favorites 
+     * by user_id
+     * the user can see perjalanan favorites he created
+     * 
+     * @param Request $request
+     * 
+     */
+    public function getPerjalananFavorites(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $favorites = Favorites::where('user_id', $request->input('user_id'))->get();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Perjalanan Favorites Found !',
+                    'data' => $favorites,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Delete Perjalanan Favorites
+     * 
+     * @param Request $request
+     * 
+     */
+    public function deletePerjalananFavorites(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $favorites = Favorites::where('user_id', $request->input('user_id'))->delete();
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Perjalanan Favorites Deleted !',
+                    'data' => $favorites,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
 }
