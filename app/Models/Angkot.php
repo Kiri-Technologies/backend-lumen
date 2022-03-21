@@ -49,7 +49,7 @@ class Angkot extends Model
         return $this->hasMany(Riwayat::class, 'angkot_id');
     }
 
-    public function user_pengumpang(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user_owner(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

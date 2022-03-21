@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 
 use App\Models\Angkot;
@@ -200,7 +201,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => Angkot::all(),
+            'data' => Angkot::with('user_owner','route')->get(),
         ], 200);
     }
 
@@ -306,7 +307,13 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $perjalanan = Perjalanan::all();
+        $perjalanan = Perjalanan::with('user_penumpang','angkot','user_supir')->get();
+        $routes = new Collection(Routes::all());
+        foreach($perjalanan as $pj){
+            $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
+        }
+
+
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -438,6 +445,22 @@ class AdminController  extends Controller
         }
     }
 
+    /**
+     * get riwayat supir narik by id
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function allRiwayat()
+    {
+        $riwayat =  Riwayat::with('supir')->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'get all riwayat successfully!',
+            'data' => $riwayat
+        ], 200);
+    }
+
 
 
     /**
@@ -469,39 +492,9 @@ class AdminController  extends Controller
     }
 
     /**
-     * Get all riwayat
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function getAll()
-    {
-        // memvalidasi jika bukan params angkot_id or supir_id
-        if (request()->all()) {
-            if (!request(['angkot_id', 'supir_id'])) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'params not available',
-                ], 400);
-            }
-        }
-
-        // fungsi method filter sebenar nya bukan ngequery tapi untuk memfilter sesuai params
-        // makanya aku taruh di models aja biar aku gak pusing
-        // untuk proses query tetap disini dan disimpan ke dalam $riwayat
-        $riwayat =  Riwayat::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'ok',
-            'data' => $riwayat
-        ], 200);
-    }
-
-    /**
      * Updatee Feedback App
      *
-     * 
+     *
      * @return Response
      */
     public function updateAppFeedback(Request $request, $id) {
@@ -540,32 +533,21 @@ class AdminController  extends Controller
 
     /**
      * Get All Application Feedback
-     * 
+     *
      * @return Response
      */
     public function getAllAppFeedback() {
         $feedbackapp = FeedbackApplication::all();
-        // check if feedbackapp is not empty
-        if (count($feedbackapp) > 0) {
-            // return successful response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => $feedbackapp,
-            ], 200);
-        } else {
-            // return error message
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Feedback Application not found !',
-                'data' => [],
-            ], 404);
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $feedbackapp
+        ], 200);
     }
 
     /**
      * Get Application Feedback find by status
-     * 
+     *
      * @return Response
      */
     public function getAppFeedbackFind(Request $request) {
@@ -598,7 +580,7 @@ class AdminController  extends Controller
                 ], 404);
             }
         }
-        
+
     }
 
 }

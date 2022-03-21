@@ -40,7 +40,8 @@ class OwnerSupirController  extends Controller
      */
     public function getListSupir()
     {
-        $list_supir = ListSupir::all();
+        //
+        $list_supir = ListSupir::with('user')->get();
         if ($list_supir) {
             return response()->json([
                 'status' => 'success',
@@ -92,5 +93,32 @@ class OwnerSupirController  extends Controller
         return response()->json([
             'data' => $riwayat->find($id)
         ]);
+    }
+
+
+    /**
+     * Get all riwayat
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function findRiwayat()
+    {
+        // memvalidasi jika bukan params angkot_id or supir_id
+        if (request()->all()) {
+            if (!request(['angkot_id', 'supir_id'])) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'params not available',
+                ], 400);
+            }
+        }
+        $riwayat =  Riwayat::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $riwayat
+        ], 200);
     }
 }
