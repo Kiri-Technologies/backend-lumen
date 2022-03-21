@@ -596,13 +596,13 @@ class UserController extends Controller
 
     /**
      * Create Perjalanan Favorites
-     * 
+     *
      * @param Request $request
      */
     public function createPerjalananFavorites(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'route_id' => 'required', 
+            'route_id' => 'required',
             'titik_naik' => 'required',
             'titik_turun' => 'required',
         ]);
@@ -640,12 +640,12 @@ class UserController extends Controller
     }
 
     /**
-     * Get all Perjalanan Favorites 
+     * Get all Perjalanan Favorites
      * by user_id
      * the user can see perjalanan favorites he created
-     * 
+     *
      * @param Request $request
-     * 
+     *
      */
     public function getPerjalananFavorites(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -681,9 +681,9 @@ class UserController extends Controller
 
     /**
      * Delete Perjalanan Favorites
-     * 
+     *
      * @param Request $request
-     * 
+     *
      */
     public function deletePerjalananFavorites(Request $request) {
         $validator = Validator::make($request->all(), [

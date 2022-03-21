@@ -38,10 +38,16 @@ class OwnerSupirController  extends Controller
      *
      * @return Response
      */
-    public function getListSupir()
+    public function getListSupir(Request $request)
     {
-        //
-        $list_supir = ListSupir::with('user')->get();
+        // $list_supir = ListSupir::with('user')->get();
+        $list_supir = ListSupir::with('user')
+        ->when($request->user_id, function ($query, $user_id) {
+            return $query->where('user_id', $user_id);
+        })->when($request->angkot_id, function ($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->get();
+
         if ($list_supir) {
             return response()->json([
                 'status' => 'success',
