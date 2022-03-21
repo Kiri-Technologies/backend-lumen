@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -125,7 +126,7 @@ class DatabaseSeeder extends Seeder
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
                 'plat_nomor' => 'B 12345',
-                'qr_code' => null,
+                'qr_code' => QrCode::format('svg')->generate(urlencode('angkot_id: 1')),
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
                 'kir_bulanan' => '2017-06-15',
