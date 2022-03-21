@@ -170,19 +170,13 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function findUser()
+    public function findUser(Request $request)
     {
-        if (isset($_GET['role']) && isset($_GET['id'])) {
-            $role = $_GET['role'];
-            $id = $_GET['id'];
-            $user = User::where("role", "like", '%' . $role . '%')->where("id", "like", '%' . $id . '%')->get();
-        } elseif (isset($_GET['role'])) {
-            $role = $_GET['role'];
-            $user = User::where("role", "like", '%' . $role . '%')->get();
-        } elseif (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $user = User::where("id", "like", '%' . $id . '%')->get();
-        }
+        $user = User::when($request->role, function ($query, $role) {
+            return $query->where('role', $role);
+        })->when($request->id, function ($query, $id) {
+            return $query->where('id', $id);
+        })->get();
 
         return response()->json([
             'status' => 'success',
@@ -201,7 +195,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => Angkot::with('user_owner','route')->get(),
+            'data' => Angkot::with('user_owner', 'route')->get(),
         ], 200);
     }
 
@@ -307,9 +301,9 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $perjalanan = Perjalanan::with('user_penumpang','angkot','user_supir')->get();
+        $perjalanan = Perjalanan::with('user_penumpang', 'angkot', 'user_supir')->get();
         $routes = new Collection(Routes::all());
-        foreach($perjalanan as $pj){
+        foreach ($perjalanan as $pj) {
             $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
         }
 
@@ -497,7 +491,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function updateAppFeedback(Request $request, $id) {
+    public function updateAppFeedback(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'status' => 'required |in:submitted,pending,processed',
 
@@ -536,7 +531,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function getAllAppFeedback() {
+    public function getAllAppFeedback()
+    {
         $feedbackapp = FeedbackApplication::all();
         return response()->json([
             'status' => 'success',
@@ -550,7 +546,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function getAppFeedbackFind(Request $request) {
+    public function getAppFeedbackFind(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'status' => 'required |in:submitted,pending,processed',
 
@@ -580,7 +577,5 @@ class AdminController  extends Controller
                 ], 404);
             }
         }
-
     }
-
 }
