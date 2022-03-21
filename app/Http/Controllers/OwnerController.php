@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 use App\Models\Angkot;
@@ -68,6 +69,10 @@ class OwnerController  extends Controller
                 $angkot->kir_bulanan = $request->input('kir_bulanan');
                 $angkot->status = "pending";
                 $angkot->save();
+
+                $angkot->qr_code = QrCode::format('svg')->generate(urlencode('angkot_id:'.$angkot->id));
+                $angkot->save();
+
 
                 //return successful response
                 return response()->json([
