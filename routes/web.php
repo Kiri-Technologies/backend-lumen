@@ -241,7 +241,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/ownersupir/driver
                 // Function : Get List Supir
                 $router->get('/', 'OwnerSupirController@getListSupir');
-            });
+            });     
 
             //  ======================== RIWAYAT ========================
 
