@@ -649,7 +649,7 @@ class AdminController  extends Controller
     }
 
     /**
-     * create Halte Virtual App
+     * Get Halte Virtual By Id App
      * 
      * @return Response
     */
@@ -680,7 +680,7 @@ class AdminController  extends Controller
     }
 
     /**
-     * create Halte Virtual App
+     * Get Halte Virtual By route_id App
      * 
      * @return Response
     */
@@ -712,6 +712,11 @@ class AdminController  extends Controller
         }
     }
 
+    /**
+     * Update Halte Virtual App
+     * 
+     * @return Response
+    */
     public function updateHalteVirtual(Request $request,$id){
             try {
                 Setpoints::find($id)->update($request->all());
@@ -732,6 +737,11 @@ class AdminController  extends Controller
             }
     }
 
+    /**
+     * Delete Halte Virtual App
+     * 
+     * @return Response
+    */
     public function deleteHalteVirtual($id){
         try {
             $point = Setpoints::find($id);
