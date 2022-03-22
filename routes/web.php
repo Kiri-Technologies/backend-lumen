@@ -151,7 +151,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             // Matches /api/perjalananfavorit/{id}/delete
             // Function : delete perjalanan favorites
-            $router->delete('/delete', 'UserController@deletePerjalananFavorites');
+            $router->delete('/{id}/delete', 'UserController@deletePerjalananFavorites');
         });
 
         // ==============================================================
@@ -240,8 +240,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/ownersupir/driver
                 // Function : Get List Supir
-                $router->get('/', 'OwnerSupirController@getListSupir');
-            });     
+                $router->get('/', 'OwnerSupirController@getListDriver');
+            });
 
             //  ======================== RIWAYAT ========================
 

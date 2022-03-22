@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->date('birthdate');
             $table->string('role');
-            $table->string('no_hp');
+            $table->string('phone_number');
             $table->string('image')->nullable();
             $table->timestamps();
         });

@@ -2,12 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Angkot;
-use App\Models\Riwayat;
-use Illuminate\Database\Seeder;
+use App\Models\Vehicle;
+use App\Models\History;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Models\Trip;
+
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,10 +25,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Riwayat::factory(5)->create();
-
         // ========================================================
-        // ===================== Dummy Routes =====================
+        // ==================== Seeder Route ======================
         // ========================================================
 
         $faker = Faker::create();
@@ -37,16 +38,6 @@ class DatabaseSeeder extends Seeder
                 'titik_akhir' => $faker->name,
             ]);
         }
-
-        // Riwayat Seeder
-        // foreach (range(1, 10) as $index) {
-        //     DB::table('routes')->insert([
-        //         'kode_angkot' => $faker->areaCode,
-        //         'titik_awal' => $faker->name,
-        //         'titik_akhir' => $faker->name,
-        //     ]);
-        // }
-
         // ========================================================
         // ===================== Seeder User ======================
         // ========================================================
@@ -58,7 +49,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'user@kiri.id',
                 'birthdate' => '2017-06-15',
                 'role' => 'penumpang',
-                'no_hp' => '081234567890',
+                'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
             ],
             [
@@ -67,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'supir@kiri.id',
                 'birthdate' => '2017-06-15',
                 'role' => 'supir',
-                'no_hp' => '081234567891',
+                'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
             ],
             [
@@ -76,7 +67,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'owner@kiri.id',
                 'birthdate' => '2017-06-15',
                 'role' => 'owner',
-                'no_hp' => '081234567891',
+                'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
             ],
             [
@@ -85,32 +76,9 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@kiri.id',
                 'birthdate' => '2017-06-15',
                 'role' => 'admin',
-                'no_hp' => '081234567891',
+                'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
             ],
-
-            // ========================================================
-            // ========= User Tambahan Soalnya migrasi error ==========
-            // ========================================================
-            // [
-            //     'id' => '1',
-            //     'name' => 'supir',
-            //     'email' => 'supir1@kiri.id',
-            //     'birthdate' => '2017-06-15',
-            //     'role' => 'supir',
-            //     'no_hp' => '081234567891',
-            //     'password' => bcrypt('password'),
-            // ],
-            // [
-            //     'id' => '2',
-            //     'name' => 'supir',
-            //     'email' => 'supir2@kiri.id',
-            //     'birthdate' => '2017-06-15',
-            //     'role' => 'supir',
-            //     'no_hp' => '081234567891',
-            //     'password' => bcrypt('password'),
-            // ],
-
         ];
 
         foreach ($user as $key => $value) {
@@ -120,7 +88,7 @@ class DatabaseSeeder extends Seeder
         // ========================================================
         // ==================== Seeder Angkot =====================
         // ========================================================
-        $angkot = [
+        $vehicle = [
             [
                 'id' => 1,
                 'user_id' => 'owner-123456',
@@ -136,8 +104,27 @@ class DatabaseSeeder extends Seeder
             ],
 
         ];
-        foreach ($angkot as $key => $value) {
-            Angkot::create($value);
+
+        foreach ($vehicle as $key => $value) {
+            Vehicle::create($value);
+        }
+
+        // ========================================================
+        // ==================== Seeder Trip =======================
+        // ========================================================
+
+        foreach (range(1, 10) as $index) {
+            DB::table('trips')->insert([
+                'penumpang_id' => 'user-123456',
+                'angkot_id' => '1',
+                'supir_id' => 'supir-123456',
+                'titik_naik' => '1',
+                'titik_turun' => '1',
+                'jarak' => '1',
+                'rekomendasi_harga' => 10000,
+                'is_done' => 0,
+                'is_connected_with_driver' => 0,
+            ]);
         }
     }
 }

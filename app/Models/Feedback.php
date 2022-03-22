@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
-    protected $table = 'feedback';
+    protected $table = 'feedbacks';
 
     /**
      * The attributes that are mass assignable.
@@ -34,8 +34,8 @@ class Feedback extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function perjalanan(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function trip(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Perjalanan::class, 'perjalanan_id', 'id');
+        return $this->belongsTo(Trip::class, 'perjalanan_id', 'id');
     }
 }

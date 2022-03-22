@@ -27,9 +27,9 @@ class Routes extends Model
         //
     ];
 
-    public function angkot()
+    public function vehicle()
     {
-        return $this->hasMany(Angkot::class, 'route_id');
+        return $this->hasMany(Vehicle::class, 'route_id');
     }
 
     public function setpoints()

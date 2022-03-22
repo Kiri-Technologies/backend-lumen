@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeedbackTable extends Migration
+class CreateFeedbacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFeedbackTable extends Migration
      */
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             // $table->unsignedInteger('user_id');
             $table->unsignedInteger('perjalanan_id');
@@ -24,7 +24,7 @@ class CreateFeedbackTable extends Migration
 
             $table->foreign('perjalanan_id')
                 ->references('id')
-                ->on('perjalanan')
+                ->on('trips')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -36,6 +36,6 @@ class CreateFeedbackTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('feedbacks');
     }
 }

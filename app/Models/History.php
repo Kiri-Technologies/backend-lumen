@@ -4,9 +4,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Riwayat extends Model
+class History extends Model
 {
-    protected $table = 'riwayat';
+    protected $table = 'histories';
 
     /**
      * The attributes that are mass assignable.
@@ -35,14 +35,14 @@ class Riwayat extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function angkot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function vehicle(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Angkot::class, 'angkot_id', 'id');
+        return $this->belongsTo(Vehicle::class, 'angkot_id', 'id');
     }
 
     public function scopeFilter($query, array $filters){
 
-        // fungsi untuk memfilter data tabel berdasarkan angkot_id pada tabel riwayat
+        // fungsi untuk memfilter data tabel berdasarkan angkot_id pada tabel history
         $query->when($filters['angkot_id'] ?? false, function($query, $angkot_id) {
             return $query->where('angkot_id', 'like', '%'. $angkot_id. '%');
         });
@@ -58,7 +58,7 @@ class Riwayat extends Model
         });
     }
 
-    // menghubungkan tabel riwayat dengan users dengan perantara 'users_id'
+    // menghubungkan tabel history dengan users dengan perantara 'users_id'
     // method supir() biar nanti saat di query yang muncul data nya adalah supir:{}
     public function supir(){
         return $this->belongsTo(User::class, 'user_id');

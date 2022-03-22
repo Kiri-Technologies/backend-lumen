@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -34,14 +34,14 @@ class OwnerSupirController  extends Controller
     }
 
     /**
-     * Get list supir on the specified angkot.
+     * Get list supir on the specified vehicle.
      *
      * @return Response
      */
-    public function getListSupir(Request $request)
+    public function getListDriver(Request $request)
     {
-        // $list_supir = ListSupir::with('user')->get();
-        $list_supir = ListSupir::with('user')
+        // $list_supir = ListDriver::with('user')->get();
+        $list_supir = ListDriver::with('user')
         ->when($request->user_id, function ($query, $user_id) {
             return $query->where('user_id', $user_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
@@ -64,14 +64,14 @@ class OwnerSupirController  extends Controller
     }
 
     /**
-     * Delete supir on the specified angkot.
+     * Delete supir on the specified vehicle.
      *
      * @param int $id
      * @return Response
      */
     public function deleteSupir($id)
     {
-        $supir = ListSupir::find($id);
+        $supir = ListDriver::find($id);
         if ($supir) {
             $supir->delete();
             return response()->json([
@@ -88,22 +88,22 @@ class OwnerSupirController  extends Controller
     }
 
     /**
-     * get riwayat supir narik by id
+     * get history supir narik by id
      *
      * @param int $id
      * @return Response
      */
-    public function getById(Riwayat $riwayat, $id)
+    public function getById(History $history, $id)
     {
-        $riwayat =  Riwayat::with('supir')->get();
+        $history =  History::with('supir')->get();
         return response()->json([
-            'data' => $riwayat->find($id)
+            'data' => $history->find($id)
         ]);
     }
 
 
     /**
-     * Get all riwayat
+     * Get all history
      *
      * @param  int  $id
      * @return Response
@@ -119,12 +119,12 @@ class OwnerSupirController  extends Controller
                 ], 400);
             }
         }
-        $riwayat =  Riwayat::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+        $history =  History::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
 
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => $riwayat
+            'data' => $history
         ], 200);
     }
 }
