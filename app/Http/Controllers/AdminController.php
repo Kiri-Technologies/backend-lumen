@@ -3,24 +3,23 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Angkot;
+use App\Models\Routes;
+use App\Models\Riwayat;
+use App\Models\ListSupir;
+use App\Models\Setpoints;
+use App\Models\Perjalanan;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\FeedbackApplication;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Laravel\Lumen\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\UserController;
 
-
-use App\Models\Angkot;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
-use App\Models\FeedbackApplication;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
-use App\Models\Routes;
-use App\Models\Setpoints;
-use App\Models\User;
 
 class AdminController  extends Controller
 {
@@ -600,5 +599,166 @@ class AdminController  extends Controller
         }
         
     }
+
+    //  ===============================================================================
+    //  =============================== Halte Virtual =================================
+    //  ===============================================================================
+
+    /**
+     * create Halte Virtual App
+     * 
+     * @return Response
+    */
+    public function createHalteVirtual(Request $request){
+        $validator = Validator::make($request-> all(), [
+            'route_id' => 'required',
+            'nama_lokasi' => "required",
+            'lat' => "required",
+            'long' => "required"
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->error(),
+                'data' => []
+            ], 400);
+        }else{
+            try{
+                $point = new Setpoints();
+                $point->route_id = $request->input("route_id");
+                $point->nama_lokasi = $request->input("nama_lokasi");
+                $point->lat = $request->input("lat");
+                $point->long = $request->input("long");
+                $point->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    "message" => 'Halte Virtual Created',
+                    'data' => $point,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * create Halte Virtual App
+     * 
+     * @return Response
+    */
+    public function getByIdHalteVirtual($id){
+        try {
+            $point = Setpoints::find($id);
+
+            if($point == null){
+                return response()->json([
+                    'status' => 'Not Found',
+                    'message' => 'Halte Virtual Not Found',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Halte Virtual Requested !',
+                'data' => $point,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
+    /**
+     * create Halte Virtual App
+     * 
+     * @return Response
+    */
+    public function getByRouteIdHalteVirtual(){
+        try{
+            $route = request(["route_id"]);
+            $point = Setpoints::where('route_id',$route)->first();
+
+            if($point == null){
+                return response()->json([
+                    'status' => 'Not Found',
+                    'message' => 'Halte Virtual Not Found',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Halte Virtual Requested !',
+                'data' => $point,
+            ], 200);
+
+        }catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
+    public function updateHalteVirtual(Request $request,$id){
+            try {
+                Setpoints::find($id)->update($request->all());
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Halte Virtual Updated !',
+                    'data' => [],
+                ], 201);
+
+            }catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+    }
+
+    public function deleteHalteVirtual($id){
+        try {
+            $point = Setpoints::find($id);
+
+            if($point){
+                $point->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Halte Virtual Deleted !',
+                    'data' => [],
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User Not Found!',
+                    'data' => [],
+                ], 400);
+            }
+        }catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
 
 }
