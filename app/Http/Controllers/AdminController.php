@@ -544,11 +544,12 @@ class AdminController  extends Controller
      * @return Response
      */
     public function getAllAppFeedback() {
-        $feedbackapp = FeedbackApplication::all();
+        // sort by newest feedback
+        $feedbackapp = FeedbackApplication::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 'success',
-            'message' => 'ok',
-            'data' => $feedbackapp
+            'message' => 'Feedback Requested !',
+            'data' => $feedbackapp,
         ], 200);
     }
 
