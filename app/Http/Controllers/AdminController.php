@@ -40,6 +40,10 @@ class AdminController  extends Controller
         $this->middleware('auth');
     }
 
+    //  ===============================================================================
+    //  ====================================== USER ===================================
+    //  ===============================================================================
+
 
     /**
      * Get one user.
@@ -190,6 +194,10 @@ class AdminController  extends Controller
         ], 200);
     }
 
+    //  ===============================================================================
+    //  ==================================== ANGKOT ===================================
+    //  ===============================================================================
+
     /**
      * Get all vehicle.
      *
@@ -274,6 +282,10 @@ class AdminController  extends Controller
         }
     }
 
+    //  ===============================================================================
+    //  ====================================== TRIP ===================================
+    //  ===============================================================================
+
 
     /**
      * Get All Trip.
@@ -299,6 +311,30 @@ class AdminController  extends Controller
             'data' => $trip,
         ], 200);
     }
+
+    //  ===============================================================================
+    //  ===================================== RIWAYAT =================================
+    //  ===============================================================================
+
+    /**
+     * get history supir narik by id
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function allRiwayat()
+    {
+        $history =  History::with('supir')->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'get all history successfully!',
+            'data' => $history
+        ], 200);
+    }
+
+    //  ===============================================================================
+    //  ================================= ROUTES ======================================
+    //  ===============================================================================
 
     /**
      * Get All Routes.
@@ -370,6 +406,7 @@ class AdminController  extends Controller
         }
     }
 
+
     /**
      * Update a Routes
      *
@@ -417,26 +454,9 @@ class AdminController  extends Controller
         }
     }
 
-    /**
-     * get history supir narik by id
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function allRiwayat()
-    {
-        $history =  History::with('supir')->get();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'get all history successfully!',
-            'data' => $history
-        ], 200);
-    }
-
-
 
     /**
-     * Update a Routes
+     * Delete a Routes
      *
      * @param  int  $id
      * @return Response
@@ -462,6 +482,10 @@ class AdminController  extends Controller
             ], 409);
         }
     }
+
+    //  ===============================================================================
+    //  =============================== FEEDBACK APP ==================================
+    //  ===============================================================================
 
     /**
      * Updatee Feedback App
@@ -730,6 +754,4 @@ class AdminController  extends Controller
             ], 409);
         }
     }
-
-
 }

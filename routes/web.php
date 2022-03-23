@@ -365,7 +365,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             });
             //  ======================== Halte Virtual ========================
 
-            $router->group(["prefix" => "haltevirtual"], function () use ($router){
+            $router->group(["prefix" => "haltevirtual"], function () use ($router) {
 
                 // Matches /api/admin/hartevirtual/create
                 // Function : Create Halte Virtual
@@ -386,10 +386,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/hartevirtual/{id}/delete
                 // Function : Delete Halte Virtual
                 $router->delete("/{id}/delete", 'AdminController@deleteHalteVirtual');
-
             });
-
-
         });
 
         // ==============================================================
