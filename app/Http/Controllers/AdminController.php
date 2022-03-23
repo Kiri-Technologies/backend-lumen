@@ -500,7 +500,7 @@ class AdminController  extends Controller
     /**
      * Updatee Feedback App
      *
-     * 
+     *
      * @return Response
      */
     public function updateAppFeedback(Request $request, $id) {
@@ -539,7 +539,7 @@ class AdminController  extends Controller
 
     /**
      * Get All Application Feedback
-     * 
+     *
      * @return Response
      */
     public function getAllAppFeedback() {
@@ -564,7 +564,7 @@ class AdminController  extends Controller
 
     /**
      * Get Application Feedback find by status
-     * 
+     *
      * @return Response
      */
     public function getAppFeedbackFind(Request $request) {
@@ -597,7 +597,7 @@ class AdminController  extends Controller
                 ], 404);
             }
         }
-        
+
     }
 
     //  ===============================================================================
@@ -606,7 +606,7 @@ class AdminController  extends Controller
 
     /**
      * create Halte Virtual App
-     * 
+     *
      * @return Response
     */
     public function createHalteVirtual(Request $request){
@@ -650,7 +650,7 @@ class AdminController  extends Controller
 
     /**
      * Get Halte Virtual By Id App
-     * 
+     *
      * @return Response
     */
     public function getByIdHalteVirtual($id){
@@ -681,13 +681,13 @@ class AdminController  extends Controller
 
     /**
      * Get Halte Virtual By route_id App
-     * 
+     *
      * @return Response
     */
     public function getByRouteIdHalteVirtual(){
         try{
             $route = request(["route_id"]);
-            $point = Setpoints::where('route_id',$route)->first();
+            $point = Setpoints::where('route_id', $route)->get();
 
             if($point == null){
                 return response()->json([
@@ -714,32 +714,33 @@ class AdminController  extends Controller
 
     /**
      * Update Halte Virtual App
-     * 
+     *
      * @return Response
-    */
-    public function updateHalteVirtual(Request $request,$id){
-            try {
-                Setpoints::find($id)->update($request->all());
+     */
+    public function updateHalteVirtual(Request $request, $id)
+    {
+        try {
+            $setpoints = Setpoints::find($id);
+            $setpoints->update($request->all());
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Halte Virtual Updated !',
-                    'data' => [],
-                ], 201);
-
-            }catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Halte Virtual Updated !',
+                'data' => $setpoints,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
     }
 
     /**
      * Delete Halte Virtual App
-     * 
+     *
      * @return Response
     */
     public function deleteHalteVirtual($id){
@@ -756,7 +757,7 @@ class AdminController  extends Controller
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found!',
+                    'message' => 'Halte Virtual Not Found!',
                     'data' => [],
                 ], 400);
             }
