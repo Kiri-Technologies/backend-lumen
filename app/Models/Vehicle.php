@@ -3,9 +3,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Angkot extends Model
+class Vehicle extends Model
 {
-    protected $table = 'angkot';
+    protected $table = 'vehicles';
 
     /**
      * The attributes that are mass assignable.
@@ -36,17 +36,17 @@ class Angkot extends Model
 
     public function list_supir()
     {
-        return $this->hasMany(ListSupir::class, 'angkot_id');
+        return $this->hasMany(ListDriver::class, 'angkot_id');
     }
 
-    public function perjalanan()
+    public function trip()
     {
-        return $this->hasMany(ListSupir::class, 'angkot_id');
+        return $this->hasMany(ListDriver::class, 'angkot_id');
     }
 
-    public function riwayat()
+    public function history()
     {
-        return $this->hasMany(Riwayat::class, 'angkot_id');
+        return $this->hasMany(History::class, 'angkot_id');
     }
 
     public function user_owner(): \Illuminate\Database\Eloquent\Relations\BelongsTo

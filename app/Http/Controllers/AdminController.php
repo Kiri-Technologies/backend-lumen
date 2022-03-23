@@ -9,16 +9,15 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Collection;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
 use App\Models\FeedbackApplication;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -90,7 +89,7 @@ class AdminController  extends Controller
                 'password' => 'required',
                 'birthdate' => 'required|date',
                 'role' => 'required|in:admin,penumpang,owner,supir',
-                'no_hp' => 'required',
+                'phone_number' => 'required',
                 'image' => 'image:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
@@ -108,7 +107,7 @@ class AdminController  extends Controller
             $user->password = app('hash')->make($request->input('password'));
             $user->birthdate = $request->input('birthdate');
             $user->role = $request->input('role');
-            $user->no_hp = $request->input('no_hp');
+            $user->phone_number = $request->input('phone_number');
 
             if (isset($request->image)) {
                 // Delete Old Image ( Still Not Working I Guess)
@@ -186,7 +185,7 @@ class AdminController  extends Controller
     }
 
     /**
-     * Get all angkot.
+     * Get all vehicle.
      *
      * @return Response
      */
@@ -195,36 +194,13 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => Angkot::with('user_owner', 'route')->get(),
+            'data' => Vehicle::with('user_owner', 'route')->get(),
         ], 200);
     }
 
-    /**
-     * Get list supir
-     *
-     * @return Response
-     */
-    public function getListSupir()
-    {
-        $list_supir = ListSupir::all();
-        if ($list_supir) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'List Supir Requested !',
-                'data' => $list_supir,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'List Supir Not Found!',
-                'data' => [],
-            ], 400);
-        }
-    }
-
 
     /**
-     * Update status on angkot
+     * Update status on vehicle
      *
      * @return Response
      */
@@ -244,15 +220,15 @@ class AdminController  extends Controller
             ], 400);
         } else {
             try {
-                $angkot = Angkot::find($id);
-                $angkot->status = $request->input('status');
-                $angkot->save();
+                $vehicle = Vehicle::find($id);
+                $vehicle->status = $request->input('status');
+                $vehicle->save();
 
                 //return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Angkot Approval Status Updated !',
-                    'data' => $angkot,
+                    'data' => $vehicle,
                 ], 201);
             } catch (\Exception $e) {
                 //return error message
@@ -266,15 +242,15 @@ class AdminController  extends Controller
     }
 
     /**
-     * Delete angkot by id
+     * Delete vehicle by id
      *
      * @return Response
      */
     public function DeleteAngkotById(Request $request, $id)
     {
         try {
-            $angkot = Angkot::find($id);
-            $angkot->delete();
+            $vehicle = Vehicle::find($id);
+            $vehicle->delete();
 
             //return successful response
             return response()->json([
@@ -294,31 +270,27 @@ class AdminController  extends Controller
 
 
     /**
-     * Get All Perjalanan.
+     * Get All Trip.
      *
      * @return Response
      *
      */
     public function getAllPerjalanan()
     {
-        $perjalanan = Perjalanan::with('user_penumpang', 'angkot', 'user_supir')->get();
-        $routes = new Collection(Routes::all());
-        foreach ($perjalanan as $pj) {
-            $pj->{"routes"} = $routes->where('id', $pj->angkot->route_id)->first();
-        }
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir')->get();
 
 
-        if (!$perjalanan) {
+        if (!$trip) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Perjalanan Not Found!',
+                'message' => 'Trip Not Found!',
                 'data' => [],
             ], 404);
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Perjalanan Requested !',
-            'data' => $perjalanan,
+            'message' => 'Trip Requested !',
+            'data' => $trip,
         ], 200);
     }
 
@@ -440,18 +412,18 @@ class AdminController  extends Controller
     }
 
     /**
-     * get riwayat supir narik by id
+     * get history supir narik by id
      *
      * @param int $id
      * @return Response
      */
     public function allRiwayat()
     {
-        $riwayat =  Riwayat::with('supir')->get();
+        $history =  History::with('supir')->get();
         return response()->json([
             'status' => 'success',
-            'message' => 'get all riwayat successfully!',
-            'data' => $riwayat
+            'message' => 'get all history successfully!',
+            'data' => $history
         ], 200);
     }
 

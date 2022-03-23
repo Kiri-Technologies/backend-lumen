@@ -3,9 +3,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class ListSupir extends Model
+class ListDriver extends Model
 {
-    protected $table = 'list_supir';
+    protected $table = 'list_drivers';
 
     /**
      * The attributes that are mass assignable.
@@ -26,9 +26,9 @@ class ListSupir extends Model
     protected $hidden = [
         //
     ];
-    public function angkot(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function vehicle(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Angkot::class, 'angkot_id', 'id');
+        return $this->belongsTo(Vehicle::class, 'angkot_id', 'id');
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

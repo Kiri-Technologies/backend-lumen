@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -34,9 +34,9 @@ class SupirController  extends Controller
     }
 
     /**
-     * Update angkot operation and supir
+     * Update vehicle operation and supir
      *
-     * @return $angkot
+     * @return $vehicle
      */
     public function updateStatusOperasi(Request $request, $id)
     {
@@ -55,16 +55,16 @@ class SupirController  extends Controller
             ], 400);
         } else {
             try {
-                $angkot = Angkot::find($id);
-                $angkot->is_beroperasi = $request->input('is_beroperasi');
-                $angkot->supir_id = $request->input('supir_yg_beroperasi');
-                $angkot->save();
+                $vehicle = Vehicle::find($id);
+                $vehicle->is_beroperasi = $request->input('is_beroperasi');
+                $vehicle->supir_id = $request->input('supir_yg_beroperasi');
+                $vehicle->save();
 
                 //return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Angkot Operation Updated !',
-                    'data' => $angkot,
+                    'data' => $vehicle,
                 ], 201);
             } catch (\Exception $e) {
                 //return error message
@@ -80,9 +80,9 @@ class SupirController  extends Controller
 
 
     /**
-     * Create Riwayat
+     * Create History
      *
-     * @return $angkot
+     * @return $vehicle
      */
     public function createHistory(Request $request)
     {
@@ -93,18 +93,18 @@ class SupirController  extends Controller
             $waktu_narik = $request->input('waktu_narik');
             $selesai_narik = $request->input('selesai_narik');
 
-            $riwayat = new Riwayat();
-            $riwayat->user_id = $user_id;
-            $riwayat->angkot_id = $angkot_id;
-            $riwayat->jumlah_pendapatan = $jumlah_pendapatan;
-            $riwayat->waktu_narik = $waktu_narik;
-            $riwayat->selesai_narik = $selesai_narik;
-            $riwayat->save();
+            $history = new History();
+            $history->user_id = $user_id;
+            $history->angkot_id = $angkot_id;
+            $history->jumlah_pendapatan = $jumlah_pendapatan;
+            $history->waktu_narik = $waktu_narik;
+            $history->selesai_narik = $selesai_narik;
+            $history->save();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data created',
-                'data' => $riwayat,
+                'data' => $history,
             ], 201);
         } catch (\Exception $e) {
             //return error message
@@ -117,13 +117,13 @@ class SupirController  extends Controller
     }
 
     /**
-     * Update Riwayat
+     * Update History
      *
-     * @return $angkot
+     * @return $vehicle
      */
     public function UpdateHistory(Request $request, $id)
     {
-        Riwayat::find($id)->update($request->all());
+        History::find($id)->update($request->all());
 
         return response()->json([
             'status' => 'ok',

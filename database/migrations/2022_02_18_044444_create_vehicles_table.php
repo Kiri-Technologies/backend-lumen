@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerjalananTable extends Migration
+class CreateVehiclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,30 @@ class CreatePerjalananTable extends Migration
      */
     public function up()
     {
-        Schema::create('perjalanan', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('penumpang_id');
-            $table->unsignedInteger('angkot_id');
-            $table->string('supir_id');
-            $table->string('titik_naik');
-            $table->string('titik_turun');
-            $table->string('jarak');
-            $table->string('rekomendasi_harga');
-            $table->boolean('is_done');
-            $table->boolean('is_connected_with_driver');
+            // $table->unsignedInteger('owner_id');
+            $table->string('user_id');
+            // $table->unsignedInteger('supir_id');
+            $table->unsignedInteger('route_id');
+            $table->string('plat_nomor');
+            $table->text('qr_code')->nullable();
+            $table->date('pajak_tahunan');
+            $table->date('pajak_stnk');
+            $table->date('kir_bulanan');
+            $table->boolean('is_beroperasi')->nullable();
+            $table->string('supir_id')->nullable();
+            $table->string('status');
             $table->timestamps();
 
-            $table->foreign('penumpang_id')
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreign('angkot_id')
+            $table->foreign('route_id')
                 ->references('id')
-                ->on('angkot')
+                ->on('routes')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('supir_id')
@@ -50,6 +53,6 @@ class CreatePerjalananTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perjalanan');
+        Schema::dropIfExists('vehicles');
     }
 }

@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -60,25 +60,25 @@ class OwnerController  extends Controller
             ], 400);
         } else {
             try {
-                $angkot = new Angkot;
-                $angkot->user_id = $request->input('user_id');
-                $angkot->route_id = $request->input('route_id');
-                $angkot->plat_nomor = $request->input('plat_nomor');
-                $angkot->pajak_tahunan = $request->input('pajak_tahunan');
-                $angkot->pajak_stnk = $request->input('pajak_stnk');
-                $angkot->kir_bulanan = $request->input('kir_bulanan');
-                $angkot->status = "pending";
-                $angkot->save();
+                $vehicle = new Vehicle;
+                $vehicle->user_id = $request->input('user_id');
+                $vehicle->route_id = $request->input('route_id');
+                $vehicle->plat_nomor = $request->input('plat_nomor');
+                $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
+                $vehicle->pajak_stnk = $request->input('pajak_stnk');
+                $vehicle->kir_bulanan = $request->input('kir_bulanan');
+                $vehicle->status = "pending";
+                $vehicle->save();
 
-                $angkot->qr_code = QrCode::format('svg')->generate(urlencode('angkot_id:'.$angkot->id));
-                $angkot->save();
+                $vehicle->qr_code = QrCode::format('svg')->generate(urlencode('angkot_id:'.$vehicle->id));
+                $vehicle->save();
 
 
                 //return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Angkot Created !',
-                    'data' => $angkot,
+                    'data' => $vehicle,
                 ], 201);
             } catch (\Exception $e) {
                 //return error message
@@ -111,19 +111,19 @@ class OwnerController  extends Controller
             ], 400);
         } else {
             try {
-                $angkot = Angkot::find($id);
-                $angkot->route_id = $request->input('route_id');
-                $angkot->plat_nomor = $request->input('plat_nomor');
-                $angkot->pajak_tahunan = $request->input('pajak_tahunan');
-                $angkot->pajak_stnk = $request->input('pajak_stnk');
-                $angkot->kir_bulanan = $request->input('kir_bulanan');
-                $angkot->save();
+                $vehicle = Vehicle::find($id);
+                $vehicle->route_id = $request->input('route_id');
+                $vehicle->plat_nomor = $request->input('plat_nomor');
+                $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
+                $vehicle->pajak_stnk = $request->input('pajak_stnk');
+                $vehicle->kir_bulanan = $request->input('kir_bulanan');
+                $vehicle->save();
 
                 //return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Angkot Updated !',
-                    'data' => $angkot,
+                    'data' => $vehicle,
                 ], 201);
             } catch (\Exception $e) {
                 //return error message
@@ -139,14 +139,14 @@ class OwnerController  extends Controller
     public function deleteAgkot(Request $request, $id)
     {
         try {
-            $angkot = Angkot::find($id);
-            $angkot->delete();
+            $vehicle = Vehicle::find($id);
+            $vehicle->delete();
 
             //return successful response
             return response()->json([
                 'status' => 'success',
                 'message' => 'Angkot Deleted !',
-                'data' => $angkot,
+                'data' => [],
             ], 201);
         } catch (\Exception $e) {
             //return error message
@@ -159,7 +159,7 @@ class OwnerController  extends Controller
     }
 
     /**
-     * Create a supir on the specified angkot.
+     * Create a supir on the specified vehicle.
      *
      * @param  int  $id
      * @return Response
@@ -168,7 +168,7 @@ class OwnerController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'supir_id' => 'required',
+            'supir_id' => 'required|exists:users,id',
             'angkot_id' => 'required',
         ]);
 
@@ -181,7 +181,7 @@ class OwnerController  extends Controller
             ], 400);
         } else {
             try {
-                $supir = new ListSupir;
+                $supir = new ListDriver;
                 $supir->supir_id = $request->input('supir_id');
                 $supir->angkot_id = $request->input('angkot_id');
                 $supir->is_confirmed = null;
@@ -205,37 +205,14 @@ class OwnerController  extends Controller
     }
 
     /**
-     * Get list supir on the specified angkot.
-     *
-     * @return Response
-     */
-    public function getListSupir()
-    {
-        $list_supir = ListSupir::all();
-        if ($list_supir) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'List Supir Requested !',
-                'data' => $list_supir,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'List Supir Not Found!',
-                'data' => [],
-            ], 400);
-        }
-    }
-
-    /**
-     * Delete supir on the specified angkot.
+     * Delete supir on the specified vehicle.
      *
      * @param int $id
      * @return Response
      */
     public function deleteSupir($id)
     {
-        $supir = ListSupir::find($id);
+        $supir = ListDriver::find($id);
         if ($supir) {
             $supir->delete();
             return response()->json([
