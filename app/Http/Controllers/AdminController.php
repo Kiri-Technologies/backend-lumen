@@ -647,7 +647,7 @@ class AdminController  extends Controller
     {
         try {
             $route = request(["route_id"]);
-            $point = Setpoints::where('route_id', $route)->first();
+            $point = Setpoints::where('route_id', $route)->get();
 
             if ($point == null) {
                 return response()->json([
@@ -679,12 +679,13 @@ class AdminController  extends Controller
     public function updateHalteVirtual(Request $request, $id)
     {
         try {
-            Setpoints::find($id)->update($request->all());
+            $setpoints = Setpoints::find($id);
+            $setpoints->update($request->all());
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Halte Virtual Updated !',
-                'data' => [],
+                'data' => $setpoints,
             ], 201);
         } catch (\Exception $e) {
             //return error message
@@ -716,7 +717,7 @@ class AdminController  extends Controller
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found!',
+                    'message' => 'Halte Virtual Not Found!',
                     'data' => [],
                 ], 400);
             }
@@ -729,4 +730,6 @@ class AdminController  extends Controller
             ], 409);
         }
     }
+
+
 }
