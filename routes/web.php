@@ -363,6 +363,33 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Get Data History
                 $router->get('/', 'AdminController@allRiwayat');
             });
+            //  ======================== Halte Virtual ========================
+
+            $router->group(["prefix" => "haltevirtual"], function () use ($router){
+
+                // Matches /api/admin/hartevirtual/create
+                // Function : Create Halte Virtual
+                $router->post("/create", 'AdminController@createHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}
+                // Function : Get Halte Virtual By Id
+                $router->get("/{id}", 'AdminController@getByIdHalteVirtual');
+
+                // Matches /api/admin/hartevirtual?route_id=
+                // Function : Get Halte Virtual By route_id
+                $router->get("/", 'AdminController@getByRouteIdHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}/update
+                // Function : Update Halte Virtual
+                $router->patch("/{id}/update", 'AdminController@updateHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}/delete
+                // Function : Delete Halte Virtual
+                $router->delete("/{id}/delete", 'AdminController@deleteHalteVirtual');
+
+            });
+
+
         });
 
         // ==============================================================
