@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
-    protected $table = 'feedback';
+    protected $table = 'feedbacks';
 
     /**
      * The attributes that are mass assignable.
@@ -13,7 +13,7 @@ class Feedback extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        // 'user_id',
         'perjalanan_id',
         'rating',
         'review',
@@ -28,4 +28,14 @@ class Feedback extends Model
     protected $hidden = [
         //
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function trip(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Trip::class, 'perjalanan_id', 'id');
+    }
 }

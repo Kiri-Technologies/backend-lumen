@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFavoritesTable extends Migration
+class CreateListDriversTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,21 @@ class CreateFavoritesTable extends Migration
      */
     public function up()
     {
-        Schema::create('favorites', function (Blueprint $table) {
+        Schema::create('list_drivers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
-            $table->unsignedInteger('route_id');
-            $table->string('titik_naik');
-            $table->string('titik_turun');
+            $table->string('supir_id');
+            $table->unsignedInteger('angkot_id');
+            $table->boolean('is_confirmed')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('supir_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreign('route_id')
+            $table->foreign('angkot_id')
                 ->references('id')
-                ->on('routes')
+                ->on('vehicles')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -40,6 +39,6 @@ class CreateFavoritesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('favorites');
+        Schema::dropIfExists('list_drivers');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerjalananTable extends Migration
+class CreateTripsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePerjalananTable extends Migration
      */
     public function up()
     {
-        Schema::create('perjalanan', function (Blueprint $table) {
+        Schema::create('trips', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('penumpang_id');
+            $table->string('penumpang_id');
             $table->unsignedInteger('angkot_id');
-            $table->unsignedInteger('supir_id');
+            $table->string('supir_id');
             $table->string('titik_naik');
             $table->string('titik_turun');
             $table->string('jarak');
@@ -25,6 +25,21 @@ class CreatePerjalananTable extends Migration
             $table->boolean('is_done');
             $table->boolean('is_connected_with_driver');
             $table->timestamps();
+
+            $table->foreign('penumpang_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('angkot_id')
+                ->references('id')
+                ->on('vehicles')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('supir_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -35,6 +50,6 @@ class CreatePerjalananTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perjalanan');
+        Schema::dropIfExists('trips');
     }
 }

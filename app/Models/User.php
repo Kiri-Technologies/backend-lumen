@@ -25,7 +25,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email',
         'birthdate',
         'role',
-        'no_hp',
+        'phone_number',
         'image',
     ];
 
@@ -62,4 +62,49 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public $incrementing = false;
+
+    public function angkot_user()
+    {
+        return $this->hasMany(Vehicle::class, 'user_id');
+    }
+
+    public function angkot_supir()
+    {
+        return $this->hasMany(Vehicle::class, 'supir_id');
+    }
+
+    public function feedback_app_user()
+    {
+        return $this->hasMany(FeedbackApp::class, 'user_id');
+    }
+
+    public function perjalanan_penumpang()
+    {
+        return $this->hasMany(Trip::class, 'penumpang_id');
+    }
+
+    public function perjalanan_supir()
+    {
+        return $this->hasMany(Trip::class, 'supir_id');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(History::class, 'user_id');
+    }
+
+    public function list_supir()
+    {
+        return $this->hasMany(ListDriver::class, 'supir_id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorites::class, 'user_id');
+    }
+
+    public function feedback_app_owner()
+    {
+        return $this->hasMany(Favorites::class, 'user_id');
+    }
 }

@@ -3,9 +3,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Perjalanan extends Model
+class FeedbackApplication extends Model
 {
-    protected $table = 'perjalanan';
+    protected $table = 'feedback_app';
 
     /**
      * The attributes that are mass assignable.
@@ -14,14 +14,9 @@ class Perjalanan extends Model
      */
     protected $fillable = [
         'user_id',
-        'angkot_id',
-        'supir_id',
-        'titik_naik',
-        'titik_turun',
-        'jarak',
-        'rekomendasi_harga',
-        'is_done',
-        'is_connected_with_driver',
+        'review',
+        'tanggapan',
+        'status',
     ];
 
     /**
@@ -32,4 +27,9 @@ class Perjalanan extends Model
     protected $hidden = [
         //
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

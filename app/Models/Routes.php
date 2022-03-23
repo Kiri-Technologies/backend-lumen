@@ -13,8 +13,9 @@ class Routes extends Model
      * @var array
      */
     protected $fillable = [
-        'angkot_id',
-        'nama_trayek',
+        'kode_angkot',
+        'titik_awal',
+        'titik_akhir',
     ];
 
     /**
@@ -25,4 +26,14 @@ class Routes extends Model
     protected $hidden = [
         //
     ];
+
+    public function vehicle()
+    {
+        return $this->hasMany(Vehicle::class, 'route_id');
+    }
+
+    public function setpoints()
+    {
+        return $this->hasMany(Setpoints::class, 'route_id');
+    }
 }

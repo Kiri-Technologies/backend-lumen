@@ -20,6 +20,11 @@ class CreateSetpointsTable extends Migration
             $table->string('lat');
             $table->string('long');
             $table->timestamps();
+
+            $table->foreign('route_id')
+                ->references('id')
+                ->on('routes')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
