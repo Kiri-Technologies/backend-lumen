@@ -15,7 +15,7 @@ class CreateRoutesTable extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('kode_angkot');
+            $table->unsignedInteger('kode_trayek');
             $table->string('titik_awal');
             $table->string('titik_akhir');
             $table->timestamps();
