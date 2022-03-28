@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             DB::table('routes')->insert([
-                'kode_angkot' => $faker->areaCode,
+                'kode_trayek' => $faker->areaCode,
                 'titik_awal' => $faker->name,
                 'titik_akhir' => $faker->name,
             ]);
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         // Riwayat Seeder
         // foreach (range(1, 10) as $index) {
         //     DB::table('routes')->insert([
-        //         'kode_angkot' => $faker->areaCode,
+        //         'kode_trayek' => $faker->areaCode,
         //         'titik_awal' => $faker->name,
         //         'titik_akhir' => $faker->name,
         //     ]);

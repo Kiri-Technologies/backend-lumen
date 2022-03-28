@@ -336,7 +336,7 @@ class UserController extends Controller
      */
     public function updatePerjalanan(Request $request, $id)
     {
-        $perjalanan = Perjalanan::find($id);
+        $perjalanan = Perjalanan::with('feedback')->find($id);
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -370,7 +370,7 @@ class UserController extends Controller
      */
     public function getPerjalananFind(Request $request)
     {
-        $perjalanan = Perjalanan::when($request->penumpang_id, function ($query, $penumpang_id) {
+        $perjalanan = Perjalanan::with('feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
             return $query->where('angkot_id', $angkot_id);
@@ -400,7 +400,7 @@ class UserController extends Controller
      */
     public function getPerjalananByID($id)
     {
-        $perjalanan = Perjalanan::find($id);
+        $perjalanan = Perjalanan::with('feedback')->find($id);
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -434,7 +434,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Feedback Requested !',
-            'data' => $feedback,
+            'data' => [$feedback],
         ], 200);
     }
 
@@ -546,7 +546,7 @@ class UserController extends Controller
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'review' => 'required',
+            'review' => 'required|in:excellent,happy,sad,awful',
             'tanggapan' => 'required',
         ]);
         if ($validator->fails()) {

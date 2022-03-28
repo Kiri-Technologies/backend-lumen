@@ -306,7 +306,7 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $perjalanan = Perjalanan::all();
+        $perjalanan = Perjalanan::with('feedback')->all();
         if (!$perjalanan) {
             return response()->json([
                 'status' => 'failed',
@@ -354,7 +354,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'kode_angkot' => 'required',
+            'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
         ]);
@@ -369,7 +369,7 @@ class AdminController  extends Controller
         } else {
             try {
                 $routes = new Routes;
-                $routes->kode_angkot = $request->input('kode_angkot');
+                $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
                 $routes->save();
@@ -401,7 +401,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'kode_angkot' => 'required',
+            'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
         ]);
@@ -416,7 +416,7 @@ class AdminController  extends Controller
         } else {
             try {
                 $routes = Routes::find($id);
-                $routes->kode_angkot = $request->input('kode_angkot');
+                $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
                 $routes->save();
