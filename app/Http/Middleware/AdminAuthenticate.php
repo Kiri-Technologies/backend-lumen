@@ -38,7 +38,8 @@ class AdminAuthenticate
         if ($request->user()->role == "admin") {
             return $next($request);
         }
-
-        return response('Unauthorized.', 401);
+        
+        $role = $request->user()->role;
+        return response("Unauthorized: Only Admin. Your Account role was '${role}'", 401);
     }
 }

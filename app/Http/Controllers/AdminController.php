@@ -40,6 +40,10 @@ class AdminController  extends Controller
         $this->middleware('auth');
     }
 
+    //  ===============================================================================
+    //  ====================================== USER ===================================
+    //  ===============================================================================
+
 
     /**
      * Get one user.
@@ -190,6 +194,10 @@ class AdminController  extends Controller
         ], 200);
     }
 
+    //  ===============================================================================
+    //  ==================================== ANGKOT ===================================
+    //  ===============================================================================
+
     /**
      * Get all vehicle.
      *
@@ -274,6 +282,10 @@ class AdminController  extends Controller
         }
     }
 
+    //  ===============================================================================
+    //  ====================================== TRIP ===================================
+    //  ===============================================================================
+
 
     /**
      * Get All Trip.
@@ -283,8 +295,7 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir')->get();
-
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->get();
 
         if (!$trip) {
             return response()->json([
@@ -299,6 +310,30 @@ class AdminController  extends Controller
             'data' => $trip,
         ], 200);
     }
+
+    //  ===============================================================================
+    //  ===================================== RIWAYAT =================================
+    //  ===============================================================================
+
+    /**
+     * get history supir narik by id
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function allRiwayat()
+    {
+        $history =  History::with('supir')->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'get all history successfully!',
+            'data' => $history
+        ], 200);
+    }
+
+    //  ===============================================================================
+    //  ================================= ROUTES ======================================
+    //  ===============================================================================
 
     /**
      * Get All Routes.
@@ -333,7 +368,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'kode_angkot' => 'required',
+            'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
         ]);
@@ -348,7 +383,7 @@ class AdminController  extends Controller
         } else {
             try {
                 $routes = new Routes;
-                $routes->kode_angkot = $request->input('kode_angkot');
+                $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
                 $routes->save();
@@ -370,6 +405,7 @@ class AdminController  extends Controller
         }
     }
 
+
     /**
      * Update a Routes
      *
@@ -380,7 +416,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'kode_angkot' => 'required',
+            'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
         ]);
@@ -395,7 +431,7 @@ class AdminController  extends Controller
         } else {
             try {
                 $routes = Routes::find($id);
-                $routes->kode_angkot = $request->input('kode_angkot');
+                $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
                 $routes->save();
@@ -417,26 +453,9 @@ class AdminController  extends Controller
         }
     }
 
-    /**
-     * get history supir narik by id
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function allRiwayat()
-    {
-        $history =  History::with('supir')->get();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'get all history successfully!',
-            'data' => $history
-        ], 200);
-    }
-
-
 
     /**
-     * Update a Routes
+     * Delete a Routes
      *
      * @param  int  $id
      * @return Response
@@ -463,6 +482,10 @@ class AdminController  extends Controller
         }
     }
 
+    //  ===============================================================================
+    //  =============================== FEEDBACK APP ==================================
+    //  ===============================================================================
+
     /**
      * Updatee Feedback App
      *
@@ -472,7 +495,7 @@ class AdminController  extends Controller
     public function updateAppFeedback(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required |in:submitted,pending,processed',
+            'status' => 'required |in:submitted,pending,processed,cancelled',
 
         ]);
         if ($validator->fails()) {
@@ -483,7 +506,7 @@ class AdminController  extends Controller
             ], 400);
         } else {
             try {
-                $feedbackapp = FeedbackApplication::find($id);
+                $feedbackapp = FeedbackApplication::with('user')->find($id);
                 $feedbackapp->status = $request->input('status');
                 $feedbackapp->save();
 
@@ -509,13 +532,13 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function getAllAppFeedback()
-    {
-        $feedbackapp = FeedbackApplication::all();
+    public function getAllAppFeedback() {
+        // sort by newest feedback
+        $feedbackapp = FeedbackApplication::with('user')->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 'success',
-            'message' => 'ok',
-            'data' => $feedbackapp
+            'message' => 'Feedback Requested !',
+            'data' => $feedbackapp,
         ], 200);
     }
 
@@ -537,7 +560,7 @@ class AdminController  extends Controller
                 'data' => [],
             ], 400);
         } else {
-            $feedbackapp = FeedbackApplication::where('status', $request->input('status'))->get();
+            $feedbackapp = FeedbackApplication::with('user')->where('status', $request->input('status'))->get();
             // check if feedbackapp is not empty
             if (count($feedbackapp) > 0) {
                 // return successful response
@@ -730,6 +753,4 @@ class AdminController  extends Controller
             ], 409);
         }
     }
-
-
 }

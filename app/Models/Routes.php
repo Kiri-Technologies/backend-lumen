@@ -13,7 +13,7 @@ class Routes extends Model
      * @var array
      */
     protected $fillable = [
-        'kode_angkot',
+        'kode_trayek',
         'titik_awal',
         'titik_akhir',
     ];
