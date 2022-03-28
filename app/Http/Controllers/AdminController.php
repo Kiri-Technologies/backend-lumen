@@ -506,7 +506,7 @@ class AdminController  extends Controller
      */
     public function updateAppFeedback(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'status' => 'required |in:submitted,pending,processed',
+            'status' => 'required |in:submitted,pending,processed,cancelled',
 
         ]);
         if ($validator->fails()) {
@@ -517,7 +517,7 @@ class AdminController  extends Controller
             ], 400);
         } else {
             try {
-                $feedbackapp = FeedbackApplication::find($id);
+                $feedbackapp = FeedbackApplication::with('user')->find($id);
                 $feedbackapp->status = $request->input('status');
                 $feedbackapp->save();
 
@@ -545,7 +545,7 @@ class AdminController  extends Controller
      */
     public function getAllAppFeedback() {
         // sort by newest feedback
-        $feedbackapp = FeedbackApplication::orderBy('created_at', 'desc')->get();
+        $feedbackapp = FeedbackApplication::with('user')->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'Feedback Requested !',
@@ -570,7 +570,7 @@ class AdminController  extends Controller
                 'data' => [],
             ], 400);
         } else {
-            $feedbackapp = FeedbackApplication::where('status', $request->input('status'))->get();
+            $feedbackapp = FeedbackApplication::with('user')->where('status', $request->input('status'))->get();
             // check if feedbackapp is not empty
             if (count($feedbackapp) > 0) {
                 // return successful response
