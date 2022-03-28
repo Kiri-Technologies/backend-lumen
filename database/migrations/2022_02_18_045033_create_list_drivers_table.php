@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRiwayatTable extends Migration
+class CreateListDriversTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,21 @@ class CreateRiwayatTable extends Migration
      */
     public function up()
     {
-        Schema::create('riwayat', function (Blueprint $table) {
+        Schema::create('list_drivers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
+            $table->string('supir_id');
             $table->unsignedInteger('angkot_id');
-            $table->string('jumlah_pendapatan');
-            $table->time('waktu_narik');
-            $table->boolean('selesai_narik');
+            $table->boolean('is_confirmed')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('supir_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('angkot_id')
                 ->references('id')
-                ->on('angkot')
+                ->on('vehicles')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -41,6 +39,6 @@ class CreateRiwayatTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('riwayat');
+        Schema::dropIfExists('list_drivers');
     }
 }

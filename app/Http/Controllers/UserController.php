@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\Feedback;
 use App\Models\FeedbackApp;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -34,6 +34,10 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
+
+    //  ===================================================================================
+    //  ======================================= PROFILE ===================================
+    //  ===================================================================================
 
     /**
      * Get the authenticated User.
@@ -73,7 +77,7 @@ class UserController extends Controller
             'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
             'birthdate' => 'required|date',
             'role' => 'required|in:admin,penumpang,owner,supir',
-            'no_hp' => 'required',
+            'phone_number' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -90,7 +94,7 @@ class UserController extends Controller
                 $user->email = $request->input('email');
                 $user->birthdate = $request->input('birthdate');
                 $user->role = $request->input('role');
-                $user->no_hp = $request->input('no_hp');
+                $user->phone_number = $request->input('phone_number');
                 $user->save();
 
                 //return successful response
@@ -202,6 +206,10 @@ class UserController extends Controller
         }
     }
 
+    //  ===================================================================================
+    //  ======================================= LOGOUT ===================================
+    //  ===================================================================================
+
     /**
      * Logout.
      *
@@ -218,6 +226,10 @@ class UserController extends Controller
         ], 200);
     }
 
+    //  ===================================================================================
+    //  ======================================== ANGKOT ===================================
+    //  ===================================================================================
+
     /**
      * Get Angkot By ID.
      *
@@ -226,8 +238,8 @@ class UserController extends Controller
      */
     public function getAngkotByID($id)
     {
-        $angkot = Angkot::find($id);
-        if (!$angkot) {
+        $vehicle = Vehicle::with('user_owner', 'route')->find($id);
+        if (!$vehicle) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
@@ -237,18 +249,19 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => $angkot,
+            'data' => $vehicle,
         ], 200);
     }
 
     /**
      * Get Angkot Find.
-     * 
+     *
      *
      * @return Response
      */
-    public function getAngkotFind(Request $request) {
-        $angkot = Angkot::when($request->owner_id, function ($query, $owner_id) {
+    public function getAngkotFind(Request $request)
+    {
+        $vehicle = Vehicle::with('user_owner', 'route')->when($request->owner_id, function ($query, $owner_id) {
             return $query->where('user_id', $owner_id);
         })->when($request->route_id, function ($query, $route_id) {
             return $query->where('route_id', $route_id);
@@ -256,7 +269,7 @@ class UserController extends Controller
             return $query->where('status', $status);
         })->get();
 
-        if (!$angkot) {
+        if (!$vehicle) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Angkot Not Found!',
@@ -266,13 +279,16 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Angkot Requested !',
-            'data' => $angkot,
+            'data' => $vehicle,
         ], 200);
-        
     }
 
+    //  ===================================================================================
+    //  ========================================= TRIP ====================================
+    //  ===================================================================================
+
     /**
-     * Create new Perjalanan
+     * Create new Trip
      *
      * @return Response
      */
@@ -299,23 +315,23 @@ class UserController extends Controller
             ], 400);
         } else {
             try {
-                $perjalanan = new Perjalanan;
-                $perjalanan->penumpang_id = $request->input('penumpang_id');
-                $perjalanan->angkot_id = $request->input('angkot_id');
-                $perjalanan->supir_id = $request->input('supir_id');
-                $perjalanan->titik_naik = $request->input('titik_naik');
-                $perjalanan->titik_turun = $request->input('titik_turun');
-                $perjalanan->jarak = $request->input('jarak');
-                $perjalanan->rekomendasi_harga = $request->input('rekomendasi_harga');
-                $perjalanan->is_done = $request->input('is_done');
-                $perjalanan->is_connected_with_driver = $request->input('is_connected_with_driver');
-                $perjalanan->save();
+                $trip = new Trip;
+                $trip->penumpang_id = $request->input('penumpang_id');
+                $trip->angkot_id = $request->input('angkot_id');
+                $trip->supir_id = $request->input('supir_id');
+                $trip->titik_naik = $request->input('titik_naik');
+                $trip->titik_turun = $request->input('titik_turun');
+                $trip->jarak = $request->input('jarak');
+                $trip->rekomendasi_harga = $request->input('rekomendasi_harga');
+                $trip->is_done = $request->input('is_done');
+                $trip->is_connected_with_driver = $request->input('is_connected_with_driver');
+                $trip->save();
 
                 // return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Perjalanan Created !',
-                    'data' => $perjalanan,
+                    'message' => 'Trip Created !',
+                    'data' => $trip,
                 ], 201);
             } catch (\Exception $e) {
                 // return error message
@@ -329,48 +345,47 @@ class UserController extends Controller
     }
 
     /**
-     * Update Perjalanan.
+     * Update Trip.
      *
      * @return Response
      *
      */
     public function updatePerjalanan(Request $request, $id)
     {
-        $perjalanan = Perjalanan::with('feedback')->find($id);
-        if (!$perjalanan) {
+        $trip = Trip::with('feedback')->find($id);
+        if (!$trip) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Perjalanan Not Found!',
+                'message' => 'Trip Not Found!',
                 'data' => [],
             ], 404);
         }
         if (isset($request->is_connected_with_driver)) {
-            $perjalanan->is_connected_with_driver = $request->is_connected_with_driver;
+            $trip->is_connected_with_driver = $request->is_connected_with_driver;
         }
         if (isset($request->is_done)) {
-            $perjalanan->is_done = $request->is_done;
+            $trip->is_done = $request->is_done;
         }
-        // $perjalanan->is_done = true;
-        // $perjalanan->is_connected_with_driver = true;
-        $perjalanan->save();
+
+        $trip->save();
 
         // return success response
         return response()->json([
             'status' => 'success',
-            'message' => 'Perjalanan Updated !',
-            'data' => $perjalanan,
+            'message' => 'Trip Updated !',
+            'data' => $trip,
         ], 201);
     }
 
     /**
-     * Get Perjalanan Find.
+     * Get Trip Find.
      *
      * @return Response
      *
      */
     public function getPerjalananFind(Request $request)
     {
-        $perjalanan = Perjalanan::with('feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
             return $query->where('angkot_id', $angkot_id);
@@ -378,42 +393,48 @@ class UserController extends Controller
             return $query->where('supir_id', $supir_id);
         })->get();
 
-        if (!$perjalanan) {
+
+
+        if (!$trip) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Perjalanan Not Found!',
+                'message' => 'Trip Not Found!',
                 'data' => [],
             ], 404);
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Perjalanan Requested !',
-            'data' => $perjalanan,
+            'message' => 'Trip Requested !',
+            'data' => $trip,
         ], 200);
     }
 
     /**
-     * Get Perjalanan By ID.
+     * Get Trip By ID.
      *
      * @return Response
      * @param $id
      */
     public function getPerjalananByID($id)
     {
-        $perjalanan = Perjalanan::with('feedback')->find($id);
-        if (!$perjalanan) {
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->find($id);
+        if (!$trip) {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Perjalanan Not Found!',
+                'message' => 'Trip Not Found!',
                 'data' => [],
             ], 404);
         }
         return response()->json([
             'status' => 'success',
-            'message' => 'Perjalanan Requested !',
-            'data' => $perjalanan,
+            'message' => 'Trip Requested !',
+            'data' => $trip,
         ], 200);
     }
+
+    //  ===================================================================================
+    //  ====================================== FEEDBACK ===================================
+    //  ===================================================================================
 
     /**
      * Get Feedback By ID.
@@ -536,13 +557,18 @@ class UserController extends Controller
         }
     }
 
+    //  ===================================================================================
+    //  ================================== FEEDBACK APP ===================================
+    //  ===================================================================================
+
     /**
      * Create App Feedback
-     * 
+     *
      * @param Request $request
-     * 
+     *
      */
-    public function createAppFeedback(Request $request) {
+    public function createAppFeedback(Request $request)
+    {
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
@@ -579,6 +605,123 @@ class UserController extends Controller
                     'data' => [],
                 ], 409);
             }
+        }
+    }
+
+    //  ===================================================================================
+    //  ==================================== FAVORITE =====================================
+    //  ===================================================================================
+
+    /**
+     * Create Trip Favorites
+     *
+     * @param Request $request
+     */
+    public function createPerjalananFavorites(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'route_id' => 'required',
+            'titik_naik' => 'required',
+            'titik_turun' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $favorites = new Favorites();
+                $favorites->user_id = $request->input('user_id');
+                $favorites->route_id = $request->input('route_id');
+                $favorites->titik_naik = $request->input('titik_naik');
+                $favorites->titik_turun = $request->input('titik_turun');
+                $favorites->save();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trip Favorites Created !',
+                    'data' => $favorites,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get all Trip Favorites
+     * by user_id
+     * the user can see trip favorites he created
+     *
+     * @param Request $request
+     *
+     */
+    public function getPerjalananFavorites(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $favorites = Favorites::where('user_id', $request->input('user_id'))->get();
+
+                // return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Trip Favorites Found !',
+                    'data' => $favorites,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Delete Trip Favorites
+     *
+     * @param Request $request
+     *
+     */
+    public function deletePerjalananFavorites(Request $request, $id)
+    {
+        try {
+            $favorites = Favorites::find($id)->delete();
+            // return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Trip Favorites Deleted !',
+                'data' => [],
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
         }
     }
 }

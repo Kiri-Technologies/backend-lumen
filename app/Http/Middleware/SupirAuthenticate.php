@@ -35,10 +35,11 @@ class SupirAuthenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($request->user()->role == "supir" || $request->user()->role == "admin") {
+        if ($request->user()->role == "supir" || $request->user()->role == "owner" || $request->user()->role == "admin") {
             return $next($request);
         }
 
-        return response('Unauthorized.', 401);
+        $role = $request->user()->role;
+        return response("Unauthorized: Only Supir / Owner. Your Account role was '${role}'", 401);
     }
 }

@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 
-use App\Models\Angkot;
+use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\FeedbackApp;
-use App\Models\ListSupir;
-use App\Models\Perjalanan;
-use App\Models\Riwayat;
+use App\Models\ListDriver;
+use App\Models\Trip;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 use App\Models\User;
@@ -33,14 +33,25 @@ class OwnerSupirController  extends Controller
         $this->middleware('auth');
     }
 
+    //  ==================================================================================
+    //  ======================================= DRIVER ===================================
+    //  ==================================================================================
+
     /**
-     * Get list supir on the specified angkot.
+     * Get list supir on the specified vehicle.
      *
      * @return Response
      */
-    public function getListSupir()
+    public function getListDriver(Request $request)
     {
-        $list_supir = ListSupir::all();
+        // $list_supir = ListDriver::with('user')->get();
+        $list_supir = ListDriver::with('user')
+        ->when($request->user_id, function ($query, $user_id) {
+            return $query->where('user_id', $user_id);
+        })->when($request->angkot_id, function ($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->get();
+
         if ($list_supir) {
             return response()->json([
                 'status' => 'success',
@@ -57,14 +68,14 @@ class OwnerSupirController  extends Controller
     }
 
     /**
-     * Delete supir on the specified angkot.
+     * Delete supir on the specified vehicle.
      *
      * @param int $id
      * @return Response
      */
     public function deleteSupir($id)
     {
-        $supir = ListSupir::find($id);
+        $supir = ListDriver::find($id);
         if ($supir) {
             $supir->delete();
             return response()->json([
@@ -80,17 +91,48 @@ class OwnerSupirController  extends Controller
         }
     }
 
+    //  ===================================================================================
+    //  ======================================= HISTORY ===================================
+    //  ===================================================================================
+
     /**
-     * get riwayat supir narik by id
+     * get history supir narik by id
      *
      * @param int $id
      * @return Response
      */
-    public function getById(Riwayat $riwayat, $id)
+    public function getById(History $history, $id)
     {
-        $riwayat =  Riwayat::with('supir')->get();
+        $history =  History::with('supir')->get();
         return response()->json([
-            'data' => $riwayat->find($id)
+            'data' => $history->find($id)
         ]);
+    }
+
+
+    /**
+     * Get all history
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function findRiwayat()
+    {
+        // memvalidasi jika bukan params angkot_id or supir_id
+        if (request()->all()) {
+            if (!request(['angkot_id', 'supir_id'])) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'params not available',
+                ], 400);
+            }
+        }
+        $history =  History::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $history
+        ], 200);
     }
 }

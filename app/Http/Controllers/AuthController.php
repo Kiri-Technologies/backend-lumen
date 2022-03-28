@@ -25,7 +25,7 @@ class AuthController extends Controller
             'password' => 'required',
             'birthdate' => 'required|date',
             'role' => 'required|in:admin,penumpang,owner,supir',
-            'no_hp' => 'required',
+            'phone_number' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -44,7 +44,7 @@ class AuthController extends Controller
                 $user->password = app('hash')->make($request->input('password'));
                 $user->birthdate = $request->input('birthdate');
                 $user->role = $request->input('role');
-                $user->no_hp = $request->input('no_hp');
+                $user->phone_number = $request->input('phone_number');
 
                 $user->save();
 

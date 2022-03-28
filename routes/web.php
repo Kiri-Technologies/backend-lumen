@@ -111,7 +111,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/perjalanan/{id}
             // Function : Get all perjalanan by owner_id
             $router->get('/{id}', 'UserController@getPerjalananByID');
-
         });
 
         //  ====================== FEEDBACK ============================
@@ -129,7 +128,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/feedback/{id}/update
             // Function : update feedback
             $router->post('/{id}/update', 'UserController@updateFeedback');
-
         });
 
         //  ====================== FEEDBACK APP ============================
@@ -138,6 +136,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Matches /api/feedbackapp/create
             // Function : create feedback for application
             $router->post('/create', 'UserController@createAppFeedback');
+        });
+
+        //  ====================== PERJALANAN FAVOURITES ============================
+        $router->group(["prefix" => 'perjalananfavorit'], function () use ($router) {
+
+            // Matches /api/perjalananfavorit/create
+            // Function : create feedback for application
+            $router->post('/create', 'UserController@createPerjalananFavorites');
+
+            // Matches /api/perjalananfavorit/
+            // Function : get all perjalanan favorites
+            $router->get('/', 'UserController@getPerjalananFavorites');
+
+            // Matches /api/perjalananfavorit/{id}/delete
+            // Function : delete perjalanan favorites
+            $router->delete('/{id}/delete', 'UserController@deletePerjalananFavorites');
         });
 
         // ==============================================================
@@ -226,12 +240,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/ownersupir/driver
                 // Function : Get List Supir
-                $router->get('/', 'OwnerSupirController@getListSupir');
+                $router->get('/', 'OwnerSupirController@getListDriver');
             });
 
             //  ======================== RIWAYAT ========================
 
             $router->group(["prefix" => 'riwayat'], function () use ($router) {
+                // Matches /api/ownersupir/riwayat/find?angkot_id = {id} || ?supir_id = {id}
+                // Function: Get data berdasarkan parameter angkot_id atau supir_id
+                $router->get('/find', 'OwnerSupirController@findRiwayat');
 
                 // Matches /api/ownersupir/riwayat/{id}
                 // Function : Get Data History By Id
@@ -273,7 +290,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/users/{id}
                 // Function : Find specific user by id
                 $router->get('/{id}', 'AdminController@singleUser');
-
             });
 
             //  ========================= ANGKOT =========================
@@ -291,15 +307,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/owner/angkot/{id}/delete
                 // Function : Delete angkot by id
                 $router->post('/{id}/delete', 'AdminController@DeleteAngkotById');
-            });
-
-            //  ========================= RIWAYAT =========================
-
-            $router->group(["prefix" => 'riwayat'], function () use ($router) {
-
-                // Matches /api/admin/riwayat & /api/admin/riwayat?angkot_id = {id} || ?supir_id = {id}
-                // Function: Get All data sekaligus mencari data melalui parameter angkot_id atau supir_id
-                $router->get('/', 'AdminController@getAll');
             });
 
             //  ========================= PERJALANAN =========================
@@ -346,6 +353,39 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/feedbackapp/find
                 // Function : find feedback app by status
                 $router->get('/find', 'AdminController@getAppFeedbackFind');
+            });
+
+            //  ========================= FEEDBACK APP =========================
+
+            $router->group(["prefix" => 'riwayat'], function () use ($router) {
+
+                // Matches /api/admin/riwayat
+                // Function : Get Data History
+                $router->get('/', 'AdminController@allRiwayat');
+            });
+            //  ======================== Halte Virtual ========================
+
+            $router->group(["prefix" => "haltevirtual"], function () use ($router) {
+
+                // Matches /api/admin/hartevirtual/create
+                // Function : Create Halte Virtual
+                $router->post("/create", 'AdminController@createHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}
+                // Function : Get Halte Virtual By Id
+                $router->get("/{id}", 'AdminController@getByIdHalteVirtual');
+
+                // Matches /api/admin/hartevirtual?route_id=
+                // Function : Get Halte Virtual By route_id
+                $router->get("/", 'AdminController@getByRouteIdHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}/update
+                // Function : Update Halte Virtual
+                $router->patch("/{id}/update", 'AdminController@updateHalteVirtual');
+
+                // Matches /api/admin/hartevirtual/{id}/delete
+                // Function : Delete Halte Virtual
+                $router->delete("/{id}/delete", 'AdminController@deleteHalteVirtual');
             });
         });
 

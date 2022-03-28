@@ -39,6 +39,7 @@ class OwnerAuthenticate
             return $next($request);
         }
 
-        return response('Unauthorized.', 401);
+        $role = $request->user()->role;
+        return response("Unauthorized: Only Owner. Your Account role was '${role}'", 401);
     }
 }
