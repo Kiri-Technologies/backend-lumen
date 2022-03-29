@@ -20,6 +20,7 @@ class CreateSetpointsTable extends Migration
             $table->string('lat');
             $table->string('long');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('route_id')
                 ->references('id')
