@@ -181,6 +181,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Update data by Id
                 $router->patch('/{id}/update', 'SupirController@UpdateHistory');
             });
+            
+            //  ====================== CONFIRM ============================
+            $router->group(["prefix" => 'driver'], function () use ($router) {
+
+                // Matches /api/supir/driver/{id}/confirm
+                // Function : Confirm driver
+                $router->post('/{id}/confirm', 'SupirController@confirmSupir');
+            });
         });
 
         // ==============================================================
