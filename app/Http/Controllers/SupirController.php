@@ -164,7 +164,7 @@ class SupirController  extends Controller
                 //return successful response
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Angkot Operation Updated !',
+                    'message' => 'supir is confrimed!',
                     'data' => $supir,
                 ], 201);
             } catch (\Exception $e) {
