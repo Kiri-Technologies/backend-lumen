@@ -4,27 +4,17 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\User;
-use App\Models\Angkot;
 use App\Models\Routes;
-use App\Models\Riwayat;
-use App\Models\ListSupir;
 use App\Models\Setpoints;
-use App\Models\Perjalanan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\FeedbackApplication;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\UserController;
 
 
 use App\Models\Vehicle;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
-use App\Models\ListDriver;
 use App\Models\Trip;
 use App\Models\History;
 

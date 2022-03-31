@@ -2,24 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
-
-use App\Models\Vehicle;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
 use App\Models\ListDriver;
-use App\Models\Trip;
 use App\Models\History;
-use App\Models\Routes;
-use App\Models\Setpoints;
-use App\Models\User;
+
 
 class OwnerSupirController  extends Controller
 {
@@ -46,11 +33,11 @@ class OwnerSupirController  extends Controller
     {
         // $list_supir = ListDriver::with('user')->get();
         $list_supir = ListDriver::with('user')
-        ->when($request->user_id, function ($query, $user_id) {
-            return $query->where('user_id', $user_id);
-        })->when($request->angkot_id, function ($query, $angkot_id) {
-            return $query->where('angkot_id', $angkot_id);
-        })->get();
+            ->when($request->user_id, function ($query, $user_id) {
+                return $query->where('user_id', $user_id);
+            })->when($request->angkot_id, function ($query, $angkot_id) {
+                return $query->where('angkot_id', $angkot_id);
+            })->get();
 
         if ($list_supir) {
             return response()->json([
