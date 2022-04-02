@@ -254,6 +254,23 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Get Data History By Id
                 $router->get('/{id}', 'OwnerSupirController@getById');
             });
+
+            //  ====================== Chart-Wahyu ======================
+            $router->group(["prefix" => 'chart'], function () use ($router) {
+
+                // Matches /api/ownersupir/chart/totalPendapatan?supir_id/angkot_id/owner_id
+                // Function : Get Total Pendapatan 
+                $router->get('/totalPendapatan', 'OwnerSupirController@getTotalPendapatan');
+
+                // Matches /api/ownersupir/chart/chart/pendapatanHariIni?supir_id/angkot_id/owner_id
+                // Function : Get Pendapatan Hari Ini
+                $router->get('/pendapatanHariIni', 'OwnerSupirController@getPendapatanHariIni');
+
+                // Matches /api/ownersupir/chart/pendapatanHarian?angkot_id/supir_id/owner_id
+                // Function : Get Pendapatan Selama 7 Hari
+                $router->get('/pendapatanHarian', 'OwnerSupirController@getPendapatanSelama7HariLalu');
+            });
+
         });
 
         // ==============================================================
@@ -363,6 +380,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Get Data History
                 $router->get('/', 'AdminController@allRiwayat');
             });
+
             //  ======================== Halte Virtual ========================
 
             $router->group(["prefix" => "haltevirtual"], function () use ($router) {
@@ -386,6 +404,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/hartevirtual/{id}/delete
                 // Function : Delete Halte Virtual
                 $router->delete("/{id}/delete", 'AdminController@deleteHalteVirtual');
+            });
+
+            //  =========================== Chart =============================
+            
+            $router->group(["prefix" => "chart"], function () use ($router){
+
+                // Matches /api/admin/totalusers
+                // Function : get total users
+                $router->get("/totalUsers", 'AdminController@getTotalUsers');
+                
             });
         });
 
