@@ -395,6 +395,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Delete Halte Virtual
                 $router->delete("/{id}/delete", 'AdminController@deleteHalteVirtual');
             });
+
+            //  ======================== Chart ========================
+            $router->group(["prefix" => "chart"], function () use ($router) {
+
+                // Matches /api/admin/chart/totalPendapatanBulanIni
+                // Function : Get Total Pendapatan Bulan Ini
+                $router->get("/totalPendapatanBulanIni", 'AdminController@totalPendapatanBulanIni');
+            });
         });
 
         // ==============================================================

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\FeedbackApplication;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
 
@@ -742,5 +743,21 @@ class AdminController  extends Controller
                 'data' => [],
             ], 409);
         }
+    }
+
+    /**
+     * Get Graphic total pendapatan this month
+     * 
+     * @return Response
+     */
+    public function totalPendapatanBulanIni() {
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->sum('total_pendapatan');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $pendapatan,
+        ], 200);
+        
+
     }
 }
