@@ -36,6 +36,19 @@ class DatabaseSeeder extends Seeder
                 'kode_trayek' => $faker->areaCode,
                 'titik_awal' => $faker->name,
                 'titik_akhir' => $faker->name,
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
+            ]);
+        }
+
+        foreach (range(1, 10) as $index) {
+            DB::table('setpoints')->insert([
+                'route_id' => $faker->numberBetween($min = 1, $max = 10),
+                'nama_lokasi' => $faker->secondaryAddress . ' ' . $faker->city,
+                'lat' => $faker->latitude($min = -6.8, $max = 6.95),
+                'long' => $faker->longitude($min = 107.5, $max = 107.65),
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
             ]);
         }
 
@@ -119,6 +132,23 @@ class DatabaseSeeder extends Seeder
         }
 
         // ========================================================
+        // ==================== Seeder History =======================
+        // ========================================================
+
+        foreach (range(1, 10) as $index) {
+            DB::table('histories')->insert([
+                'user_id' => 'supir-123456',
+                'angkot_id' => '1',
+                'jumlah_pendapatan' => $faker->numberBetween($min = 1000, $max = 90000),
+                'mulai_narik' => $faker->dateTime,
+                'selesai_narik' => $faker->dateTime,
+                'status' => 'done',
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
+            ]);
+        }
+
+        // ========================================================
         // ==================== Seeder Trip =======================
         // ========================================================
 
@@ -127,12 +157,17 @@ class DatabaseSeeder extends Seeder
                 'penumpang_id' => 'user-123456',
                 'angkot_id' => '1',
                 'supir_id' => 'supir-123456',
-                'titik_naik' => '1',
-                'titik_turun' => '1',
+                'history_id' => $faker->numberBetween($min = 1, $max = 10),
+                'tempat_naik_id' => $faker->numberBetween($min = 1, $max = 10),
+                'tempat_turun_id' => $faker->numberBetween($min = 1, $max = 10),
+                'nama_tempat_naik' => $faker->secondaryAddress . ' ' . $faker->city,
+                'nama_tempat_turun' => $faker->secondaryAddress . ' ' . $faker->city,
                 'jarak' => '1',
-                'rekomendasi_harga' => 10000,
+                'rekomendasi_harga' => $faker->numberBetween($min = 10000, $max = 100000),
                 'is_done' => 0,
                 'is_connected_with_driver' => 0,
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
             ]);
         }
     }

@@ -15,9 +15,7 @@ class CreateVehiclesTable extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->increments('id');
-            // $table->unsignedInteger('owner_id');
             $table->string('user_id');
-            // $table->unsignedInteger('supir_id');
             $table->unsignedInteger('route_id');
             $table->string('plat_nomor');
             $table->text('qr_code')->nullable();
@@ -28,6 +26,7 @@ class CreateVehiclesTable extends Migration
             $table->string('supir_id')->nullable();
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')

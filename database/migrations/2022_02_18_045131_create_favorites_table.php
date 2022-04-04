@@ -17,8 +17,8 @@ class CreateFavoritesTable extends Migration
             $table->increments('id');
             $table->string('user_id');
             $table->unsignedInteger('route_id');
-            $table->string('titik_naik');
-            $table->string('titik_turun');
+            $table->unsignedInteger('tempat_naik_id');
+            $table->unsignedInteger('tempat_turun_id');
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -29,6 +29,16 @@ class CreateFavoritesTable extends Migration
             $table->foreign('route_id')
                 ->references('id')
                 ->on('routes')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('tempat_naik_id')
+                ->references('id')
+                ->on('setpoints')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('tempat_turun_id')
+                ->references('id')
+                ->on('setpoints')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }

@@ -17,10 +17,12 @@ class CreateHistoriesTable extends Migration
             $table->increments('id');
             $table->string('user_id');
             $table->unsignedInteger('angkot_id');
-            $table->string('jumlah_pendapatan');
-            $table->time('waktu_narik');
-            $table->boolean('selesai_narik');
+            $table->integer('jumlah_pendapatan');
+            $table->datetime('mulai_narik');
+            $table->datetime('selesai_narik');
+            $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')
