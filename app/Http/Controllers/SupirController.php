@@ -4,22 +4,12 @@ namespace App\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\Vehicle;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
 use App\Models\ListDriver;
-use App\Models\Trip;
 use App\Models\History;
-use App\Models\Routes;
-use App\Models\Setpoints;
-use App\Models\User;
+
 
 class SupirController  extends Controller
 {
@@ -137,5 +127,44 @@ class SupirController  extends Controller
             'status' => 'ok',
             'message' => 'data updated'
         ], 201);
+    }
+
+        /**
+     * Confirm supir assign to specified angkot
+     * 
+     * @param  int  $id
+     */
+    public function confirmSupir(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'is_confirm' => 'required|boolean',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $supir = ListDriver::find($id);
+                $supir->is_confirm = $request->input('is_confirm');
+                $supir->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'supir is confrimed!',
+                    'data' => $supir,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
     }
 }

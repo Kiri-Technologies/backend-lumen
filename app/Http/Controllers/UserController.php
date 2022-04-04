@@ -8,18 +8,12 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\Feedback;
-use App\Models\FeedbackApp;
-use App\Models\ListDriver;
 use App\Models\Trip;
-use App\Models\History;
-use App\Models\Routes;
-use App\Models\Setpoints;
 use App\Models\User;
 use App\Models\FeedbackApplication;
 
