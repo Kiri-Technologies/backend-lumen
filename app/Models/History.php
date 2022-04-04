@@ -20,8 +20,9 @@ class History extends Model
         'user_id',
         'angkot_id',
         'jumlah_pendapatan',
-        'waktu_narik',
+        'mulai_narik',
         'selesai_narik',
+        'status',
     ];
 
     /**
