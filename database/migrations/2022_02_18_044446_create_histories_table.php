@@ -20,7 +20,7 @@ class CreateHistoriesTable extends Migration
             $table->integer('jumlah_pendapatan');
             $table->datetime('mulai_narik');
             $table->datetime('selesai_narik');
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

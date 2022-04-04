@@ -297,9 +297,12 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
+            'history_id' => 'required|string',
+            'tempat_naik_id' => 'required|string',
+            'tempat_turun_id' => 'required|string',
             'supir_id' => 'required|string',
-            'titik_naik' => 'required|string',
-            'titik_turun' => 'required|string',
+            'nama_tempat_naik' => 'required|string',
+            'nama_tempat_turun' => 'required|string',
             'jarak' => 'required|string',
             'rekomendasi_harga' => 'required|string',
             'is_done' => 'required|boolean',
@@ -318,9 +321,12 @@ class UserController extends Controller
                 $trip = new Trip;
                 $trip->penumpang_id = $request->input('penumpang_id');
                 $trip->angkot_id = $request->input('angkot_id');
+                $trip->history_id = $request->input('history_id');
+                $trip->tempat_naik_id = $request->input('tempat_naik_id');
+                $trip->tempat_turun_id = $request->input('tempat_turun_id');
                 $trip->supir_id = $request->input('supir_id');
-                $trip->titik_naik = $request->input('titik_naik');
-                $trip->titik_turun = $request->input('titik_turun');
+                $trip->nama_tempat_naik = $request->input('nama_tempat_naik');
+                $trip->nama_tempat_turun = $request->input('nama_tempat_turun');
                 $trip->jarak = $request->input('jarak');
                 $trip->rekomendasi_harga = $request->input('rekomendasi_harga');
                 $trip->is_done = $request->input('is_done');
@@ -622,8 +628,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'route_id' => 'required',
-            'titik_naik' => 'required',
-            'titik_turun' => 'required',
+            'tempat_naik_id' => 'required',
+            'tempat_turun_id' => 'required',
         ]);
         if ($validator->fails()) {
             //return failed response
@@ -637,8 +643,8 @@ class UserController extends Controller
                 $favorites = new Favorites();
                 $favorites->user_id = $request->input('user_id');
                 $favorites->route_id = $request->input('route_id');
-                $favorites->titik_naik = $request->input('titik_naik');
-                $favorites->titik_turun = $request->input('titik_turun');
+                $favorites->tempat_naik_id = $request->input('tempat_naik_id');
+                $favorites->tempat_turun_id = $request->input('tempat_turun_id');
                 $favorites->save();
 
                 // return successful response
