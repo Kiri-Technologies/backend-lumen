@@ -263,7 +263,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/{id}', 'OwnerSupirController@getById');
             });
 
-            //  ====================== Chart-Wahyu ======================
+            //  ========================= Chart =========================
             $router->group(["prefix" => 'chart'], function () use ($router) {
 
                 // Matches /api/ownersupir/chart/totalPendapatan?supir_id/angkot_id/owner_id
@@ -419,6 +419,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/chart/totalPendapatanBulanIni
                 // Function : Get Total Pendapatan Bulan Ini
                 $router->get("/totalPendapatanBulanIni", 'AdminController@totalPendapatanBulanIni');
+
+                // Matches /api/admin/chart/totalPendapatanBulanLalu
+                // Function : Get Total Pendapatan Bulan Ini
+                $router->get("/totalPendapatanBulanLalu", 'AdminController@totalPendapatanBulanLalu');
 
                 // Matches /api/admin/chart/totalAngkotMendaftarBulanIni
                 // Function : Get Total Angkot Mendaftar Bulan Ini

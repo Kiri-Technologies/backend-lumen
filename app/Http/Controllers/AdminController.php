@@ -286,7 +286,7 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->get();
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->get();
 
         if (!$trip) {
             return response()->json([
@@ -523,7 +523,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function getAllAppFeedback() {
+    public function getAllAppFeedback()
+    {
         // sort by newest feedback
         $feedbackapp = FeedbackApplication::with('user')->orderBy('created_at', 'desc')->get();
         return response()->json([
@@ -750,7 +751,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function totalPendapatanBulanIni() {
+    public function totalPendapatanBulanIni()
+    {
         $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->sum('jumlah_pendapatan');
         return response()->json([
             'status' => 'success',
@@ -766,7 +768,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function totalAngkotMendaftarBulanIni() {
+    public function totalAngkotMendaftarBulanIni()
+    {
         $angkot = Vehicle::whereMonth('created_at', Carbon::now()->month)->count();
         return response()->json([
             'status' => 'success',
@@ -782,7 +785,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function totalAngkotTerdaftar() {
+    public function totalAngkotTerdaftar()
+    {
         $angkot = Vehicle::count();
         return response()->json([
             'status' => 'success',
@@ -793,16 +797,30 @@ class AdminController  extends Controller
         ], 200);
     }
 
-    //  ===============================================================================
-    //  =============================== Chart-Wahyu ===================================
-    //  ===============================================================================
+    /**
+     * Get Graphic total pendapatan previous month
+     *
+     * @return Response
+     */
+    public function totalPendapatanBulanLalu()
+    {
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->subMonth()->month)->sum('jumlah_pendapatan');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => [
+                'total_pendapatan_bulan_ini' => $pendapatan
+            ],
+        ], 200);
+    }
 
     /**
      * Get Total User App
      *
      * @return Response
-    */
-    public function getTotalUsers(){
+     */
+    public function getTotalUsers()
+    {
         $owner = User::where('role', 'owner')->count();
         $penumpang = User::where('role', 'penumpang')->count();
         $supir = User::where('role', 'supir')->count();
@@ -819,5 +837,4 @@ class AdminController  extends Controller
             'data' => $total_user,
         ], 200);
     }
-
 }
