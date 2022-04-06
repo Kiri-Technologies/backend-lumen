@@ -9,7 +9,6 @@ use App\Models\Setpoints;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\FeedbackApplication;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
@@ -18,6 +17,7 @@ use Laravel\Lumen\Routing\Controller;
 use App\Models\Vehicle;
 use App\Models\Trip;
 use App\Models\History;
+use App\Models\FeedbackApplication;
 
 class AdminController  extends Controller
 {
@@ -761,9 +761,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total_pendapatan_bulan_ini' => $pendapatan
-            ],
+            'data' => $pendapatan
         ], 200);
     }
 
@@ -778,9 +776,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total_angkot_terdaftar_bulan_ini' => $angkot
-            ],
+            'data' => $angkot
         ], 200);
     }
 
@@ -795,9 +791,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total_angkot_terdaftar' => $angkot
-            ],
+            'data' => $angkot
         ], 200);
     }
 
@@ -812,9 +806,22 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total_pendapatan_bulan_ini' => $pendapatan
-            ],
+            'data' => $pendapatan,
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total pendapatan previous month
+     *
+     * @return Response
+     */
+    public function totalFeedbackApp()
+    {
+        $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
         ], 200);
     }
 
