@@ -156,6 +156,7 @@ class OwnerSupirController  extends Controller
             $total = History::where('angkot_id', $angkot_id)->sum('jumlah_pendapatan');
         }elseif($request->owner_id){
             $total = History::where('user_id', $owner_id)->sum('jumlah_pendapatan');
+            // $total = $request->owner_id;
         }else{
             return response()->json([
                 'status' => 'failed',
@@ -166,7 +167,9 @@ class OwnerSupirController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Total Pendapatan Requested !',
-            'total_pendapatan' => $total
+            'data' => [
+                'total_pendapatan' => $total
+            ]
         ], 200);
     }
 
