@@ -278,7 +278,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Get Pendapatan Selama 7 Hari
                 $router->get('/pendapatanHarian', 'OwnerSupirController@getPendapatanSelama7HariLalu');
             });
-
         });
 
         // ==============================================================
@@ -432,6 +431,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/totalusers
                 // Function : get total users
                 $router->get("/totalUsers", 'AdminController@getTotalUsers');
+            });
         });
 
         // ==============================================================
