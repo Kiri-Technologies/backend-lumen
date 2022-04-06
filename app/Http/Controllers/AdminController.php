@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\FeedbackApplication;
-use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
