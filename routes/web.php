@@ -207,11 +207,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/owner/angkot/create
                 // Function : Create Angkot
-                $router->post('/create', 'OwnerController@create');
+                $router->post('/create', 'OwnerController@createAngkot');
 
                 // Matches /api/owner/angkot/{id}/update
                 // Function : Create Angkot
-                $router->post('/{id}/update', 'OwnerController@update');
+                $router->post('/{id}/update', 'OwnerController@updateAngkot');
 
                 // Matches /api/owner/angkot/{id}/delete
                 // Function : Create Angkot

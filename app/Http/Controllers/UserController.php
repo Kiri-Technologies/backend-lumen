@@ -48,16 +48,6 @@ class UserController extends Controller
     }
 
     /**
-     * Get all User.
-     *
-     * @return Response
-     */
-    // public function allUsers()
-    // {
-    //      return response()->json(['users' =>  User::all()], 200);
-    // }
-
-    /**
      * Update one user.
      *
      * @return Response

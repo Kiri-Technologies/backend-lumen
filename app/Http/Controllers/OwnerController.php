@@ -31,7 +31,7 @@ class OwnerController  extends Controller
      *
      * @return void
      */
-    public function create(Request $request)
+    public function createAngkot(Request $request)
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
@@ -83,7 +83,7 @@ class OwnerController  extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function updateAngkot(Request $request, $id)
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
