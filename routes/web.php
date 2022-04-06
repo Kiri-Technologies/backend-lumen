@@ -402,6 +402,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/chart/totalPendapatanBulanIni
                 // Function : Get Total Pendapatan Bulan Ini
                 $router->get("/totalPendapatanBulanIni", 'AdminController@totalPendapatanBulanIni');
+
+                // Matches /api/admin/chart/totalAngkotMendaftarBulanIni
+                // Function : Get Total Angkot Mendaftar Bulan Ini
+                $router->get("/totalAngkotMendaftarBulanIni", 'AdminController@totalAngkotMendaftarBulanIni');
+
+                // Matches /api/admin/chart/totalAngkotTerdaftar
+                // Function : Get Total Angkot Terdaftar
+                $router->get("/totalAngkotTerdaftar", 'AdminController@totalAngkotTerdaftar');
             });
         });
 
