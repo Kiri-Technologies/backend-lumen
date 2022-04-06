@@ -747,7 +747,7 @@ class AdminController  extends Controller
 
     /**
      * Get Graphic total pendapatan this month
-     * 
+     *
      * @return Response
      */
     public function totalPendapatanBulanIni() {
@@ -763,7 +763,7 @@ class AdminController  extends Controller
 
     /**
      * Get Graphic total angkot register this month
-     * 
+     *
      * @return Response
      */
     public function totalAngkotMendaftarBulanIni() {
@@ -779,7 +779,7 @@ class AdminController  extends Controller
 
     /**
      * Get Graphic total registered angkot all time
-     * 
+     *
      * @return Response
      */
     public function totalAngkotTerdaftar() {
@@ -792,4 +792,32 @@ class AdminController  extends Controller
             ],
         ], 200);
     }
+
+    //  ===============================================================================
+    //  =============================== Chart-Wahyu ===================================
+    //  ===============================================================================
+
+    /**
+     * Get Total User App
+     *
+     * @return Response
+    */
+    public function getTotalUsers(){
+        $owner = User::where('role', 'owner')->count();
+        $penumpang = User::where('role', 'penumpang')->count();
+        $supir = User::where('role', 'supir')->count();
+
+        $total_user = [
+            'owner' => $owner,
+            'penumpang' => $penumpang,
+            'supir' => $supir
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User',
+            'data' => $total_user,
+        ], 200);
+    }
+
 }

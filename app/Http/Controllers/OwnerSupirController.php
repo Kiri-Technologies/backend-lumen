@@ -4,6 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
+use App\Models\Vehicle;
+use App\Models\Favorites;
+use App\Models\FeedbackApp;
 use App\Models\ListDriver;
 use App\Models\History;
 
@@ -120,6 +130,120 @@ class OwnerSupirController  extends Controller
             'status' => 'success',
             'message' => 'ok',
             'data' => $history
+        ], 200);
+    }
+
+    //  ===============================================================================
+    //  =============================== Chart-Wahyu ===================================
+    //  ===============================================================================
+
+    /**
+     * Get Total Pendapatan
+     * @return Response
+    */
+    public function getTotalPendapatan(Request $request)
+    {
+        $supir_id = $request->supir_id;
+        $angkot_id = $request->angkot_id;
+        $owner_id = $request->owner_id;
+
+        if($request->supir_id){
+            $total = History::where('user_id', $supir_id)->sum('jumlah_pendapatan');
+        }elseif ($request->angkot_id) {
+            $total = History::where('angkot_id', $angkot_id)->sum('jumlah_pendapatan');
+        }elseif($request->owner_id){
+            $total = History::where('user_id', $owner_id)->sum('jumlah_pendapatan');
+            // $total = $request->owner_id;
+        }else{
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'params not available',
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Pendapatan Requested !',
+            'data' => [
+                'total_pendapatan' => $total
+            ]
+        ], 200);
+    }
+
+    /**
+     * Get Pendapatan Hari Ini
+     * @return Response
+    */
+    public function getPendapatanHariIni(Request $request)
+    {
+        $supir_id = $request->supir_id;
+        $angkot_id = $request->angkot_id;
+        $owner_id = $request->owner_id;
+
+        if($request->supir_id){
+            $total = History::where('user_id', $supir_id)->whereDate('created_at', Carbon::now())->sum('jumlah_pendapatan');
+        }elseif ($request->angkot_id) {
+            $total = History::where('angkot_id', $angkot_id)->whereDate('created_at', Carbon::now())->sum('jumlah_pendapatan');
+        }elseif($request->owner_id){
+            $total = History::where('user_id', $owner_id)->whereDate('created_at', Carbon::now())->sum('jumlah_pendapatan');
+        }else{
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'params not available',
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Pendapatan Requested !',
+            'total_pendapatan_hari_ini' => $total
+        ], 200);
+    }
+
+    public function getPendapatanSelama7HariLalu(Request $request){
+        $supir_id = $request->supir_id;
+        $angkot_id = $request->angkot_id;
+        $owner_id = $request->owner_id;
+
+        if($request->supir_id){
+            for($i=0; $i<7; $i++){
+                $date = Carbon::now()->subDays($i);
+                $total = History::where('user_id', $supir_id)->whereDate('created_at', $date)->sum('jumlah_pendapatan');
+                $total_pendapatan_7_hari_lalu[] = $total;
+            }
+        }elseif ($request->angkot_id) {
+            for($i=0; $i<7; $i++){
+                $date = Carbon::now()->subDays($i);
+                $total = History::where('angkot_id', $angkot_id)->whereDate('created_at', $date)->sum('jumlah_pendapatan');
+                $total_pendapatan_7_hari_lalu[] = $total;
+            }
+        }elseif($request->owner_id){
+            for($i=0; $i<7; $i++){
+                $date = Carbon::now()->subDays($i);
+                $total = History::where('user_id', $owner_id)->whereDate('created_at', $date)->sum('jumlah_pendapatan');
+                $total_pendapatan_7_hari_lalu[] = $total;
+            }
+        }else{
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'params not available',
+            ], 400);
+        }
+
+        $pendapatan = [
+            '1' => $total_pendapatan_7_hari_lalu[0],
+            '2' => $total_pendapatan_7_hari_lalu[1],
+            '3' => $total_pendapatan_7_hari_lalu[2],
+            '4' => $total_pendapatan_7_hari_lalu[3],
+            '5' => $total_pendapatan_7_hari_lalu[4],
+            '6' => $total_pendapatan_7_hari_lalu[5],
+            '7' => $total_pendapatan_7_hari_lalu[6]
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Pendapatan Requested !',
+            'total_pendapatan_7_hari_lalu' => $pendapatan
         ], 200);
     }
 }
