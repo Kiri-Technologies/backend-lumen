@@ -207,11 +207,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/owner/angkot/create
                 // Function : Create Angkot
-                $router->post('/create', 'OwnerController@create');
+                $router->post('/create', 'OwnerController@createAngkot');
 
                 // Matches /api/owner/angkot/{id}/update
                 // Function : Create Angkot
-                $router->post('/{id}/update', 'OwnerController@update');
+                $router->post('/{id}/update', 'OwnerController@updateAngkot');
 
                 // Matches /api/owner/angkot/{id}/delete
                 // Function : Create Angkot
@@ -263,7 +263,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 $router->get('/{id}', 'OwnerSupirController@getById');
             });
 
-            //  ====================== Chart-Wahyu ======================
+            //  ========================= Chart =========================
             $router->group(["prefix" => 'chart'], function () use ($router) {
 
                 // Matches /api/ownersupir/chart/totalPendapatan?supir_id/angkot_id/owner_id
@@ -419,6 +419,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/chart/totalPendapatanBulanIni
                 // Function : Get Total Pendapatan Bulan Ini
                 $router->get("/totalPendapatanBulanIni", 'AdminController@totalPendapatanBulanIni');
+
+                // Matches /api/admin/chart/totalPendapatanBulanLalu
+                // Function : Get Total Pendapatan Bulan Ini
+                $router->get("/totalPendapatanBulanLalu", 'AdminController@totalPendapatanBulanLalu');
 
                 // Matches /api/admin/chart/totalAngkotMendaftarBulanIni
                 // Function : Get Total Angkot Mendaftar Bulan Ini

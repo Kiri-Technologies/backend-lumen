@@ -71,6 +71,46 @@ class SupirController  extends Controller
         }
     }
 
+    /**
+     * Confirm supir assign to specified angkot
+     *
+     * @param  int  $id
+     */
+    public function confirmSupir(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'is_confirmed' => 'required|boolean',
+        ]);
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $supir = ListDriver::find($id);
+                $supir->is_confirmed = $request->input('is_confirmed');
+                $supir->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'supir is confrimed!',
+                    'data' => $supir,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
     //  ===================================================================================
     //  ======================================= HISTORY ===================================
     //  ===================================================================================
@@ -127,44 +167,5 @@ class SupirController  extends Controller
             'status' => 'ok',
             'message' => 'data updated'
         ], 201);
-    }
-
-    /**
-     * Confirm supir assign to specified angkot
-     * 
-     * @param  int  $id
-     */
-    public function confirmSupir(Request $request, $id) {
-        $validator = Validator::make($request->all(), [
-            'is_confirmed' => 'required|boolean',
-        ]);
-        if ($validator->fails()) {
-            //return failed response
-            return response()->json([
-                'status' => 'failed',
-                'message' => $validator->errors(),
-                'data' => [],
-            ], 400);
-        } else {
-            try {
-                $supir = ListDriver::find($id);
-                $supir->is_confirmed = $request->input('is_confirmed');
-                $supir->save();
-
-                //return successful response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'supir is confrimed!',
-                    'data' => $supir,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
-        }
     }
 }
