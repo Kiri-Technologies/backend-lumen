@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\FeedbackApplication;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
 
@@ -742,5 +743,53 @@ class AdminController  extends Controller
                 'data' => [],
             ], 409);
         }
+    }
+
+    /**
+     * Get Graphic total pendapatan this month
+     * 
+     * @return Response
+     */
+    public function totalPendapatanBulanIni() {
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->sum('jumlah_pendapatan');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => [
+                'total_pendapatan_bulan_ini' => $pendapatan
+            ],
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total angkot register this month
+     * 
+     * @return Response
+     */
+    public function totalAngkotMendaftarBulanIni() {
+        $angkot = Vehicle::whereMonth('created_at', Carbon::now()->month)->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => [
+                'total_angkot_terdaftar_bulan_ini' => $angkot
+            ],
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total registered angkot all time
+     * 
+     * @return Response
+     */
+    public function totalAngkotTerdaftar() {
+        $angkot = Vehicle::count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => [
+                'total_angkot_terdaftar' => $angkot
+            ],
+        ], 200);
     }
 }

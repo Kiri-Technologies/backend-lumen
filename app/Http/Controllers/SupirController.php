@@ -129,14 +129,14 @@ class SupirController  extends Controller
         ], 201);
     }
 
-        /**
+    /**
      * Confirm supir assign to specified angkot
      * 
      * @param  int  $id
      */
     public function confirmSupir(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'is_confirm' => 'required|boolean',
+            'is_confirmed' => 'required|boolean',
         ]);
         if ($validator->fails()) {
             //return failed response
@@ -148,7 +148,7 @@ class SupirController  extends Controller
         } else {
             try {
                 $supir = ListDriver::find($id);
-                $supir->is_confirm = $request->input('is_confirm');
+                $supir->is_confirmed = $request->input('is_confirmed');
                 $supir->save();
 
                 //return successful response
