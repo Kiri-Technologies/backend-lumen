@@ -62,7 +62,7 @@ class OwnerController  extends Controller
                 $vehicle->status = "pending";
                 $vehicle->save();
 
-                $vehicle->qr_code = QrCode::format('svg')->generate(urlencode('angkot_id:'.$vehicle->id));
+                $vehicle->qr_code = 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/'.$vehicle->id);
                 $vehicle->save();
 
 
