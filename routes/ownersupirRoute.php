@@ -68,6 +68,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/ownersupir/chart/pendapatanHarian?angkot_id/supir_id/owner_id
                 // Function : Get Pendapatan Selama 7 Hari
                 $router->get('/pendapatanHarian', 'OwnerSupirController@getPendapatanSelama7HariLalu');
+
+                // Matches /api/ownersupir/chart/averagePenumpangPernarik?angkot_id/supir_id/owner_id
+                // Function : Get Avarage Penumpang Pernarik
+                $router->get('/averagePenumpangPernarik', 'OwnerSupirController@averagePenumpangPernarik');
+
+                // Matches /api/ownersupir/chart/totalPenumpangHariIni?angkot_id/supir_id/owner_id
+                // Function : Get Total Penumpang Hari Ini
+                $router->get('/totalPenumpangHariIni', 'OwnerSupirController@totalPenumpangHariIni');
             });
         });
 
