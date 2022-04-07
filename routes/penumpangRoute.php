@@ -123,6 +123,27 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             // Function : delete perjalanan favorites
             $router->delete('/{id}/delete', 'UserController@deletePerjalananFavorites');
         });
+
+        //  ====================== Routes ============================
+        $router->group(["prefix" => 'routes'], function () use ($router) {
+
+            // Matches /api/routes
+            // Function : create feedback for application
+            $router->get('/', 'UserController@getAllRoutes');
+        });
+
+        //  ======================== Halte Virtual ========================
+
+        $router->group(["prefix" => "haltevirtual"], function () use ($router) {
+
+            // Matches /api/hartevirtual/{id}
+            // Function : Get Halte Virtual By Id
+            $router->get("/{id}", 'UserController@getByIdHalteVirtual');
+
+            // Matches /api/hartevirtual?route_id=
+            // Function : Get Halte Virtual By route_id
+            $router->get("/", 'UserController@getByRouteIdHalteVirtual');
+        });
     });
     //  =============================================================
     //  ======================= END AUTH ============================

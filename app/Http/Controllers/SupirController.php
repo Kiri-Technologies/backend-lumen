@@ -123,34 +123,56 @@ class SupirController  extends Controller
      * @return $vehicle
      */
     public function createHistory(Request $request)
-    {
-        try {
-            $user_id = $request->input('user_id');
-            $angkot_id = $request->input('angkot_id');
-            $jumlah_pendapatan = $request->input('jumlah_pendapatan');
-            $waktu_narik = $request->input('waktu_narik');
-            $selesai_narik = $request->input('selesai_narik');
+    { //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'angkot_id' => 'required',
+            'mulai_narik' => 'required',
+        ]);
 
-            $history = new History();
-            $history->user_id = $user_id;
-            $history->angkot_id = $angkot_id;
-            $history->jumlah_pendapatan = $jumlah_pendapatan;
-            $history->waktu_narik = $waktu_narik;
-            $history->selesai_narik = $selesai_narik;
-            $history->save();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data created',
-                'data' => $history,
-            ], 201);
-        } catch (\Exception $e) {
-            //return error message
+        if ($validator->fails()) {
+            //return failed response
             return response()->json([
                 'status' => 'failed',
-                'message' => $e,
+                'message' => $validator->errors(),
                 'data' => [],
-            ], 409);
+            ], 400);
+        } else {
+            try {
+                $user_id = $request->input('user_id');
+                $angkot_id = $request->input('angkot_id');
+                $mulai_narik = $request->input('mulai_narik');
+
+                $history = new History();
+                $history->user_id = $user_id;
+                $history->angkot_id = $angkot_id;
+
+                if ($request->input('jumlah_pendapatan')) {
+                    $jumlah_pendapatan = $request->input('jumlah_pendapatan');
+                    $history->jumlah_pendapatan = $jumlah_pendapatan;
+                }
+
+                if ($request->input('selesai_narik')) {
+                    $selesai_narik = $request->input('selesai_narik');
+                    $history->selesai_narik = $selesai_narik;
+                }
+
+                $history->mulai_narik = $mulai_narik;
+                $history->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Data created',
+                    'data' => $history,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
         }
     }
 

@@ -213,7 +213,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:approved,pending,decline',
+            'status' => 'required|in:approved,pending,declined',
         ]);
 
         if ($validator->fails()) {
@@ -325,29 +325,6 @@ class AdminController  extends Controller
     //  ===============================================================================
     //  ================================= ROUTES ======================================
     //  ===============================================================================
-
-    /**
-     * Get All Routes.
-     *
-     * @return Response
-     *
-     */
-    public function getAllRoutes()
-    {
-        $route = Routes::all();
-        if (!$route) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Routes Not Found!',
-                'data' => [],
-            ], 404);
-        }
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Routes Requested !',
-            'data' => $route,
-        ], 200);
-    }
 
     /**
      * Create a routes.
@@ -618,71 +595,6 @@ class AdminController  extends Controller
                     'data' => [],
                 ], 409);
             }
-        }
-    }
-
-    /**
-     * Get Halte Virtual By Id App
-     *
-     * @return Response
-     */
-    public function getByIdHalteVirtual($id)
-    {
-        try {
-            $point = Setpoints::find($id);
-
-            if ($point == null) {
-                return response()->json([
-                    'status' => 'Not Found',
-                    'message' => 'Halte Virtual Not Found',
-                    'data' => [],
-                ], 404);
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Halte Virtual Requested !',
-                'data' => $point,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e,
-                'data' => [],
-            ], 409);
-        }
-    }
-
-    /**
-     * Get Halte Virtual By route_id App
-     *
-     * @return Response
-     */
-    public function getByRouteIdHalteVirtual()
-    {
-        try {
-            $route = request(["route_id"]);
-            $point = Setpoints::where('route_id', $route)->get();
-
-            if ($point == null) {
-                return response()->json([
-                    'status' => 'Not Found',
-                    'message' => 'Halte Virtual Not Found',
-                    'data' => [],
-                ], 404);
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Halte Virtual Requested !',
-                'data' => $point,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e,
-                'data' => [],
-            ], 409);
         }
     }
 
