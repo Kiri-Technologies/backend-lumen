@@ -42,7 +42,7 @@ class OwnerSupirController  extends Controller
     public function getListDriver(Request $request)
     {
         // $list_supir = ListDriver::with('user')->get();
-        $list_supir = ListDriver::with('user')
+        $list_supir = ListDriver::with('user','vehicle')
             ->when($request->user_id, function ($query, $user_id) {
                 return $query->where('user_id', $user_id);
             })->when($request->angkot_id, function ($query, $angkot_id) {
@@ -124,7 +124,7 @@ class OwnerSupirController  extends Controller
                 ], 400);
             }
         }
-        $history =  History::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+        $history =  History::with('supir','vehicle')->filter(request(['angkot_id', 'supir_id']))->get();
 
         return response()->json([
             'status' => 'success',
