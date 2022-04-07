@@ -760,4 +760,56 @@ class AdminController  extends Controller
             'data' => $total_user,
         ], 200);
     }
+
+    /**
+     * Get Most Used Trayek
+     *
+     * @return Response
+     */
+    public function mostUsedTrayek()
+    {
+        $trayek = Routes::all();
+        foreach ($trayek as $tr) {
+            $angkot = Vehicle::where('route_id', $tr->id)->get();
+            $count = 0;
+            foreach ($angkot as $ak) {
+                $trip_count = Trip::where('angkot_id', $ak->id)->count();
+                $count += $trip_count;
+            }
+            $tr->count = $count;
+        }
+
+        $trayek = $trayek->sortByDesc("count");
+        $trayek = $trayek->unique('id')->values();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Most Used Trayek',
+            'data' => $trayek,
+        ], 200);
+    }
+
+    /**
+     * Get Most Used Setpoint
+     *
+     * @return Response
+     */
+    public function mostUsedSetpoint()
+    {
+        $setpoints = Setpoints::all();
+        foreach ($setpoints as $st) {
+            $trip_count_naik = Trip::where('tempat_naik_id', $st->id)->count();
+            $trip_count_turun = Trip::where('tempat_turun_id', $st->id)->count();
+            $st->count = $trip_count_naik + $trip_count_turun;
+        }
+
+        $setpoints = $setpoints->sortByDesc("count");
+        $setpoints = $setpoints->unique('id')->values();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Most Used Setpoint',
+            'data' => $setpoints,
+        ], 200);
+    }
 }

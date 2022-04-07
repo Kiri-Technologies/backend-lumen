@@ -169,6 +169,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/totalusers
                 // Function : get total users
                 $router->get("/totalUsers", 'AdminController@getTotalUsers');
+
+                // Matches /api/admin/mostUsedTrayek
+                // Function : get most user trayek
+                $router->get("/mostUsedTrayek", 'AdminController@mostUsedTrayek');
+
+                // Matches /api/admin/mostUsedSetpoint
+                // Function : get most used set point
+                $router->get("/mostUsedSetpoint", 'AdminController@mostUsedSetpoint');
             });
         });
 

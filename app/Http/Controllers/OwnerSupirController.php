@@ -16,6 +16,7 @@ use App\Models\Favorites;
 use App\Models\FeedbackApp;
 use App\Models\ListDriver;
 use App\Models\History;
+use App\Models\Trip;
 use Illuminate\Database\Eloquent\Collection;
 
 class OwnerSupirController  extends Controller
@@ -42,7 +43,7 @@ class OwnerSupirController  extends Controller
     public function getListDriver(Request $request)
     {
         // $list_supir = ListDriver::with('user')->get();
-        $list_supir = ListDriver::with('user')
+        $list_supir = ListDriver::with('user', 'vehicle')
             ->when($request->user_id, function ($query, $user_id) {
                 return $query->where('user_id', $user_id);
             })->when($request->angkot_id, function ($query, $angkot_id) {
@@ -124,7 +125,7 @@ class OwnerSupirController  extends Controller
                 ], 400);
             }
         }
-        $history =  History::with('supir')->filter(request(['angkot_id', 'supir_id']))->get();
+        $history =  History::with('supir', 'vehicle')->filter(request(['angkot_id', 'supir_id']))->get();
 
         return response()->json([
             'status' => 'success',
@@ -240,6 +241,78 @@ class OwnerSupirController  extends Controller
             'status' => 'success',
             'message' => 'Total Pendapatan Requested !',
             'data' => $pendapatan
+        ], 200);
+    }
+
+    /**
+     * Get Average Penumpang
+     * @return Response
+     */
+    public function averagePenumpangPernarik(Request $request)
+    {
+        $history = History::with('vehicle')->when($request->supir_id, function ($query, $supir_id) {
+            return $query->where('user_id', $supir_id);
+        })->when($request->angkot_id, function ($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->get();
+
+        if ($request->owner_id) {
+            $new_history = new Collection();
+            foreach ($history as $tr) {
+                if ($tr->vehicle->user_id == $request->owner_id) {
+                    $new_history->push($tr);
+                }
+            }
+            $history = $new_history;
+        }
+
+        $history_count = $history->count();
+        $count = 0;
+        foreach ($history as $tr) {
+            $count_trip = Trip::where('history_id', $tr->id)->count();
+            $count += $count_trip;
+        }
+        $count = round($count/$history_count);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Average Penumpang Requested !',
+            'data' => $count
+        ], 200);
+    }
+
+    /**
+     * Get Total Penumpang di Hari Ini
+     * @return Response
+     */
+    public function totalPenumpangHariIni(Request $request)
+    {
+        $history = History::with('vehicle')->when($request->supir_id, function ($query, $supir_id) {
+            return $query->where('user_id', $supir_id);
+        })->when($request->angkot_id, function ($query, $angkot_id) {
+            return $query->where('angkot_id', $angkot_id);
+        })->whereDate('created_at', Carbon::now())->get();
+
+        if ($request->owner_id) {
+            $new_history = new Collection();
+            foreach ($history as $tr) {
+                if ($tr->vehicle->user_id == $request->owner_id) {
+                    $new_history->push($tr);
+                }
+            }
+            $history = $new_history;
+        }
+
+        $count = 0;
+        foreach ($history as $tr) {
+            $count_trip = Trip::where('history_id', $tr->id)->count();
+            $count += $count_trip;
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Penumpang Di Hari Ini Requested !',
+            'data' => $count
         ], 200);
     }
 }
