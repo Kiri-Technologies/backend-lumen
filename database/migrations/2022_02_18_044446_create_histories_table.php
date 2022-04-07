@@ -17,9 +17,9 @@ class CreateHistoriesTable extends Migration
             $table->increments('id');
             $table->string('user_id');
             $table->unsignedInteger('angkot_id');
-            $table->integer('jumlah_pendapatan');
+            $table->integer('jumlah_pendapatan')->nullable();
             $table->datetime('mulai_narik');
-            $table->datetime('selesai_narik');
+            $table->datetime('selesai_narik')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();

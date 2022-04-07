@@ -381,6 +381,10 @@ class UserController extends Controller
             return $query->where('angkot_id', $angkot_id);
         })->when($request->supir_id, function ($query, $supir_id) {
             return $query->where('supir_id', $supir_id);
+        })->when($request->is_connected_with_driver, function ($query, $is_connected_with_driver) {
+            return $query->where('is_connected_with_driver', $is_connected_with_driver);
+        })->when($request->is_done, function ($query, $is_done) {
+            return $query->where('is_done', $is_done);
         })->get();
 
 
