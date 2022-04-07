@@ -88,10 +88,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             $router->group(["prefix" => 'routes'], function () use ($router) {
 
-                // Matches /api/admin/routes
-                // Function : Get all routes
-                $router->get('/', 'AdminController@getAllRoutes');
-
                 // Matches /api/admin/routes/create
                 // Function : Update routes by id
                 $router->post('/create', 'AdminController@createRoutes');
@@ -137,14 +133,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/hartevirtual/create
                 // Function : Create Halte Virtual
                 $router->post("/create", 'AdminController@createHalteVirtual');
-
-                // Matches /api/admin/hartevirtual/{id}
-                // Function : Get Halte Virtual By Id
-                $router->get("/{id}", 'AdminController@getByIdHalteVirtual');
-
-                // Matches /api/admin/hartevirtual?route_id=
-                // Function : Get Halte Virtual By route_id
-                $router->get("/", 'AdminController@getByRouteIdHalteVirtual');
 
                 // Matches /api/admin/hartevirtual/{id}/update
                 // Function : Update Halte Virtual

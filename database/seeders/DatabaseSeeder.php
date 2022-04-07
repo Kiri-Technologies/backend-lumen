@@ -110,7 +110,6 @@ class DatabaseSeeder extends Seeder
         // ========================================================
         $vehicle = [
             [
-                'id' => 1,
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
                 'plat_nomor' => 'B 12345',
@@ -120,7 +119,31 @@ class DatabaseSeeder extends Seeder
                 'kir_bulanan' => '2017-06-15',
                 'is_beroperasi' => null,
                 'supir_id' => null,
-                'status' => 'aktif',
+                'status' => 'approved',
+            ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 12345',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/2'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'approved',
+            ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 12345',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/3'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'approved',
             ],
 
         ];
@@ -136,8 +159,8 @@ class DatabaseSeeder extends Seeder
         foreach (range(1, 10) as $index) {
             DB::table('histories')->insert([
                 'user_id' => 'supir-123456',
-                'angkot_id' => '1',
-                'jumlah_pendapatan' => $faker->numberBetween($min = 1000, $max = 90000),
+                'angkot_id' => $faker->numberBetween($min = 1, $max = 3),
+                'jumlah_pendapatan' => 10000,
                 'mulai_narik' => $faker->dateTime,
                 'selesai_narik' => $faker->dateTime,
                 'status' => 'done',
