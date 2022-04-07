@@ -213,7 +213,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:approved,pending,decline',
+            'status' => 'required|in:approved,pending,declined',
         ]);
 
         if ($validator->fails()) {
