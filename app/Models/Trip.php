@@ -41,7 +41,7 @@ class Trip extends Model
 
     public function feedback()
     {
-        return $this->hasMany(Feedback::class, 'perjalanan_id');
+        return $this->hasOne(Feedback::class, 'perjalanan_id');
     }
 
     public function user_penumpang(): \Illuminate\Database\Eloquent\Relations\BelongsTo
