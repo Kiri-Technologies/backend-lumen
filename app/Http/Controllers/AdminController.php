@@ -832,9 +832,7 @@ class AdminController  extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'ok',
-                'data' => [
-                    'total' => $total,
-                ],
+                'data' => $total,
             ], 200);
         }
 
@@ -850,9 +848,7 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total' => $total,
-            ],
+            'data' => $total,
         ], 200);
     }
 }
