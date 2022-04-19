@@ -819,26 +819,14 @@ class AdminController  extends Controller
      * @return Response
      */
     public function totalPerjalananBulanIni() {
-        $total = Trip::whereMonth('created_at', Carbon::now()->month)->count();
-        // if no trip found in this month return empty array
-        if ($total == 0) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => [],
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => [
-                    'total' => $total,
-                    'per_angkot' => Trip::whereMonth('created_at', Carbon::now()->month)->groupBy('angkot_id')->count(),
-                    'per_user' => Trip::whereMonth('created_at', Carbon::now()->month)->groupBy('user_id')->count(),
-                ],
-            ], 200);
-        }
-
+        $total = Trip::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
     }
 
     /**
@@ -846,13 +834,12 @@ class AdminController  extends Controller
      * @return Response
      */
     public function totalPerjalananBulanLalu() {
-        $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
+        $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)
+        ->whereYear('created_at', Carbon::now()->year)->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => [
-                'total' => $total,
-            ],
+            'data' => $total,
         ], 200);
     }
 }
