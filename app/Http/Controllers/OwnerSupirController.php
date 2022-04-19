@@ -103,7 +103,7 @@ class OwnerSupirController  extends Controller
      */
     public function getById(History $history, $id)
     {
-        $history =  History::with('supir')->get();
+        $history =  History::with('supir', 'vehicle.route')->get();
         return response()->json([
             'data' => $history->find($id)
         ]);
@@ -127,7 +127,7 @@ class OwnerSupirController  extends Controller
                 ], 400);
             }
         }
-        $history =  History::with('supir', 'vehicle')->filter(request(['angkot_id', 'supir_id']))->get();
+        $history =  History::with('supir', 'vehicle.route')->filter(request(['angkot_id', 'supir_id']))->get();
 
         return response()->json([
             'status' => 'success',

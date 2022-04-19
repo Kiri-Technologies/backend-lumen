@@ -314,7 +314,7 @@ class AdminController  extends Controller
      */
     public function allRiwayat()
     {
-        $history =  History::with('supir','vehicle')->get();
+        $history =  History::with('supir','vehicle.route')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'get all history successfully!',
