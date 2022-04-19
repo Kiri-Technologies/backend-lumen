@@ -748,6 +748,29 @@ class UserController extends Controller
         ], 200);
     }
 
+    /**
+     * Get Routes By ID.
+     *
+     * @return Response
+     *
+     */
+    public function getRoutesById($id)
+    {
+        $route = Routes::find($id);
+        if (!$route) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Routes Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Routes Requested !',
+            'data' => $route,
+        ], 200);
+    }
+
 
     //  =============================================================
     //  ===================== HALTE VIRTUAL =========================

@@ -128,8 +128,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->group(["prefix" => 'routes'], function () use ($router) {
 
             // Matches /api/routes
-            // Function : create feedback for application
+            // Function : get all routes
             $router->get('/', 'UserController@getAllRoutes');
+
+            // Matches /api/routes/{id}
+            // Function : get routes by ID
+            $router->get('/{id}', 'UserController@getRoutesById');
         });
 
         //  ======================== Halte Virtual ========================
