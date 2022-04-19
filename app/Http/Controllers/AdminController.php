@@ -730,11 +730,22 @@ class AdminController  extends Controller
     public function totalFeedbackApp()
     {
         $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)->count();
+        ->whereYear('created_at', Carbon::now()->year)->get();
+
+        $submitted = $total->where('status','submitted')->count();
+        $pending = $total->where('status','pending')->count();
+        $processed = $total->where('status','processed')->count();
+        $cancelled = $total->where('status','cancelled')->count();
+
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
-            'data' => $total,
+            'data' => [
+                'submitted' => $submitted,
+                'pending' => $pending,
+                'processed' => $processed,
+                'cancelled' => $cancelled
+            ],
         ], 200);
     }
 
