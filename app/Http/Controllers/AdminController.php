@@ -821,21 +821,11 @@ class AdminController  extends Controller
         $total = Trip::whereMonth('created_at', Carbon::now()->month)
         ->whereYear('created_at', Carbon::now()->year)
         ->count();
-        // if no trip found in this month return empty array
-        if ($total == 0) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => [],
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'ok',
-                'data' => $total,
-            ], 200);
-        }
-
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
     }
 
     /**
