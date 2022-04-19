@@ -258,23 +258,31 @@ class OwnerSupirController  extends Controller
             return $query->where('angkot_id', $angkot_id);
         })->get();
 
-        if ($request->owner_id) {
-            $new_history = new Collection();
-            foreach ($history as $tr) {
-                if ($tr->vehicle->user_id == $request->owner_id) {
-                    $new_history->push($tr);
+        if ($history) {
+            if ($request->owner_id) {
+                $new_history = new Collection();
+                foreach ($history as $tr) {
+                    if ($tr->vehicle->user_id == $request->owner_id) {
+                        $new_history->push($tr);
+                    }
                 }
+                $history = $new_history;
             }
-            $history = $new_history;
-        }
 
-        $history_count = $history->count();
-        $count = 0;
-        foreach ($history as $tr) {
-            $count_trip = Trip::where('history_id', $tr->id)->count();
-            $count += $count_trip;
+            if ($history->count() > 0) {
+                $history_count = $history->count();
+                $count = 0;
+                foreach ($history as $tr) {
+                    $count_trip = Trip::where('history_id', $tr->id)->count();
+                    $count += $count_trip;
+                }
+                $count = round($count / $history_count);
+            } else {
+                $count = 0;
+            }
+        } else {
+            $count = 0;
         }
-        $count = round($count/$history_count);
 
         return response()->json([
             'status' => 'success',
