@@ -48,6 +48,8 @@ class OwnerSupirController  extends Controller
                 return $query->where('user_id', $user_id);
             })->when($request->angkot_id, function ($query, $angkot_id) {
                 return $query->where('angkot_id', $angkot_id);
+            })->when($request->is_confirmed, function ($query, $is_confirmed) {
+                return $query->where('is_confirmed', $is_confirmed);
             })->get();
 
         if ($list_supir) {
@@ -205,8 +207,8 @@ class OwnerSupirController  extends Controller
 
     public function getPendapatanSelama7HariLalu(Request $request)
     {
-        for ($i = 0; $i < 7; $i++) {
-            $date = Carbon::now()->subDays($i);
+        for ($day = 0; $day < 7; $day++) {
+            $date = Carbon::now()->subDays($day);
             $history = History::with('vehicle')->when($request->supir_id, function ($query, $supir_id) {
                 return $query->where('user_id', $supir_id);
             })->when($request->angkot_id, function ($query, $angkot_id) {

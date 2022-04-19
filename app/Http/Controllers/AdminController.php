@@ -669,7 +669,7 @@ class AdminController  extends Controller
      */
     public function totalPendapatanBulanIni()
     {
-        $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->sum('jumlah_pendapatan');
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('jumlah_pendapatan');
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
@@ -684,7 +684,7 @@ class AdminController  extends Controller
      */
     public function totalAngkotMendaftarBulanIni()
     {
-        $angkot = Vehicle::whereMonth('created_at', Carbon::now()->month)->count();
+        $angkot = Vehicle::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
@@ -729,7 +729,8 @@ class AdminController  extends Controller
      */
     public function totalFeedbackApp()
     {
-        $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)->count();
+        $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
