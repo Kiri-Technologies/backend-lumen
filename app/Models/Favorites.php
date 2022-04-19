@@ -15,8 +15,8 @@ class Favorites extends Model
     protected $fillable = [
         'user_id',
         'route_id',
-        'titik_naik',
-        'titik_turun',
+        'tempat_naik_id',
+        'tempat_turun_id',
     ];
 
     /**
@@ -36,5 +36,15 @@ class Favorites extends Model
     public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Routes::class, 'route_id', 'id');
+    }
+
+    public function setpoint_naik(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Setpoints::class, 'tempat_naik_id', 'id');
+    }
+
+    public function setpoint_turun(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Setpoints::class, 'tempat_turun_id', 'id');
     }
 }

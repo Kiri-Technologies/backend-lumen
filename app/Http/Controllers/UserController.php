@@ -377,7 +377,7 @@ class UserController extends Controller
      */
     public function getPerjalananFind(Request $request)
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
             return $query->where('angkot_id', $angkot_id);
@@ -413,7 +413,7 @@ class UserController extends Controller
      */
     public function getPerjalananByID($id)
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->find($id);
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->find($id);
         if (!$trip) {
             return response()->json([
                 'status' => 'failed',
@@ -676,7 +676,7 @@ class UserController extends Controller
             ], 400);
         } else {
             try {
-                $favorites = Favorites::where('user_id', $request->input('user_id'))->get();
+                $favorites = Favorites::with('route', 'user', 'setpoint_naik', 'setpoint_turun')->where('user_id', $request->input('user_id'))->get();
 
                 // return successful response
                 return response()->json([
@@ -840,6 +840,4 @@ class UserController extends Controller
             ], 409);
         }
     }
-
-
 }

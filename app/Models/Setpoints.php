@@ -35,4 +35,9 @@ class Setpoints extends Model
     {
         return $this->belongsTo(Routes::class, 'route_id', 'id');
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorites::class, 'route_id');
+    }
 }
