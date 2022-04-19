@@ -177,6 +177,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/mostUsedSetpoint
                 // Function : get most used set point
                 $router->get("/mostUsedSetpoint", 'AdminController@mostUsedSetpoint');
+
+                // Matches /api/admin/totalPerjalananBulanIni
+                // Function : get total perjalanan bulan ini
+                $router->get("/totalPerjalananBulanIni", 'AdminController@totalPerjalananBulanIni');
+
+                // Matches /api/admin/totalPerjalananBulanLalu
+                // Function : get total perjalanan bulan lalu
+                $router->get("/totalPerjalananBulanLalu", 'AdminController@totalPerjalananBulanLalu');
             });
         });
 

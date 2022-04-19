@@ -568,7 +568,7 @@ class UserController extends Controller
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'review' => 'required|in:excellent,happy,sad,awful',
+            'review' => 'required|in:excellent,happy,sad,awful,neutral',
             'tanggapan' => 'required',
         ]);
         if ($validator->fails()) {

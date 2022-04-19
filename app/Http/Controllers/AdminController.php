@@ -812,4 +812,33 @@ class AdminController  extends Controller
             'data' => $setpoints,
         ], 200);
     }
+
+    /**
+     * Graphic Total Perjalanan this month
+     * @return Response
+     */
+    public function totalPerjalananBulanIni() {
+        $total = Trip::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
+    }
+
+    /**
+     * Graphic Total Perjalanan last month
+     * @return Response
+     */
+    public function totalPerjalananBulanLalu() {
+        $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)
+        ->whereYear('created_at', Carbon::now()->year)->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
+    }
 }
