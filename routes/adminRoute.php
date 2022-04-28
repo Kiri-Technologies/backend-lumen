@@ -98,7 +98,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/admin/routes/{id}/delete
                 // Function : delete routes by id
-                $router->post('/{id}/delete', 'AdminController@deleteRoutes');
+                $router->delete('/{id}/delete', 'AdminController@deleteRoutes');
             });
             //  ========================= FEEDBACK APP =========================
 
