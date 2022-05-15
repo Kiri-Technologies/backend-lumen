@@ -98,7 +98,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/admin/routes/{id}/delete
                 // Function : delete routes by id
-                $router->post('/{id}/delete', 'AdminController@deleteRoutes');
+                $router->delete('/{id}/delete', 'AdminController@deleteRoutes');
             });
             //  ========================= FEEDBACK APP =========================
 
@@ -136,7 +136,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/admin/hartevirtual/{id}/update
                 // Function : Update Halte Virtual
-                $router->patch("/{id}/update", 'AdminController@updateHalteVirtual');
+                $router->post("/{id}/update", 'AdminController@updateHalteVirtual');
 
                 // Matches /api/admin/hartevirtual/{id}/delete
                 // Function : Delete Halte Virtual

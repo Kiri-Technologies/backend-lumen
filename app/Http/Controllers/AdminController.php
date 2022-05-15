@@ -605,14 +605,24 @@ class AdminController  extends Controller
      */
     public function updateHalteVirtual(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'route_id' => 'required',
+            'nama_lokasi' => "required",
+            'lat' => "required",
+            'long' => "required"
+        ]);
         try {
-            $setpoints = Setpoints::find($id);
-            $setpoints->update($request->all());
-
+            $point = Setpoints::find($id);
+            $point->route_id = $request->input("route_id");
+            $point->nama_lokasi = $request->input("nama_lokasi");
+            $point->lat = $request->input("lat");
+            $point->long = $request->input("long");
+            $point->save();
+            
             return response()->json([
                 'status' => 'success',
-                'message' => 'Halte Virtual Updated !',
-                'data' => $setpoints,
+                "message" => 'Halte Virtual Updated',
+                'data' => $point,
             ], 201);
         } catch (\Exception $e) {
             //return error message
