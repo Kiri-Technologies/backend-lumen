@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trip extends Model
 {
+    use SoftDeletes;
     protected $table = 'trips';
 
     /**
@@ -16,9 +18,12 @@ class Trip extends Model
     protected $fillable = [
         'penumpang_id',
         'angkot_id',
+        'history_id',
+        'tempat_naik_id',
+        'tempat_turun_id',
         'supir_id',
-        'titik_naik',
-        'titik_turun',
+        'nama_tempat_naik',
+        'nama_tempat_turun',
         'jarak',
         'rekomendasi_harga',
         'is_done',
@@ -36,7 +41,7 @@ class Trip extends Model
 
     public function feedback()
     {
-        return $this->hasMany(Feedback::class, 'perjalanan_id');
+        return $this->hasOne(Feedback::class, 'perjalanan_id');
     }
 
     public function user_penumpang(): \Illuminate\Database\Eloquent\Relations\BelongsTo

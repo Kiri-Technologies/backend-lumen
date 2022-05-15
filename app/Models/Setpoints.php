@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Setpoints extends Model
 {
+    use SoftDeletes;
     protected $table = 'setpoints';
 
     /**
@@ -32,5 +34,10 @@ class Setpoints extends Model
     public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Routes::class, 'route_id', 'id');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorites::class, 'route_id');
     }
 }

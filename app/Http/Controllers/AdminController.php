@@ -4,29 +4,20 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\User;
-use App\Models\Angkot;
 use App\Models\Routes;
-use App\Models\Riwayat;
-use App\Models\ListSupir;
 use App\Models\Setpoints;
-use App\Models\Perjalanan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\FeedbackApplication;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Laravel\Lumen\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\UserController;
 
 
 use App\Models\Vehicle;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
-use App\Models\ListDriver;
 use App\Models\Trip;
 use App\Models\History;
+use App\Models\FeedbackApplication;
 
 class AdminController  extends Controller
 {
@@ -222,7 +213,7 @@ class AdminController  extends Controller
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:approved,pending,decline',
+            'status' => 'required|in:approved,pending,declined',
         ]);
 
         if ($validator->fails()) {
@@ -295,7 +286,7 @@ class AdminController  extends Controller
      */
     public function getAllPerjalanan()
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->get();
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->get();
 
         if (!$trip) {
             return response()->json([
@@ -323,7 +314,7 @@ class AdminController  extends Controller
      */
     public function allRiwayat()
     {
-        $history =  History::with('supir')->get();
+        $history =  History::with('supir','vehicle.route')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'get all history successfully!',
@@ -334,29 +325,6 @@ class AdminController  extends Controller
     //  ===============================================================================
     //  ================================= ROUTES ======================================
     //  ===============================================================================
-
-    /**
-     * Get All Routes.
-     *
-     * @return Response
-     *
-     */
-    public function getAllRoutes()
-    {
-        $route = Routes::all();
-        if (!$route) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Routes Not Found!',
-                'data' => [],
-            ], 404);
-        }
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Routes Requested !',
-            'data' => $route,
-        ], 200);
-    }
 
     /**
      * Create a routes.
@@ -532,7 +500,8 @@ class AdminController  extends Controller
      *
      * @return Response
      */
-    public function getAllAppFeedback() {
+    public function getAllAppFeedback()
+    {
         // sort by newest feedback
         $feedbackapp = FeedbackApplication::with('user')->orderBy('created_at', 'desc')->get();
         return response()->json([
@@ -630,85 +599,30 @@ class AdminController  extends Controller
     }
 
     /**
-     * Get Halte Virtual By Id App
-     *
-     * @return Response
-     */
-    public function getByIdHalteVirtual($id)
-    {
-        try {
-            $point = Setpoints::find($id);
-
-            if ($point == null) {
-                return response()->json([
-                    'status' => 'Not Found',
-                    'message' => 'Halte Virtual Not Found',
-                    'data' => [],
-                ], 404);
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Halte Virtual Requested !',
-                'data' => $point,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e,
-                'data' => [],
-            ], 409);
-        }
-    }
-
-    /**
-     * Get Halte Virtual By route_id App
-     *
-     * @return Response
-     */
-    public function getByRouteIdHalteVirtual()
-    {
-        try {
-            $route = request(["route_id"]);
-            $point = Setpoints::where('route_id', $route)->get();
-
-            if ($point == null) {
-                return response()->json([
-                    'status' => 'Not Found',
-                    'message' => 'Halte Virtual Not Found',
-                    'data' => [],
-                ], 404);
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Halte Virtual Requested !',
-                'data' => $point,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e,
-                'data' => [],
-            ], 409);
-        }
-    }
-
-    /**
      * Update Halte Virtual App
      *
      * @return Response
      */
     public function updateHalteVirtual(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'route_id' => 'required',
+            'nama_lokasi' => "required",
+            'lat' => "required",
+            'long' => "required"
+        ]);
         try {
-            $setpoints = Setpoints::find($id);
-            $setpoints->update($request->all());
-
+            $point = Setpoints::find($id);
+            $point->route_id = $request->input("route_id");
+            $point->nama_lokasi = $request->input("nama_lokasi");
+            $point->lat = $request->input("lat");
+            $point->long = $request->input("long");
+            $point->save();
+            
             return response()->json([
                 'status' => 'success',
-                'message' => 'Halte Virtual Updated !',
-                'data' => $setpoints,
+                "message" => 'Halte Virtual Updated',
+                'data' => $point,
             ], 201);
         } catch (\Exception $e) {
             //return error message
@@ -752,5 +666,201 @@ class AdminController  extends Controller
                 'data' => [],
             ], 409);
         }
+    }
+
+    //  ===================================================================================
+    //  ======================================= CHART  ====================================
+    //  ===================================================================================
+
+    /**
+     * Get Graphic total pendapatan this month
+     *
+     * @return Response
+     */
+    public function totalPendapatanBulanIni()
+    {
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('jumlah_pendapatan');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $pendapatan
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total angkot register this month
+     *
+     * @return Response
+     */
+    public function totalAngkotMendaftarBulanIni()
+    {
+        $angkot = Vehicle::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $angkot
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total registered angkot all time
+     *
+     * @return Response
+     */
+    public function totalAngkotTerdaftar()
+    {
+        $angkot = Vehicle::count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $angkot
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total pendapatan previous month
+     *
+     * @return Response
+     */
+    public function totalPendapatanBulanLalu()
+    {
+        $pendapatan = History::whereMonth('created_at', Carbon::now()->subMonth()->month)->sum('jumlah_pendapatan');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $pendapatan,
+        ], 200);
+    }
+
+    /**
+     * Get Graphic total pendapatan previous month
+     *
+     * @return Response
+     */
+    public function totalFeedbackApp()
+    {
+        $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)->get();
+
+        $submitted = $total->where('status','submitted')->count();
+        $pending = $total->where('status','pending')->count();
+        $processed = $total->where('status','processed')->count();
+        $cancelled = $total->where('status','cancelled')->count();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => [
+                'submitted' => $submitted,
+                'pending' => $pending,
+                'processed' => $processed,
+                'cancelled' => $cancelled
+            ],
+        ], 200);
+    }
+
+    /**
+     * Get Total User App
+     *
+     * @return Response
+     */
+    public function getTotalUsers()
+    {
+        $owner = User::where('role', 'owner')->count();
+        $penumpang = User::where('role', 'penumpang')->count();
+        $supir = User::where('role', 'supir')->count();
+
+        $total_user = [
+            'owner' => $owner,
+            'penumpang' => $penumpang,
+            'supir' => $supir
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Most Used Trayek
+     *
+     * @return Response
+     */
+    public function mostUsedTrayek()
+    {
+        $trayek = Routes::all();
+        foreach ($trayek as $tr) {
+            $angkot = Vehicle::where('route_id', $tr->id)->get();
+            $count = 0;
+            foreach ($angkot as $ak) {
+                $trip_count = Trip::where('angkot_id', $ak->id)->count();
+                $count += $trip_count;
+            }
+            $tr->count = $count;
+        }
+
+        $trayek = $trayek->sortByDesc("count");
+        $trayek = $trayek->unique('id')->values();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Most Used Trayek',
+            'data' => $trayek,
+        ], 200);
+    }
+
+    /**
+     * Get Most Used Setpoint
+     *
+     * @return Response
+     */
+    public function mostUsedSetpoint()
+    {
+        $setpoints = Setpoints::all();
+        foreach ($setpoints as $st) {
+            $trip_count_naik = Trip::where('tempat_naik_id', $st->id)->count();
+            $trip_count_turun = Trip::where('tempat_turun_id', $st->id)->count();
+            $st->count = $trip_count_naik + $trip_count_turun;
+        }
+
+        $setpoints = $setpoints->sortByDesc("count");
+        $setpoints = $setpoints->unique('id')->values();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Most Used Setpoint',
+            'data' => $setpoints,
+        ], 200);
+    }
+
+    /**
+     * Graphic Total Perjalanan this month
+     * @return Response
+     */
+    public function totalPerjalananBulanIni() {
+        $total = Trip::whereMonth('created_at', Carbon::now()->month)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
+    }
+
+    /**
+     * Graphic Total Perjalanan last month
+     * @return Response
+     */
+    public function totalPerjalananBulanLalu() {
+        $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)
+        ->whereYear('created_at', Carbon::now()->year)->count();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ok',
+            'data' => $total,
+        ], 200);
     }
 }

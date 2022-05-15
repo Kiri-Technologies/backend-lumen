@@ -118,6 +118,12 @@ $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
+    require __DIR__.'/../routes/adminRoute.php';
+    require __DIR__.'/../routes/authRoute.php';
+    require __DIR__.'/../routes/ownerRoute.php';
+    require __DIR__.'/../routes/ownersupirRoute.php';
+    require __DIR__.'/../routes/penumpangRoute.php';
+    require __DIR__.'/../routes/supirRoute.php';
     require __DIR__.'/../routes/web.php';
 });
 

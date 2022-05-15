@@ -8,20 +8,16 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 
 use App\Models\Vehicle;
 use App\Models\Favorites;
 use App\Models\Feedback;
-use App\Models\FeedbackApp;
-use App\Models\ListDriver;
 use App\Models\Trip;
-use App\Models\History;
-use App\Models\Routes;
-use App\Models\Setpoints;
 use App\Models\User;
 use App\Models\FeedbackApplication;
+use App\Models\Routes;
+use App\Models\Setpoints;
 
 class UserController extends Controller
 {
@@ -52,16 +48,6 @@ class UserController extends Controller
             'data' => Auth::user(),
         ], 200);
     }
-
-    /**
-     * Get all User.
-     *
-     * @return Response
-     */
-    // public function allUsers()
-    // {
-    //      return response()->json(['users' =>  User::all()], 200);
-    // }
 
     /**
      * Update one user.
@@ -297,9 +283,12 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
+            'history_id' => 'required|string',
+            'tempat_naik_id' => 'required|string',
+            'tempat_turun_id' => 'required|string',
             'supir_id' => 'required|string',
-            'titik_naik' => 'required|string',
-            'titik_turun' => 'required|string',
+            'nama_tempat_naik' => 'required|string',
+            'nama_tempat_turun' => 'required|string',
             'jarak' => 'required|string',
             'rekomendasi_harga' => 'required|string',
             'is_done' => 'required|boolean',
@@ -318,9 +307,12 @@ class UserController extends Controller
                 $trip = new Trip;
                 $trip->penumpang_id = $request->input('penumpang_id');
                 $trip->angkot_id = $request->input('angkot_id');
+                $trip->history_id = $request->input('history_id');
+                $trip->tempat_naik_id = $request->input('tempat_naik_id');
+                $trip->tempat_turun_id = $request->input('tempat_turun_id');
                 $trip->supir_id = $request->input('supir_id');
-                $trip->titik_naik = $request->input('titik_naik');
-                $trip->titik_turun = $request->input('titik_turun');
+                $trip->nama_tempat_naik = $request->input('nama_tempat_naik');
+                $trip->nama_tempat_turun = $request->input('nama_tempat_turun');
                 $trip->jarak = $request->input('jarak');
                 $trip->rekomendasi_harga = $request->input('rekomendasi_harga');
                 $trip->is_done = $request->input('is_done');
@@ -385,12 +377,16 @@ class UserController extends Controller
      */
     public function getPerjalananFind(Request $request)
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->when($request->penumpang_id, function ($query, $penumpang_id) {
             return $query->where('penumpang_id', $penumpang_id);
         })->when($request->angkot_id, function ($query, $angkot_id) {
             return $query->where('angkot_id', $angkot_id);
         })->when($request->supir_id, function ($query, $supir_id) {
             return $query->where('supir_id', $supir_id);
+        })->when($request->is_connected_with_driver, function ($query, $is_connected_with_driver) {
+            return $query->where('is_connected_with_driver', $is_connected_with_driver);
+        })->when($request->is_done, function ($query, $is_done) {
+            return $query->where('is_done', $is_done);
         })->get();
 
 
@@ -417,7 +413,7 @@ class UserController extends Controller
      */
     public function getPerjalananByID($id)
     {
-        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir','feedback')->find($id);
+        $trip = Trip::with('user_penumpang', 'vehicle.route', 'user_supir', 'feedback')->find($id);
         if (!$trip) {
             return response()->json([
                 'status' => 'failed',
@@ -572,7 +568,7 @@ class UserController extends Controller
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'review' => 'required|in:excellent,happy,sad,awful',
+            'review' => 'required|in:excellent,happy,sad,awful,neutral',
             'tanggapan' => 'required',
         ]);
         if ($validator->fails()) {
@@ -622,8 +618,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'route_id' => 'required',
-            'titik_naik' => 'required',
-            'titik_turun' => 'required',
+            'tempat_naik_id' => 'required',
+            'tempat_turun_id' => 'required',
         ]);
         if ($validator->fails()) {
             //return failed response
@@ -637,8 +633,8 @@ class UserController extends Controller
                 $favorites = new Favorites();
                 $favorites->user_id = $request->input('user_id');
                 $favorites->route_id = $request->input('route_id');
-                $favorites->titik_naik = $request->input('titik_naik');
-                $favorites->titik_turun = $request->input('titik_turun');
+                $favorites->tempat_naik_id = $request->input('tempat_naik_id');
+                $favorites->tempat_turun_id = $request->input('tempat_turun_id');
                 $favorites->save();
 
                 // return successful response
@@ -680,7 +676,7 @@ class UserController extends Controller
             ], 400);
         } else {
             try {
-                $favorites = Favorites::where('user_id', $request->input('user_id'))->get();
+                $favorites = Favorites::with('route', 'user', 'setpoint_naik', 'setpoint_turun')->where('user_id', $request->input('user_id'))->get();
 
                 // return successful response
                 return response()->json([
@@ -717,6 +713,126 @@ class UserController extends Controller
             ], 201);
         } catch (\Exception $e) {
             //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
+    //  ===================================================================================
+    //  ===================================== ROUTES ======================================
+    //  ===================================================================================
+
+    /**
+     * Get All Routes.
+     *
+     * @return Response
+     *
+     */
+    public function getAllRoutes()
+    {
+        $route = Routes::all();
+        if (!$route) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Routes Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Routes Requested !',
+            'data' => $route,
+        ], 200);
+    }
+
+    /**
+     * Get Routes By ID.
+     *
+     * @return Response
+     *
+     */
+    public function getRoutesById($id)
+    {
+        $route = Routes::find($id);
+        if (!$route) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Routes Not Found!',
+                'data' => [],
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Routes Requested !',
+            'data' => $route,
+        ], 200);
+    }
+
+
+    //  =============================================================
+    //  ===================== HALTE VIRTUAL =========================
+    //  =============================================================
+
+    /**
+     * Get Halte Virtual By Id App
+     *
+     * @return Response
+     */
+    public function getByIdHalteVirtual($id)
+    {
+        try {
+            $point = Setpoints::find($id);
+
+            if ($point == null) {
+                return response()->json([
+                    'status' => 'Not Found',
+                    'message' => 'Halte Virtual Not Found',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Halte Virtual Requested !',
+                'data' => $point,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
+        }
+    }
+
+    /**
+     * Get Halte Virtual By route_id App
+     *
+     * @return Response
+     */
+    public function getByRouteIdHalteVirtual()
+    {
+        try {
+            $route = request(["route_id"]);
+            $point = Setpoints::where('route_id', $route)->get();
+
+            if ($point == null) {
+                return response()->json([
+                    'status' => 'Not Found',
+                    'message' => 'Halte Virtual Not Found',
+                    'data' => [],
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Halte Virtual Requested !',
+                'data' => $point,
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failed',
                 'message' => $e,

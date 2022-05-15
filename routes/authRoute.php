@@ -14,12 +14,6 @@
 |
 */
 
-// Matches /
-// Function : Hit Point
-$router->get('/', function () use ($router) {
-    return "Dont't forget to add '/api' after base url :D";
-});
-
 // API route group
 $router->group(['prefix' => 'api'], function () use ($router) {
 
@@ -27,13 +21,31 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //  ========================== API ==============================
     //  =============================================================
 
-    // Matches /api
-    // Function : API Main Point
-    $router->get('/', function () use ($router) {
-        return $router->app->version();
-    });
-});
+    // Matches /api/register
+    // Function : Register
+    $router->post('register', 'AuthController@register');
 
+    // Matches /api/login
+    // Function : Login
+    $router->post('login', 'AuthController@login');
+    //  =============================================================
+    //  ========================= AUTH ==============================
+    //  =============================================================
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+
+        //  ====================== LOGOUT ============================
+
+        // Matches /api/logout
+        // Function : Logout
+        $router->get('logout', 'UserController@logout');
+    });
+
+    //  =============================================================
+    //  ======================= END AUTH ============================
+    //  =============================================================
+
+});
     // ==============================================================
     //  ======================== END API ============================
     //  =============================================================

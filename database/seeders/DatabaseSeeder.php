@@ -11,8 +11,6 @@ use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 
@@ -36,6 +34,19 @@ class DatabaseSeeder extends Seeder
                 'kode_trayek' => $faker->areaCode,
                 'titik_awal' => $faker->name,
                 'titik_akhir' => $faker->name,
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
+            ]);
+        }
+
+        foreach (range(1, 10) as $index) {
+            DB::table('setpoints')->insert([
+                'route_id' => $faker->numberBetween($min = 1, $max = 10),
+                'nama_lokasi' => $faker->secondaryAddress . ' ' . $faker->city,
+                'lat' => $faker->latitude($min = -6.8, $max = 6.95),
+                'long' => $faker->longitude($min = 107.5, $max = 107.65),
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
             ]);
         }
 
@@ -99,23 +110,63 @@ class DatabaseSeeder extends Seeder
         // ========================================================
         $vehicle = [
             [
-                'id' => 1,
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
                 'plat_nomor' => 'B 12345',
-                'qr_code' => QrCode::format('svg')->generate(urlencode('angkot_id: 1')),
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/1'),
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
                 'kir_bulanan' => '2017-06-15',
                 'is_beroperasi' => null,
                 'supir_id' => null,
-                'status' => 'aktif',
+                'status' => 'approved',
+            ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 12345',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/2'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'approved',
+            ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 12345',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/3'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'approved',
             ],
 
         ];
 
         foreach ($vehicle as $key => $value) {
             Vehicle::create($value);
+        }
+
+        // ========================================================
+        // ==================== Seeder History =======================
+        // ========================================================
+
+        foreach (range(1, 10) as $index) {
+            DB::table('histories')->insert([
+                'user_id' => 'supir-123456',
+                'angkot_id' => $faker->numberBetween($min = 1, $max = 3),
+                'jumlah_pendapatan' => 10000,
+                'mulai_narik' => $faker->dateTime,
+                'selesai_narik' => $faker->dateTime,
+                'status' => 'done',
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
+            ]);
         }
 
         // ========================================================
@@ -127,12 +178,17 @@ class DatabaseSeeder extends Seeder
                 'penumpang_id' => 'user-123456',
                 'angkot_id' => '1',
                 'supir_id' => 'supir-123456',
-                'titik_naik' => '1',
-                'titik_turun' => '1',
+                'history_id' => $faker->numberBetween($min = 1, $max = 10),
+                'tempat_naik_id' => $faker->numberBetween($min = 1, $max = 10),
+                'tempat_turun_id' => $faker->numberBetween($min = 1, $max = 10),
+                'nama_tempat_naik' => $faker->secondaryAddress . ' ' . $faker->city,
+                'nama_tempat_turun' => $faker->secondaryAddress . ' ' . $faker->city,
                 'jarak' => '1',
-                'rekomendasi_harga' => 10000,
+                'rekomendasi_harga' => $faker->numberBetween($min = 10000, $max = 100000),
                 'is_done' => 0,
                 'is_connected_with_driver' => 0,
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
             ]);
         }
     }

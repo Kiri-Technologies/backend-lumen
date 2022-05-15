@@ -4,23 +4,11 @@ namespace App\Http\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 use App\Models\Vehicle;
-use App\Models\Favorites;
-use App\Models\FeedbackApp;
 use App\Models\ListDriver;
-use App\Models\Trip;
-use App\Models\History;
-use App\Models\Routes;
-use App\Models\Setpoints;
-use App\Models\User;
 
 class OwnerController  extends Controller
 {
@@ -43,7 +31,7 @@ class OwnerController  extends Controller
      *
      * @return void
      */
-    public function create(Request $request)
+    public function createAngkot(Request $request)
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
@@ -74,7 +62,7 @@ class OwnerController  extends Controller
                 $vehicle->status = "pending";
                 $vehicle->save();
 
-                $vehicle->qr_code = QrCode::format('svg')->generate(urlencode('angkot_id:'.$vehicle->id));
+                $vehicle->qr_code = 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/'.$vehicle->id);
                 $vehicle->save();
 
 
@@ -95,7 +83,7 @@ class OwnerController  extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function updateAngkot(Request $request, $id)
     {
         //validate incoming request
         $validator = Validator::make($request->all(), [
@@ -235,4 +223,6 @@ class OwnerController  extends Controller
             ], 404);
         }
     }
+
+
 }
