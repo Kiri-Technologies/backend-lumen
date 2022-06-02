@@ -339,6 +339,10 @@ class AdminController  extends Controller
             'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
+            'lat_titik_awal' => 'required',
+            'long_titik_awal' => 'required',
+            'lat_titik_akhir' => 'required',
+            'long_titik_akhir' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -354,6 +358,10 @@ class AdminController  extends Controller
                 $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
+                $routes->lat_titik_awal = $request->input('lat_titik_awal');
+                $routes->long_titik_awal = $request->input('long_titik_awal');
+                $routes->lat_titik_akhir = $request->input('lat_titik_akhir');
+                $routes->long_titik_akhir = $request->input('long_titik_akhir');
                 $routes->save();
 
                 // return successful response
@@ -387,6 +395,10 @@ class AdminController  extends Controller
             'kode_trayek' => 'required',
             'titik_awal' => 'required',
             'titik_akhir' => 'required',
+            'lat_titik_awal' => 'required',
+            'long_titik_awal' => 'required',
+            'lat_titik_akhir' => 'required',
+            'long_titik_akhir' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -402,6 +414,10 @@ class AdminController  extends Controller
                 $routes->kode_trayek = $request->input('kode_trayek');
                 $routes->titik_awal = $request->input('titik_awal');
                 $routes->titik_akhir = $request->input('titik_akhir');
+                $routes->lat_titik_awal = $request->input('lat_titik_awal');
+                $routes->long_titik_awal = $request->input('long_titik_awal');
+                $routes->lat_titik_akhir = $request->input('lat_titik_akhir');
+                $routes->long_titik_akhir = $request->input('long_titik_akhir');
                 $routes->save();
 
                 // return successful response
@@ -618,7 +634,7 @@ class AdminController  extends Controller
             $point->lat = $request->input("lat");
             $point->long = $request->input("long");
             $point->save();
-            
+
             return response()->json([
                 'status' => 'success',
                 "message" => 'Halte Virtual Updated',

@@ -18,6 +18,10 @@ class CreateRoutesTable extends Migration
             $table->string('kode_trayek');
             $table->string('titik_awal');
             $table->string('titik_akhir');
+            $table->string('lat_titik_awal');
+            $table->string('long_titik_awal');
+            $table->string('lat_titik_akhir');
+            $table->string('long_titik_akhir');
             $table->timestamps();
             $table->softDeletes();
         });
