@@ -580,7 +580,8 @@ class AdminController  extends Controller
             'route_id' => 'required',
             'nama_lokasi' => "required",
             'lat' => "required",
-            'long' => "required"
+            'long' => "required",
+            'arah' => "required"
         ]);
 
         if ($validator->fails()) {
@@ -596,6 +597,7 @@ class AdminController  extends Controller
                 $point->nama_lokasi = $request->input("nama_lokasi");
                 $point->lat = $request->input("lat");
                 $point->long = $request->input("long");
+                $point->arah = $request->input("arah");
                 $point->save();
 
                 return response()->json([
@@ -625,7 +627,9 @@ class AdminController  extends Controller
             'route_id' => 'required',
             'nama_lokasi' => "required",
             'lat' => "required",
-            'long' => "required"
+            'long' => "required",
+            'arah' => "required"
+
         ]);
         try {
             $point = Setpoints::find($id);
@@ -633,6 +637,7 @@ class AdminController  extends Controller
             $point->nama_lokasi = $request->input("nama_lokasi");
             $point->lat = $request->input("lat");
             $point->long = $request->input("long");
+            $point->arah = $request->input("arah");
             $point->save();
 
             return response()->json([
