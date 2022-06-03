@@ -34,6 +34,10 @@ class DatabaseSeeder extends Seeder
                 'kode_trayek' => $faker->areaCode,
                 'titik_awal' => $faker->name,
                 'titik_akhir' => $faker->name,
+                'lat_titik_awal' => $faker->latitude($min = -6.8, $max = 6.95),
+                'long_titik_awal' => $faker->latitude($min = -6.8, $max = 6.95),
+                'lat_titik_akhir' => $faker->latitude($min = -6.8, $max = 6.95),
+                'long_titik_akhir' => $faker->latitude($min = -6.8, $max = 6.95),
                 'created_at' => $faker->dateTime,
                 'updated_at' => $faker->dateTime,
             ]);
@@ -43,6 +47,7 @@ class DatabaseSeeder extends Seeder
             DB::table('setpoints')->insert([
                 'route_id' => $faker->numberBetween($min = 1, $max = 10),
                 'nama_lokasi' => $faker->secondaryAddress . ' ' . $faker->city,
+                'arah' => $faker->name,
                 'lat' => $faker->latitude($min = -6.8, $max = 6.95),
                 'long' => $faker->longitude($min = 107.5, $max = 107.65),
                 'created_at' => $faker->dateTime,

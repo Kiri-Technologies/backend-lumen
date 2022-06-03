@@ -183,11 +183,51 @@ class SupirController  extends Controller
      */
     public function UpdateHistory(Request $request, $id)
     {
-        History::find($id)->update($request->all());
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'prohibited',
+            'angkot_id' => 'prohibited',
+            'mulai_narik' => 'prohibited',
+        ]);
 
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'data updated'
-        ], 201);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $history = History::find($id);
+
+                if ($request->input('jumlah_pendapatan')) {
+                    $history->jumlah_pendapatan = $request->input('jumlah_pendapatan');
+                }
+
+                if ($request->input('selesai_narik')) {
+                    $history->selesai_narik = $request->input('selesai_narik');
+                }
+
+                if ($request->input('status')) {
+                    $history->status = $request->input('status');
+                }
+
+                $history->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Data created',
+                    'data' => $history,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
     }
 }
