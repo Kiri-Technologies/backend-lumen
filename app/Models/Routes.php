@@ -19,6 +19,10 @@ class Routes extends Model
         'kode_trayek',
         'titik_awal',
         'titik_akhir',
+        'lat_titik_awal',
+        'long_titik_awal',
+        'lat_titik_akhir',
+        'long_titik_akhir',
     ];
 
     /**

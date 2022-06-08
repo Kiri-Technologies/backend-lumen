@@ -19,6 +19,7 @@ class CreateSetpointsTable extends Migration
             $table->string('nama_lokasi');
             $table->string('lat');
             $table->string('long');
+            $table->string('arah');
             $table->timestamps();
             $table->softDeletes();
 

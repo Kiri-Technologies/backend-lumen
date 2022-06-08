@@ -52,7 +52,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
                 // Matches /api/supir/riwayat/{id}/update
                 // Function : Update data by Id
-                $router->patch('/{id}/update', 'SupirController@UpdateHistory');
+                $router->post('/{id}/update', 'SupirController@UpdateHistory');
             });
 
             //  ====================== CONFIRM ============================

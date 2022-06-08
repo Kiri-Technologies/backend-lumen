@@ -20,6 +20,7 @@ class Setpoints extends Model
         'nama_lokasi',
         'lat',
         'long',
+        'arah',
     ];
 
     /**
