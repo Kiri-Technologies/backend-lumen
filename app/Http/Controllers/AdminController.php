@@ -18,6 +18,8 @@ use App\Models\Vehicle;
 use App\Models\Trip;
 use App\Models\History;
 use App\Models\FeedbackApplication;
+use App\Models\PremiumUser;
+use App\Models\Target;
 
 class AdminController  extends Controller
 {
@@ -314,7 +316,7 @@ class AdminController  extends Controller
      */
     public function allRiwayat()
     {
-        $history =  History::with('supir','vehicle.route')->get();
+        $history =  History::with('supir', 'vehicle.route')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'get all history successfully!',
@@ -761,12 +763,12 @@ class AdminController  extends Controller
     public function totalFeedbackApp()
     {
         $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)->get();
+            ->whereYear('created_at', Carbon::now()->year)->get();
 
-        $submitted = $total->where('status','submitted')->count();
-        $pending = $total->where('status','pending')->count();
-        $processed = $total->where('status','processed')->count();
-        $cancelled = $total->where('status','cancelled')->count();
+        $submitted = $total->where('status', 'submitted')->count();
+        $pending = $total->where('status', 'pending')->count();
+        $processed = $total->where('status', 'processed')->count();
+        $cancelled = $total->where('status', 'cancelled')->count();
 
         return response()->json([
             'status' => 'success',
@@ -860,10 +862,11 @@ class AdminController  extends Controller
      * Graphic Total Perjalanan this month
      * @return Response
      */
-    public function totalPerjalananBulanIni() {
+    public function totalPerjalananBulanIni()
+    {
         $total = Trip::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->count();
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
@@ -875,13 +878,209 @@ class AdminController  extends Controller
      * Graphic Total Perjalanan last month
      * @return Response
      */
-    public function totalPerjalananBulanLalu() {
+    public function totalPerjalananBulanLalu()
+    {
         $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)
-        ->whereYear('created_at', Carbon::now()->year)->count();
+            ->whereYear('created_at', Carbon::now()->year)->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
             'data' => $total,
+        ], 200);
+    }
+
+    //  ===================================================================================
+    //  ==================================== Premium User  ================================
+    //  ===================================================================================
+
+    /**
+     * create premium user
+     *
+     * @return Response
+     */
+    public function createPremiumUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'payment_date' => "required|date",
+            'from' => "required|date",
+            'to' => "required|date",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->error(),
+                'data' => []
+            ], 400);
+        } else {
+            try {
+                $premiumUser = new PremiumUser();
+                $premiumUser->user_id = $request->input("user_id");
+                $premiumUser->payment_date = $request->input("payment_date");
+                $premiumUser->from = $request->input("from");
+                $premiumUser->to = $request->input("to");
+                $premiumUser->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    "message" => 'Premium User Created',
+                    'data' => $premiumUser,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get all premium users.
+     *
+     * @return Response
+     */
+    public function getAllPremiumUsers()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => PremiumUser::with('user')->get(),
+        ], 200);
+    }
+
+    /**
+     * Update premium users
+     *
+     * @return Response
+     */
+    public function updatePremiumUser(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'payment_date' => "required|date",
+            'from' => "required|date",
+            'to' => "required|date",
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $premiumUser = PremiumUser::find($id);
+                $premiumUser->user_id = $request->input("user_id");
+                $premiumUser->payment_date = $request->input("payment_date");
+                $premiumUser->from = $request->input("from");
+                $premiumUser->to = $request->input("to");
+                $premiumUser->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Updated !',
+                    'data' => $premiumUser,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function deletePremiumUser($id)
+    {
+        $premiumUser = PremiumUser::find($id);
+        if ($premiumUser) {
+            $premiumUser->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Premium User Deleted !',
+                'data' => [],
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Premium User Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
+
+
+    //  ===================================================================================
+    //  ==================================== Target  ======================================
+    //  ===================================================================================
+
+    public function getAllTarget()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => Target::get(),
+        ], 200);
+    }
+
+    public function updateTarget(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'target' => "required|integer",
+            'input' => "integer",
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $target = Target::find($id);
+                $target->target = $request->input("target");
+
+                if ($request->input("input")) {
+                    $target->input = $request->input("input");
+                }
+                $target->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Updated !',
+                    'data' => $target,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function getTargetById($id)
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => Target::find($id),
         ], 200);
     }
 }

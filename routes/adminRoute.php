@@ -186,6 +186,44 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : get total perjalanan bulan lalu
                 $router->get("/totalPerjalananBulanLalu", 'AdminController@totalPerjalananBulanLalu');
             });
+
+            //  ======================== Target ========================
+
+            $router->group(["prefix" => "target"], function () use ($router) {
+
+                // Matches /api/admin/target
+                // Function : Get All Target
+                $router->get("/", 'AdminController@getAllTarget');
+
+                // Matches /api/admin/target/{id}/update
+                // Function : Update Target
+                $router->post("/{id}/update", 'AdminController@updateTarget');
+
+                // Matches /api/admin/target/{id}
+                // Function : Get Target By Id
+                $router->get("/{id}", 'AdminController@getTargetById');
+            });
+
+            //  ======================== Premium User ========================
+
+            $router->group(["prefix" => "premiumuser"], function () use ($router) {
+
+                // Matches /api/admin/premiumuser/create
+                // Function : Create Premium User
+                $router->post("/create", 'AdminController@createPremiumUser');
+
+                // Matches /api/admin/premiumuser
+                // Function : Get All Premium User
+                $router->get("/", 'AdminController@getAllPremiumUsers');
+
+                // Matches /api/admin/premiumuser/{id}/update
+                // Function : Update Premium User
+                $router->post("/{id}/update", 'AdminController@updatePremiumUser');
+
+                // Matches /api/admin/premiumuser/{id}/delete
+                // Function : Delete Premium User
+                $router->delete("/{id}/delete", 'AdminController@deletePremiumUser');
+            });
         });
 
         // ==============================================================
