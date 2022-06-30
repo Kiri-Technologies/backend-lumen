@@ -17,7 +17,7 @@ class CreateTripsTable extends Migration
             $table->increments('id');
             $table->string('penumpang_id');
             $table->unsignedInteger('angkot_id');
-            $table->unsignedInteger('history_id');
+            $table->unsignedInteger('history_id')->nullable();
             $table->unsignedInteger('tempat_naik_id');
             $table->unsignedInteger('tempat_turun_id');
             $table->string('supir_id');
