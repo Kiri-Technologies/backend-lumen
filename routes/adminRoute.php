@@ -232,6 +232,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Get All Premium User
                 $router->get("/", 'AdminController@getAllPremiumUsers');
 
+                // Matches /api/admin/premiumuser/1
+                // Function : Get Premium user by id
+                $router->get("/{id}", 'AdminController@getPremiumUserById');
+
                 // Matches /api/admin/premiumuser/{id}/update
                 // Function : Update Premium User
                 $router->post("/{id}/update", 'AdminController@updatePremiumUser');

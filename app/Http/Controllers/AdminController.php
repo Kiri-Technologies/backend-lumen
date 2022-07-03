@@ -1112,6 +1112,29 @@ class AdminController  extends Controller
     }
 
     /**
+     * Get all premium users.
+     *
+     * @return Response
+     */
+    public function getPremiumUserById($id)
+    {
+        $premiumUser = PremiumUser::with('user')->find($id);
+        if ($premiumUser) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Premium Users Requested !',
+                'data' => $premiumUser,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Premium User Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
+
+    /**
      * Update premium users
      *
      * @return Response
