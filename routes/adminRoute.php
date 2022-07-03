@@ -185,6 +185,60 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/totalPerjalananBulanLalu
                 // Function : get total perjalanan bulan lalu
                 $router->get("/totalPerjalananBulanLalu", 'AdminController@totalPerjalananBulanLalu');
+
+                // Matches /api/admin/totalUsersThisMonth
+                // Function : get total user bulan ini
+                $router->get("/totalUsersThisMonth", 'AdminController@getTotalUsersThisMonth');
+
+                // Matches /api/admin/totalUsersLastSixMonth
+                // Function : get total user 6 bulan terakhir
+                $router->get("/totalUsersLastSixMonth", 'AdminController@getTotalUsersLastSixMonth');
+
+                // Matches /api/admin/totalPremiumUserThisMonth
+                // Function : get total premium user bulan ini
+                $router->get("/totalPremiumUserThisMonth", 'AdminController@getTotalPremiumUsersThisMonth');
+
+                // Matches /api/admin/totalUsersLastSixMonth
+                // Function : get total user 6 bulan terakhir
+                $router->get("/totalPremiumUserLastSixMonth", 'AdminController@getTotalPremiumUsersLastSixMonth');
+            });
+
+            //  ======================== Target ========================
+
+            $router->group(["prefix" => "target"], function () use ($router) {
+
+                // Matches /api/admin/target
+                // Function : Get All Target
+                $router->get("/", 'AdminController@getAllTarget');
+
+                // Matches /api/admin/target/{id}/update
+                // Function : Update Target
+                $router->post("/{id}/update", 'AdminController@updateTarget');
+
+                // Matches /api/admin/target/{id}
+                // Function : Get Target By Id
+                $router->get("/{id}", 'AdminController@getTargetById');
+            });
+
+            //  ======================== Premium User ========================
+
+            $router->group(["prefix" => "premiumuser"], function () use ($router) {
+
+                // Matches /api/admin/premiumuser/create
+                // Function : Create Premium User
+                $router->post("/create", 'AdminController@createPremiumUser');
+
+                // Matches /api/admin/premiumuser
+                // Function : Get All Premium User
+                $router->get("/", 'AdminController@getAllPremiumUsers');
+
+                // Matches /api/admin/premiumuser/{id}/update
+                // Function : Update Premium User
+                $router->post("/{id}/update", 'AdminController@updatePremiumUser');
+
+                // Matches /api/admin/premiumuser/{id}/delete
+                // Function : Delete Premium User
+                $router->delete("/{id}/delete", 'AdminController@deletePremiumUser');
             });
         });
 

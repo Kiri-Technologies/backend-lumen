@@ -266,8 +266,8 @@ class DatabaseSeeder extends Seeder
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
                 'kir_bulanan' => '2017-06-15',
-                'is_beroperasi' => null,
-                'supir_id' => null,
+                'is_beroperasi' => true,
+                'supir_id' => 'supir-123456',
                 'status' => 'approved',
             ],
             [
@@ -400,6 +400,23 @@ class DatabaseSeeder extends Seeder
             'updated_at' => $faker->dateTime,
         ]);
 
+        DB::table('trips')->insert([
+            'penumpang_id' => 'user-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'supir-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 0,
+            'is_connected_with_driver' => 1,
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
         // foreach (range(1, 10) as $index) {
         //     DB::table('trips')->insert([
         //         'penumpang_id' => 'user-123456',
@@ -418,5 +435,56 @@ class DatabaseSeeder extends Seeder
         //         'updated_at' => $faker->dateTime,
         //     ]);
         // }
+
+        // ==========================================================
+        // ==================== Feedback Trip =======================
+        // ==========================================================
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 1,
+            'rating' => 4,
+            'review' => 'sangat nyaman',
+            'komentar' => 'sudah bagus, saya sangat nyaman menggunakan angkot ini',
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 2,
+            'rating' => 5,
+            'review' => 'sangat nyaman',
+            'komentar' => 'sudah bagus sih dan bersih',
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
+
+        // ==========================================================
+        // ======================= Target ===========================
+        // ==========================================================
+
+        DB::table('targets')->insert([
+            'name' => 'pengeluaran',
+            'input' => 0,
+            'target' => 500000,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'pengguna berlangganan',
+            'input' => 0,
+            'target' => 20,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'user',
+            'input' => 0,
+            'target' => 5,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'feedback user',
+            'input' => 0,
+            'target' => 5,
+        ]);
     }
 }

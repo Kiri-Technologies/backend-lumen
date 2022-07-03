@@ -108,4 +108,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Favorites::class, 'user_id');
     }
+
+    public function premium()
+    {
+        return $this->hasMany(PremiumUser::class, 'user_id');
+    }
 }
