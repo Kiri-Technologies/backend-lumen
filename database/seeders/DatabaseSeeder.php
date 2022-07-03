@@ -457,5 +457,34 @@ class DatabaseSeeder extends Seeder
             'created_at' => $faker->dateTime,
             'updated_at' => $faker->dateTime,
         ]);
+
+
+        // ==========================================================
+        // ======================= Target ===========================
+        // ==========================================================
+
+        DB::table('targets')->insert([
+            'name' => 'pengeluaran',
+            'input' => 0,
+            'target' => 500000,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'pengguna berlangganan',
+            'input' => 0,
+            'target' => 20,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'user',
+            'input' => 0,
+            'target' => 5,
+        ]);
+
+        DB::table('targets')->insert([
+            'name' => 'feedback user',
+            'input' => 0,
+            'target' => 5,
+        ]);
     }
 }

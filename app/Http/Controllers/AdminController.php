@@ -18,6 +18,8 @@ use App\Models\Vehicle;
 use App\Models\Trip;
 use App\Models\History;
 use App\Models\FeedbackApplication;
+use App\Models\PremiumUser;
+use App\Models\Target;
 
 class AdminController  extends Controller
 {
@@ -314,7 +316,7 @@ class AdminController  extends Controller
      */
     public function allRiwayat()
     {
-        $history =  History::with('supir','vehicle.route')->get();
+        $history =  History::with('supir', 'vehicle.route')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'get all history successfully!',
@@ -761,12 +763,12 @@ class AdminController  extends Controller
     public function totalFeedbackApp()
     {
         $total = FeedbackApplication::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)->get();
+            ->whereYear('created_at', Carbon::now()->year)->get();
 
-        $submitted = $total->where('status','submitted')->count();
-        $pending = $total->where('status','pending')->count();
-        $processed = $total->where('status','processed')->count();
-        $cancelled = $total->where('status','cancelled')->count();
+        $submitted = $total->where('status', 'submitted')->count();
+        $pending = $total->where('status', 'pending')->count();
+        $processed = $total->where('status', 'processed')->count();
+        $cancelled = $total->where('status', 'cancelled')->count();
 
         return response()->json([
             'status' => 'success',
@@ -800,6 +802,165 @@ class AdminController  extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Total User',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total User App this month and last month
+     *
+     * @return Response
+     */
+    public function getTotalUsersThisMonth()
+    {
+        $thisMonth = Carbon::now()->month;
+        $lastMonth = Carbon::now()->subMonth()->month;
+        $thisYear = Carbon::now()->year;
+
+
+        $ownerThisMonth = User::where('role', 'owner')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        $penumpangThisMonth = User::where('role', 'penumpang')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        $supirThisMonth = User::where('role', 'supir')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+
+        $ownerLastMonth = User::where('role', 'owner')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $penumpangLastMonth = User::where('role', 'penumpang')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $supirLastMonth = User::where('role', 'supir')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+
+        $total_user = [
+            'owner' => [
+                'this_month' => $ownerThisMonth,
+                'last_month' => $ownerLastMonth
+            ],
+            'penumpang' => [
+                'this_month' => $penumpangThisMonth,
+                'last_month' => $penumpangLastMonth
+            ],
+            'supir' => [
+                'this_month' => $supirThisMonth,
+                'last_month' => $supirLastMonth
+            ],
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User This Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total User App this month and last month
+     *
+     * @return Response
+     */
+    public function getTotalUsersLastSixMonth()
+    {
+        $owner = [];
+        $supir = [];
+        $penumpang = [];
+
+        for ($month = 0; $month < 6; $month++) {
+            $date = Carbon::now()->subMonth($month);
+
+            $ownerCounter = User::where('role', 'owner')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+            $penumpangCounter = User::where('role', 'penumpang')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+            $supirCounter = User::where('role', 'supir')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+
+            array_push($owner, $ownerCounter);
+            array_push($supir, $supirCounter);
+            array_push($penumpang, $penumpangCounter);
+        }
+
+        $total_user = [
+            'owner' => [
+                '1' => $owner[0],
+                '2' => $owner[1],
+                '3' => $owner[2],
+                '4' => $owner[3],
+                '5' => $owner[4],
+                '6' => $owner[5],
+            ],
+            'supir' => [
+                '1' => $supir[0],
+                '2' => $supir[1],
+                '3' => $supir[2],
+                '4' => $supir[3],
+                '5' => $supir[4],
+                '6' => $supir[5],
+            ],
+            'penumpang' => [
+                '1' => $penumpang[0],
+                '2' => $penumpang[1],
+                '3' => $penumpang[2],
+                '4' => $penumpang[3],
+                '5' => $penumpang[4],
+                '6' => $penumpang[5],
+            ],
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User Last Six Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total Premium User This Month
+     *
+     * @return Response
+     */
+    public function getTotalPremiumUsersThisMonth()
+    {
+        $thisDate = Carbon::now();
+
+        $premiumUserThisMonth = PremiumUser::whereDate('to', '>', $thisDate)->count();
+
+        $total_user = [
+            'premium_user' => $premiumUserThisMonth
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Premium User This Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total Premium User Last Six Month
+     *
+     * @return Response
+     */
+    public function getTotalPremiumUsersLastSixMonth()
+    {
+        $premiumUser = [];
+
+        for ($month = 0; $month < 6; $month++) {
+            $date = Carbon::now()->subMonth($month);
+
+            if ($month == 0) {
+                $premiumUserThisMonth = PremiumUser::whereMonth('to', '>=', $date)->count();
+            } else {
+                $premiumUserThisMonth = PremiumUser::whereMonth('to', $date->month)->count();
+            }
+
+            array_push($premiumUser, $premiumUserThisMonth);
+        }
+
+        $total_user = [
+            '1' => $premiumUser[0],
+            '2' => $premiumUser[1],
+            '3' => $premiumUser[2],
+            '4' => $premiumUser[3],
+            '5' => $premiumUser[4],
+            '6' => $premiumUser[5],
+
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User Last Six Month',
             'data' => $total_user,
         ], 200);
     }
@@ -860,10 +1021,11 @@ class AdminController  extends Controller
      * Graphic Total Perjalanan this month
      * @return Response
      */
-    public function totalPerjalananBulanIni() {
+    public function totalPerjalananBulanIni()
+    {
         $total = Trip::whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->count();
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
@@ -875,13 +1037,209 @@ class AdminController  extends Controller
      * Graphic Total Perjalanan last month
      * @return Response
      */
-    public function totalPerjalananBulanLalu() {
+    public function totalPerjalananBulanLalu()
+    {
         $total = Trip::whereMonth('created_at', Carbon::now()->subMonth()->month)
-        ->whereYear('created_at', Carbon::now()->year)->count();
+            ->whereYear('created_at', Carbon::now()->year)->count();
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
             'data' => $total,
+        ], 200);
+    }
+
+    //  ===================================================================================
+    //  ==================================== Premium User  ================================
+    //  ===================================================================================
+
+    /**
+     * create premium user
+     *
+     * @return Response
+     */
+    public function createPremiumUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'payment_date' => "required|date",
+            'from' => "required|date",
+            'to' => "required|date",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->error(),
+                'data' => []
+            ], 400);
+        } else {
+            try {
+                $premiumUser = new PremiumUser();
+                $premiumUser->user_id = $request->input("user_id");
+                $premiumUser->payment_date = $request->input("payment_date");
+                $premiumUser->from = $request->input("from");
+                $premiumUser->to = $request->input("to");
+                $premiumUser->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    "message" => 'Premium User Created',
+                    'data' => $premiumUser,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    /**
+     * Get all premium users.
+     *
+     * @return Response
+     */
+    public function getAllPremiumUsers()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => PremiumUser::with('user')->get(),
+        ], 200);
+    }
+
+    /**
+     * Update premium users
+     *
+     * @return Response
+     */
+    public function updatePremiumUser(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'payment_date' => "required|date",
+            'from' => "required|date",
+            'to' => "required|date",
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $premiumUser = PremiumUser::find($id);
+                $premiumUser->user_id = $request->input("user_id");
+                $premiumUser->payment_date = $request->input("payment_date");
+                $premiumUser->from = $request->input("from");
+                $premiumUser->to = $request->input("to");
+                $premiumUser->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Updated !',
+                    'data' => $premiumUser,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function deletePremiumUser($id)
+    {
+        $premiumUser = PremiumUser::find($id);
+        if ($premiumUser) {
+            $premiumUser->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Premium User Deleted !',
+                'data' => [],
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Premium User Not Found!',
+                'data' => [],
+            ], 400);
+        }
+    }
+
+
+    //  ===================================================================================
+    //  ==================================== Target  ======================================
+    //  ===================================================================================
+
+    public function getAllTarget()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => Target::get(),
+        ], 200);
+    }
+
+    public function updateTarget(Request $request, $id)
+    {
+        //validate incoming request
+        $validator = Validator::make($request->all(), [
+            'target' => "required|integer",
+            'input' => "integer",
+        ]);
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        } else {
+            try {
+                $target = Target::find($id);
+                $target->target = $request->input("target");
+
+                if ($request->input("input")) {
+                    $target->input = $request->input("input");
+                }
+                $target->save();
+
+                //return successful response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Updated !',
+                    'data' => $target,
+                ], 201);
+            } catch (\Exception $e) {
+                //return error message
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $e,
+                    'data' => [],
+                ], 409);
+            }
+        }
+    }
+
+    public function getTargetById($id)
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Premium Users Requested !',
+            'data' => Target::find($id),
         ], 200);
     }
 }
