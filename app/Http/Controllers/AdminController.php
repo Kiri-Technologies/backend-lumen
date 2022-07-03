@@ -807,6 +807,165 @@ class AdminController  extends Controller
     }
 
     /**
+     * Get Total User App this month and last month
+     *
+     * @return Response
+     */
+    public function getTotalUsersThisMonth()
+    {
+        $thisMonth = Carbon::now()->month;
+        $lastMonth = Carbon::now()->subMonth()->month;
+        $thisYear = Carbon::now()->year;
+
+
+        $ownerThisMonth = User::where('role', 'owner')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        $penumpangThisMonth = User::where('role', 'penumpang')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        $supirThisMonth = User::where('role', 'supir')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+
+        $ownerLastMonth = User::where('role', 'owner')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $penumpangLastMonth = User::where('role', 'penumpang')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $supirLastMonth = User::where('role', 'supir')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+
+        $total_user = [
+            'owner' => [
+                'this_month' => $ownerThisMonth,
+                'last_month' => $ownerLastMonth
+            ],
+            'penumpang' => [
+                'this_month' => $penumpangThisMonth,
+                'last_month' => $penumpangLastMonth
+            ],
+            'supir' => [
+                'this_month' => $supirThisMonth,
+                'last_month' => $supirLastMonth
+            ],
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User This Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total User App this month and last month
+     *
+     * @return Response
+     */
+    public function getTotalUsersLastSixMonth()
+    {
+        $owner = [];
+        $supir = [];
+        $penumpang = [];
+
+        for ($month = 0; $month < 6; $month++) {
+            $date = Carbon::now()->subMonth($month);
+
+            $ownerCounter = User::where('role', 'owner')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+            $penumpangCounter = User::where('role', 'penumpang')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+            $supirCounter = User::where('role', 'supir')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+
+            array_push($owner, $ownerCounter);
+            array_push($supir, $supirCounter);
+            array_push($penumpang, $penumpangCounter);
+        }
+
+        $total_user = [
+            'owner' => [
+                '1' => $owner[0],
+                '2' => $owner[1],
+                '3' => $owner[2],
+                '4' => $owner[3],
+                '5' => $owner[4],
+                '6' => $owner[5],
+            ],
+            'supir' => [
+                '1' => $supir[0],
+                '2' => $supir[1],
+                '3' => $supir[2],
+                '4' => $supir[3],
+                '5' => $supir[4],
+                '6' => $supir[5],
+            ],
+            'penumpang' => [
+                '1' => $penumpang[0],
+                '2' => $penumpang[1],
+                '3' => $penumpang[2],
+                '4' => $penumpang[3],
+                '5' => $penumpang[4],
+                '6' => $penumpang[5],
+            ],
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User Last Six Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total Premium User This Month
+     *
+     * @return Response
+     */
+    public function getTotalPremiumUsersThisMonth()
+    {
+        $thisDate = Carbon::now();
+
+        $premiumUserThisMonth = PremiumUser::whereDate('to', '>', $thisDate)->count();
+
+        $total_user = [
+            'premium_user' => $premiumUserThisMonth
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total Premium User This Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
+     * Get Total Premium User Last Six Month
+     *
+     * @return Response
+     */
+    public function getTotalPremiumUsersLastSixMonth()
+    {
+        $premiumUser = [];
+
+        for ($month = 0; $month < 6; $month++) {
+            $date = Carbon::now()->subMonth($month);
+
+            if ($month == 0) {
+                $premiumUserThisMonth = PremiumUser::whereMonth('to', '>=', $date)->count();
+            } else {
+                $premiumUserThisMonth = PremiumUser::whereMonth('to', $date->month)->count();
+            }
+
+            array_push($premiumUser, $premiumUserThisMonth);
+        }
+
+        $total_user = [
+            '1' => $premiumUser[0],
+            '2' => $premiumUser[1],
+            '3' => $premiumUser[2],
+            '4' => $premiumUser[3],
+            '5' => $premiumUser[4],
+            '6' => $premiumUser[5],
+
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total User Last Six Month',
+            'data' => $total_user,
+        ], 200);
+    }
+
+    /**
      * Get Most Used Trayek
      *
      * @return Response

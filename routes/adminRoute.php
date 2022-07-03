@@ -185,6 +185,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Matches /api/admin/totalPerjalananBulanLalu
                 // Function : get total perjalanan bulan lalu
                 $router->get("/totalPerjalananBulanLalu", 'AdminController@totalPerjalananBulanLalu');
+
+                // Matches /api/admin/totalUsersThisMonth
+                // Function : get total user bulan ini
+                $router->get("/totalUsersThisMonth", 'AdminController@getTotalUsersThisMonth');
+
+                // Matches /api/admin/totalUsersLastSixMonth
+                // Function : get total user 6 bulan terakhir
+                $router->get("/totalUsersLastSixMonth", 'AdminController@getTotalUsersLastSixMonth');
+
+                // Matches /api/admin/totalPremiumUserThisMonth
+                // Function : get total premium user bulan ini
+                $router->get("/totalPremiumUserThisMonth", 'AdminController@getTotalPremiumUsersThisMonth');
+
+                // Matches /api/admin/totalUsersLastSixMonth
+                // Function : get total user 6 bulan terakhir
+                $router->get("/totalPremiumUserLastSixMonth", 'AdminController@getTotalPremiumUsersLastSixMonth');
             });
 
             //  ======================== Target ========================
