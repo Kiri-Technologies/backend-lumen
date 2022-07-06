@@ -1072,7 +1072,11 @@ class AdminController  extends Controller
                 'message' => $validator->error(),
                 'data' => []
             ], 400);
-        } else {
+        }
+
+        $user = User::find($request->input("user_id"));
+
+        if ($user) {
             try {
                 $premiumUser = new PremiumUser();
                 $premiumUser->user_id = $request->input("user_id");
@@ -1094,6 +1098,13 @@ class AdminController  extends Controller
                     'data' => [],
                 ], 409);
             }
+        } else {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => "User tidak ditemukan",
+                'data' => [],
+            ], 400);
         }
     }
 
@@ -1156,7 +1167,11 @@ class AdminController  extends Controller
                 'message' => $validator->errors(),
                 'data' => [],
             ], 400);
-        } else {
+        }
+
+        $user = User::find($request->input("user_id"));
+
+        if ($user) {
             try {
                 $premiumUser = PremiumUser::find($id);
                 $premiumUser->user_id = $request->input("user_id");
@@ -1179,6 +1194,13 @@ class AdminController  extends Controller
                     'data' => [],
                 ], 409);
             }
+        } else {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => "User tidak ditemukan",
+                'data' => [],
+            ], 400);
         }
     }
 
@@ -1210,7 +1232,7 @@ class AdminController  extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'message' => 'Premium Users Requested !',
+            'message' => 'Target Requested !',
             'data' => Target::get(),
         ], 200);
     }
@@ -1243,7 +1265,7 @@ class AdminController  extends Controller
                 //return successful response
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Premium User Updated !',
+                    'message' => 'Target Updated !',
                     'data' => $target,
                 ], 201);
             } catch (\Exception $e) {
@@ -1261,7 +1283,7 @@ class AdminController  extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'message' => 'Premium Users Requested !',
+            'message' => 'Target Requested !',
             'data' => Target::find($id),
         ], 200);
     }
