@@ -1245,6 +1245,8 @@ class AdminController  extends Controller
             'input' => "integer",
         ]);
 
+        $request = $request->all();
+
         if ($validator->fails()) {
             //return failed response
             return response()->json([
@@ -1255,10 +1257,10 @@ class AdminController  extends Controller
         } else {
             try {
                 $target = Target::find($id);
-                $target->target = $request->input("target");
+                $target->target = $request['target'];
 
-                if ($request->input("input")) {
-                    $target->input = $request->input("input");
+                if (isset($request['input'])) {
+                    $target->input = $request['input'] == 0 ? null : $request['input'];
                 }
                 $target->save();
 

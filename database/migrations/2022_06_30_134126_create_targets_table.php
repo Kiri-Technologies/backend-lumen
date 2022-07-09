@@ -16,7 +16,7 @@ class CreateTargetsTable extends Migration
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('input');
+            $table->integer('input')->nullable();
             $table->integer('target');
             $table->timestamps();
         });
