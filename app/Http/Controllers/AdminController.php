@@ -747,7 +747,9 @@ class AdminController  extends Controller
      */
     public function totalPendapatanBulanLalu()
     {
-        $pendapatan = History::whereMonth('created_at', Carbon::now()->subMonth()->month)->sum('jumlah_pendapatan');
+        $date = Carbon::now()->subMonth();
+        // $pendapatan = History::whereMonth('created_at', Carbon::now()->subMonth()->month)->sum('jumlah_pendapatan');
+        $pendapatan = History::whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->sum('jumlah_pendapatan');
         return response()->json([
             'status' => 'success',
             'message' => 'ok',
