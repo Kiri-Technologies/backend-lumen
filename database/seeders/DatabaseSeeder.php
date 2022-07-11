@@ -6,7 +6,7 @@ use App\Models\Vehicle;
 use App\Models\History;
 use App\Models\User;
 use App\Models\Trip;
-
+use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -222,9 +222,27 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('password'),
             ],
             [
+                'id' => 'komeng-123456',
+                'name' => 'komeng',
+                'email' => 'komeng@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+            ],
+            [
                 'id' => 'supir-123456',
                 'name' => 'supir',
                 'email' => 'supir@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+            ],
+            [
+                'id' => 'dayat-123456',
+                'name' => 'dayat',
+                'email' => 'dayat@gmail.com',
                 'birthdate' => '2017-06-15',
                 'role' => 'supir',
                 'phone_number' => '081234567891',
@@ -253,6 +271,30 @@ class DatabaseSeeder extends Seeder
         foreach ($user as $key => $value) {
             User::create($value);
         }
+
+        DB::table('users')->insert([
+            'id' => 'wahyu-123456',
+            'name' => 'wahyu',
+            'email' => 'wahyu@gmail.com',
+            'birthdate' => '2017-06-15',
+            'role' => 'penumpang',
+            'phone_number' => '081234567890',
+            'password' => bcrypt('password'),
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('users')->insert([
+            'id' => 'lanang-123456',
+            'name' => 'lanang',
+            'email' => 'lanang@gmail.com',
+            'birthdate' => '2017-06-15',
+            'role' => 'supir',
+            'phone_number' => '081234567890',
+            'password' => bcrypt('password'),
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
 
         // ========================================================
         // ==================== Seeder Angkot =====================
@@ -314,7 +356,23 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('list_drivers')->insert([
+            'supir_id' => 'dayat-123456',
+            'angkot_id' => 1,
+            'is_confirmed' => 1,
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
+        DB::table('list_drivers')->insert([
             'supir_id' => 'supir-123456',
+            'angkot_id' => 2,
+            'is_confirmed' => 1,
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
+        DB::table('list_drivers')->insert([
+            'supir_id' => 'lanang-123456',
             'angkot_id' => 2,
             'is_confirmed' => 1,
             'created_at' => $faker->dateTime,
@@ -325,28 +383,95 @@ class DatabaseSeeder extends Seeder
         // ========================================================
         // ==================== Seeder History =======================
         // ========================================================
-        
 
+        // Last month
         DB::table('histories')->insert([
             'user_id' => 'supir-123456',
             'angkot_id' => 1,
-            'jumlah_pendapatan' => 15000,
-            'mulai_narik' => $faker->dateTime,
-            'selesai_narik' => $faker->dateTime,
+            'jumlah_pendapatan' => 121000,
+            'mulai_narik' => Carbon::now()->subMonth(),
+            'selesai_narik' => Carbon::now()->subMonth(),
             'status' => 'done',
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('histories')->insert([
+            'user_id' => 'dayat-123456',
+            'angkot_id' => 1,
+            'jumlah_pendapatan' => 80000,
+            'mulai_narik' => Carbon::now()->subMonth(),
+            'selesai_narik' => Carbon::now()->subMonth(),
+            'status' => 'done',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
         ]);
 
         DB::table('histories')->insert([
             'user_id' => 'supir-123456',
             'angkot_id' => 2,
-            'jumlah_pendapatan' => 10000,
-            'mulai_narik' => $faker->dateTime,
-            'selesai_narik' => $faker->dateTime,
+            'jumlah_pendapatan' => 82000,
+            'mulai_narik' => Carbon::now()->subMonth(),
+            'selesai_narik' => Carbon::now()->subMonth(),
             'status' => 'done',
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('histories')->insert([
+            'user_id' => 'lanang-123456',
+            'angkot_id' => 2,
+            'jumlah_pendapatan' => 90000,
+            'mulai_narik' => Carbon::now()->subMonth(),
+            'selesai_narik' => Carbon::now()->subMonth(),
+            'status' => 'done',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        // This month
+        DB::table('histories')->insert([
+            'user_id' => 'supir-123456',
+            'angkot_id' => 1,
+            'jumlah_pendapatan' => 105000,
+            'mulai_narik' => Carbon::now(),
+            'selesai_narik' => Carbon::now(),
+            'status' => 'done',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('histories')->insert([
+            'user_id' => 'dayat-123456',
+            'angkot_id' => 1,
+            'jumlah_pendapatan' => 111000,
+            'mulai_narik' => Carbon::now(),
+            'selesai_narik' => Carbon::now(),
+            'status' => 'done',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('histories')->insert([
+            'user_id' => 'supir-123456',
+            'angkot_id' => 2,
+            'jumlah_pendapatan' => 99000,
+            'mulai_narik' => Carbon::now(),
+            'selesai_narik' => Carbon::now(),
+            'status' => 'done',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('histories')->insert([
+            'user_id' => 'lanang-123456',
+            'angkot_id' => 2,
+            'jumlah_pendapatan' => 105000,
+            'mulai_narik' => Carbon::now(),
+            'selesai_narik' => Carbon::now(),
+            'status' => 'done',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         // foreach (range(1, 10) as $index) {
@@ -366,6 +491,7 @@ class DatabaseSeeder extends Seeder
         // ==================== Seeder Trip =======================
         // ========================================================
 
+        // last month
         DB::table('trips')->insert([
             'penumpang_id' => 'user-123456',
             'angkot_id' => 1,
@@ -379,8 +505,42 @@ class DatabaseSeeder extends Seeder
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
             'is_done' => 1,
             'is_connected_with_driver' => 1,
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'komeng-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'lanang-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'wahyu-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'dayat-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
         ]);
 
         DB::table('trips')->insert([
@@ -396,8 +556,8 @@ class DatabaseSeeder extends Seeder
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
             'is_done' => 1,
             'is_connected_with_driver' => 1,
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
         ]);
 
         DB::table('trips')->insert([
@@ -413,8 +573,94 @@ class DatabaseSeeder extends Seeder
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
             'is_done' => 0,
             'is_connected_with_driver' => 1,
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        // This month
+        DB::table('trips')->insert([
+            'penumpang_id' => 'user-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'supir-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'komeng-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'lanang-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'wahyu-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'dayat-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'user-123456',
+            'angkot_id' => 2,
+            'supir_id' => 'supir-123456',
+            'history_id' => 2,
+            'tempat_naik_id' => 10,
+            'tempat_turun_id' => 12,
+            'nama_tempat_naik' => 'Universitas Bhakti Kencana Bandung',
+            'nama_tempat_turun' => 'Metro Indah Mall',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'user-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'supir-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 0,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
         // foreach (range(1, 10) as $index) {
@@ -440,13 +686,14 @@ class DatabaseSeeder extends Seeder
         // ==================== Feedback Trip =======================
         // ==========================================================
 
+        // Last month
         DB::table('feedbacks')->insert([
             'perjalanan_id' => 1,
             'rating' => 4,
             'review' => 'sangat nyaman',
-            'komentar' => 'sudah bagus, saya sangat nyaman menggunakan angkot ini',
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'komentar' => 'angkotnya nyaman sekali',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
         ]);
 
         DB::table('feedbacks')->insert([
@@ -454,8 +701,81 @@ class DatabaseSeeder extends Seeder
             'rating' => 5,
             'review' => 'sangat nyaman',
             'komentar' => 'sudah bagus sih dan bersih',
-            'created_at' => $faker->dateTime,
-            'updated_at' => $faker->dateTime,
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 3,
+            'rating' => 3,
+            'review' => 'kurang nyaman',
+            'komentar' => 'angkotnya bau rokok',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 4,
+            'rating' => 5,
+            'review' => 'nyaman',
+            'komentar' => 'angkotnya lumayan ngebut',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 5,
+            'rating' => 1,
+            'review' => 'tidak nyaman',
+            'komentar' => 'ngetemnya lama banget saya jadi telat ngantor',
+            'created_at' => Carbon::now()->subMonth(),
+            'updated_at' => Carbon::now()->subMonth(),
+        ]);
+
+        // This month
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 6,
+            'rating' => 2,
+            'review' => 'kurang nyaman',
+            'komentar' => 'angkotnya tidak bersih',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 7,
+            'rating' => 4,
+            'review' => 'nyaman',
+            'komentar' => 'sudah bagus',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 8,
+            'rating' => 5,
+            'review' => 'sangat nyaman',
+            'komentar' => 'supirnya ramah sekali',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 9,
+            'rating' => 4,
+            'review' => 'sangat nyaman',
+            'komentar' => 'walaupun sudah malam tetapi perjalanannya lancar',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'perjalanan_id' => 10,
+            'rating' => 4,
+            'review' => 'sangat nyaman',
+            'komentar' => 'bagus',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
 
@@ -485,6 +805,237 @@ class DatabaseSeeder extends Seeder
             'name' => 'feedback user',
             'input' => 0,
             'target' => 5,
+        ]);
+
+
+        // ================================================================
+        // ======================= Feedback app ===========================
+        // ================================================================
+        // excellent,happy,sad,awful,neutral
+
+        // Submitted
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'selama ini saya nyaman menggunakan aplikasi, sangat membantu sekali',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'aplikasinya sangat membantu saya dalam menggunakan transportasi umum',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'sedikit masukan dari saya, kalau bisa aplikasinya ditingkatkan',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'aplikasinya lemot banget',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // pending
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'selama ini saya nyaman menggunakan aplikasi, sangat membantu sekali',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'aplikasinya sangat membantu saya dalam menggunakan transportasi umum',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'sedikit masukan dari saya, kalau bisa aplikasinya ditingkatkan',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'aplikasinya lemot banget',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // processed
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'selama ini saya nyaman menggunakan aplikasi, sangat membantu sekali',
+            'status' => 'processed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'aplikasinya sangat membantu saya dalam menggunakan transportasi umum',
+            'status' => 'processed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'sedikit masukan dari saya, kalau bisa aplikasinya ditingkatkan',
+            'status' => 'processed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'aplikasinya lemot banget',
+            'status' => 'processed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
+            'status' => 'processed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // cancelled
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'selama ini saya nyaman menggunakan aplikasi, sangat membantu sekali',
+            'status' => 'cancelled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'aplikasinya sangat membantu saya dalam menggunakan transportasi umum',
+            'status' => 'cancelled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'sedikit masukan dari saya, kalau bisa aplikasinya ditingkatkan',
+            'status' => 'cancelled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'aplikasinya lemot banget',
+            'status' => 'cancelled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
+            'status' => 'cancelled',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+
+        // ================================================================
+        // ======================= Premium User ===========================
+        // ================================================================
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'supir-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-08-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'dayat-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'dayat-123456',
+            'payment_date' => '2022-06-01',
+            'from' => '2022-06-01',
+            'to' => '2022-07-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'lanang-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }
