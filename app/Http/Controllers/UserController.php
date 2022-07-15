@@ -283,7 +283,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
-            'history_id' => 'required|string',
+            'history_id' => 'string',
             'tempat_naik_id' => 'required|string',
             'tempat_turun_id' => 'required|string',
             'supir_id' => 'required|string',
