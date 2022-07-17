@@ -9,6 +9,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use App\Models\Vehicle;
 use App\Models\ListDriver;
+use App\Models\Routes;
+use App\Models\User;
 
 class OwnerController  extends Controller
 {
@@ -50,36 +52,47 @@ class OwnerController  extends Controller
                 'message' => $validator->errors(),
                 'data' => [],
             ], 400);
-        } else {
-            try {
-                $vehicle = new Vehicle;
-                $vehicle->user_id = $request->input('user_id');
-                $vehicle->route_id = $request->input('route_id');
-                $vehicle->plat_nomor = $request->input('plat_nomor');
-                $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
-                $vehicle->pajak_stnk = $request->input('pajak_stnk');
-                $vehicle->kir_bulanan = $request->input('kir_bulanan');
-                $vehicle->status = "pending";
-                $vehicle->save();
+        }
 
-                $vehicle->qr_code = 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.urlencode($_ENV['APP_URL'].'/vehicle/'.$vehicle->id);
-                $vehicle->save();
+        $route = Routes::find($request->input('route_id'));
+        $user = User::find($request->input('user_id'));
+
+        if ($route == null || $user == null) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $route == null  ? 'Route not found !' : 'User not found !',
+                'data' => []
+            ], 404);
+        }
+
+        try {
+            $vehicle = new Vehicle;
+            $vehicle->user_id = $request->input('user_id');
+            $vehicle->route_id = $request->input('route_id');
+            $vehicle->plat_nomor = $request->input('plat_nomor');
+            $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
+            $vehicle->pajak_stnk = $request->input('pajak_stnk');
+            $vehicle->kir_bulanan = $request->input('kir_bulanan');
+            $vehicle->status = "pending";
+            $vehicle->save();
+
+            $vehicle->qr_code = 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/' . $vehicle->id);
+            $vehicle->save();
 
 
-                //return successful response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Angkot Created !',
-                    'data' => $vehicle,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
+            //return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Angkot Created !',
+                'data' => $vehicle,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
         }
     }
 
@@ -101,30 +114,40 @@ class OwnerController  extends Controller
                 'message' => $validator->errors(),
                 'data' => [],
             ], 400);
-        } else {
-            try {
-                $vehicle = Vehicle::find($id);
-                $vehicle->route_id = $request->input('route_id');
-                $vehicle->plat_nomor = $request->input('plat_nomor');
-                $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
-                $vehicle->pajak_stnk = $request->input('pajak_stnk');
-                $vehicle->kir_bulanan = $request->input('kir_bulanan');
-                $vehicle->save();
+        }
+        $route = Routes::find($request->input('route_id'));
+        $user = User::find($request->input('user_id'));
 
-                //return successful response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Angkot Updated !',
-                    'data' => $vehicle,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
+        if ($route == null || $user == null) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $route == null  ? 'Route not found !' : 'User not found !',
+                'data' => []
+            ], 404);
+        }
+
+        try {
+            $vehicle = Vehicle::find($id);
+            $vehicle->route_id = $request->input('route_id');
+            $vehicle->plat_nomor = $request->input('plat_nomor');
+            $vehicle->pajak_tahunan = $request->input('pajak_tahunan');
+            $vehicle->pajak_stnk = $request->input('pajak_stnk');
+            $vehicle->kir_bulanan = $request->input('kir_bulanan');
+            $vehicle->save();
+
+            //return successful response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Angkot Updated !',
+                'data' => $vehicle,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
         }
     }
 
@@ -223,6 +246,4 @@ class OwnerController  extends Controller
             ], 404);
         }
     }
-
-
 }
