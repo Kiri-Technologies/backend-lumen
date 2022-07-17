@@ -284,7 +284,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'penumpang_id' => 'required|string',
             'angkot_id' => 'required|string',
-            'history_id' => 'string',
             'tempat_naik_id' => 'required|string',
             'tempat_turun_id' => 'required|string',
             'supir_id' => 'required|string',
@@ -305,11 +304,12 @@ class UserController extends Controller
             ], 400);
         } else {
             try {
-                $lastHistory = History::where('angkot_id', $request->angkot_id)->last();
+                $lastHistory = History::where('angkot_id', $request->angkot_id)->orderBy('id', 'desc')->first();
                 $trip = new Trip;
                 $trip->penumpang_id = $request->input('penumpang_id');
                 $trip->angkot_id = $request->input('angkot_id');
                 $trip->history_id = $lastHistory->id;
+                // $trip->history_id = $request->input('angkot_id');
                 $trip->tempat_naik_id = $request->input('tempat_naik_id');
                 $trip->tempat_turun_id = $request->input('tempat_turun_id');
                 $trip->supir_id = $request->input('supir_id');
