@@ -592,29 +592,39 @@ class AdminController  extends Controller
                 'message' => $validator->error(),
                 'data' => []
             ], 400);
-        } else {
-            try {
-                $point = new Setpoints();
-                $point->route_id = $request->input("route_id");
-                $point->nama_lokasi = $request->input("nama_lokasi");
-                $point->lat = $request->input("lat");
-                $point->long = $request->input("long");
-                $point->arah = $request->input("arah");
-                $point->save();
+        }
 
-                return response()->json([
-                    'status' => 'success',
-                    "message" => 'Halte Virtual Created',
-                    'data' => $point,
-                ], 201);
-            } catch (\Exception $e) {
-                //return error message
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => $e,
-                    'data' => [],
-                ], 409);
-            }
+        $route = Routes::find($request->input('route_id'));
+
+        if ($route == null) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Route not found !',
+                'data' => []
+            ], 404);
+        }
+
+        try {
+            $point = new Setpoints();
+            $point->route_id = $request->input("route_id");
+            $point->nama_lokasi = $request->input("nama_lokasi");
+            $point->lat = $request->input("lat");
+            $point->long = $request->input("long");
+            $point->arah = $request->input("arah");
+            $point->save();
+
+            return response()->json([
+                'status' => 'success',
+                "message" => 'Halte Virtual Created',
+                'data' => $point,
+            ], 201);
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
         }
     }
 
@@ -633,6 +643,23 @@ class AdminController  extends Controller
             'arah' => "required"
 
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->error(),
+                'data' => []
+            ], 400);
+        }
+
+        $route = Routes::find($request->input('route_id'));
+
+        if ($route == null) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Route not found !',
+                'data' => []
+            ], 404);
+        }
         try {
             $point = Setpoints::find($id);
             $point->route_id = $request->input("route_id");
