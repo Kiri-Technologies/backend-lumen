@@ -16,6 +16,7 @@ use App\Models\Feedback;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\FeedbackApplication;
+use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
 
@@ -304,10 +305,11 @@ class UserController extends Controller
             ], 400);
         } else {
             try {
+                $lastHistory = History::where('angkot_id', $request->angkot_id)->last();
                 $trip = new Trip;
                 $trip->penumpang_id = $request->input('penumpang_id');
                 $trip->angkot_id = $request->input('angkot_id');
-                $trip->history_id = $request->input('history_id');
+                $trip->history_id = $lastHistory->id;
                 $trip->tempat_naik_id = $request->input('tempat_naik_id');
                 $trip->tempat_turun_id = $request->input('tempat_turun_id');
                 $trip->supir_id = $request->input('supir_id');
