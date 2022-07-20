@@ -37,7 +37,7 @@ class SupirController  extends Controller
         //validate incoming request
         $validator = Validator::make($request->all(), [
             'is_beroperasi' => 'required',
-            'supir_yg_beroperasi' => 'required',
+            // 'supir_yg_beroperasi' => 'required',
         ]);
 
         if ($validator->fails()) {
