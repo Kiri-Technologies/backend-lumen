@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use App\Models\ListDriver;
 use App\Models\History;
-
+use App\Models\Trip;
 
 class SupirController  extends Controller
 {
@@ -54,19 +54,25 @@ class SupirController  extends Controller
                 $vehicle->supir_id = $request->input('supir_yg_beroperasi');
                 $vehicle->save();
 
+                if ($request->input('is_beroperasi') == 0) {
+                    $history = History::where('angkot_id', $id)->orderBy('id', 'desc')->first();
+                    $history->jumlah_pendapatan = Trip::where('history_id', $history->id)->where('is_connected_with_driver', 1)->sum('rekomendasi_harga');
+                    $history->save();
+                }
+
                 //return successful response
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Angkot Operation Updated !',
                     'data' => $vehicle,
-                ], 201);
+                ], 200);
             } catch (\Exception $e) {
                 //return error message
                 return response()->json([
                     'status' => 'failed',
                     'message' => $e,
                     'data' => [],
-                ], 409);
+                ], 400);
             }
         }
     }
