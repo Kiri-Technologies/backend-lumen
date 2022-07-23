@@ -895,9 +895,9 @@ class AdminController  extends Controller
         for ($month = 0; $month < 6; $month++) {
             $date = Carbon::now()->subMonth($month);
 
-            $ownerCounter = User::where('role', 'owner')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
-            $penumpangCounter = User::where('role', 'penumpang')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
-            $supirCounter = User::where('role', 'supir')->whereMonth('created_at', $date->month)->whereYear('created_at', $date->year)->count();
+            $ownerCounter = User::where('role', 'owner')->whereMonth('created_at', '<=', $date->month)->whereYear('created_at', $date->year)->count();
+            $penumpangCounter = User::where('role', 'penumpang')->whereMonth('created_at', '<=', $date->month)->whereYear('created_at', $date->year)->count();
+            $supirCounter = User::where('role', 'supir')->whereMonth('created_at', '<=', $date->month)->whereYear('created_at', $date->year)->count();
 
             array_push($owner, $ownerCounter);
             array_push($supir, $supirCounter);
