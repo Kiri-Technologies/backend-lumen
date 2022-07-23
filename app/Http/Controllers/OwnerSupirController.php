@@ -44,8 +44,8 @@ class OwnerSupirController  extends Controller
     {
         // $list_supir = ListDriver::with('user')->get();
         $list_supir = ListDriver::with('user', 'vehicle.route')
-            ->when($request->user_id, function ($query, $user_id) {
-                return $query->where('user_id', $user_id);
+            ->when($request->supir_id, function ($query, $supir_id) {
+                return $query->where('user_id', $supir_id);
             })->when($request->angkot_id, function ($query, $angkot_id) {
                 return $query->where('angkot_id', $angkot_id);
             })->when($request->is_confirmed, function ($query, $is_confirmed) {
