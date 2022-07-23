@@ -116,9 +116,8 @@ class OwnerController  extends Controller
             ], 400);
         }
         $route = Routes::find($request->input('route_id'));
-        $user = User::find($request->input('user_id'));
 
-        if ($route == null || $user == null) {
+        if ($route == null) {
             return response()->json([
                 'status' => 'failed',
                 'message' => $route == null  ? 'Route not found !' : 'User not found !',
