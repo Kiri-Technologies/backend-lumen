@@ -733,6 +733,30 @@ class DatabaseSeeder extends Seeder
                 'supir_id' => null,
                 'status' => 'approved',
             ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 7123 XA',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/3'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'pending',
+            ],
+            [
+                'user_id' => 'owner-123456',
+                'route_id' => 1,
+                'plat_nomor' => 'B 7123 XA',
+                'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/3'),
+                'pajak_tahunan' => '2017-06-15',
+                'pajak_stnk' => '2017-06-15',
+                'kir_bulanan' => '2017-06-15',
+                'is_beroperasi' => null,
+                'supir_id' => null,
+                'status' => 'declined',
+            ],
 
         ];
 
