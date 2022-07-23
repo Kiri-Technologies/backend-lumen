@@ -724,7 +724,7 @@ class DatabaseSeeder extends Seeder
             [
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
-                'plat_nomor' => 'B 7123 XA',
+                'plat_nomor' => 'B 5131 RR',
                 'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/3'),
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
@@ -736,7 +736,7 @@ class DatabaseSeeder extends Seeder
             [
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
-                'plat_nomor' => 'B 7123 XA',
+                'plat_nomor' => 'B 9151 PK',
                 'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/3'),
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
@@ -748,7 +748,7 @@ class DatabaseSeeder extends Seeder
             [
                 'user_id' => 'owner-123456',
                 'route_id' => 1,
-                'plat_nomor' => 'B 7123 XA',
+                'plat_nomor' => 'B 0123 ER',
                 'qr_code' => 'http://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' . urlencode($_ENV['APP_URL'] . '/vehicle/3'),
                 'pajak_tahunan' => '2017-06-15',
                 'pajak_stnk' => '2017-06-15',
