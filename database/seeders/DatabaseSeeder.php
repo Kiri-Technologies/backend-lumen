@@ -207,11 +207,15 @@ class DatabaseSeeder extends Seeder
         //         'titik_akhir' => $faker->name,
         //     ]);
         // }
+        
         // ========================================================
         // ===================== Seeder User ======================
         // ========================================================
 
+        // bulan ini
         $user = [
+            // === penumpang ===
+            // bulan ini
             [
                 'id' => 'user-123456',
                 'name' => 'user',
@@ -220,7 +224,10 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
+            // 1 bulan kemarin
             [
                 'id' => 'komeng-123456',
                 'name' => 'komeng',
@@ -229,7 +236,136 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
             ],
+            [
+                'id' => 'wahyu-123456',
+                'name' => 'wahyu',
+                'email' => 'wahyu@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'taulany-123456',
+                'name' => 'taulany',
+                'email' => 'taulany@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'dodit-123456',
+                'name' => 'dodit',
+                'email' => 'dodit@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 2 bulan kemarin
+            [
+                'id' => 'nia-123456',
+                'name' => 'nia',
+                'email' => 'nia@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'rahma-123456',
+                'name' => 'rahma',
+                'email' => 'rahma@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 3 bulan kemarin
+            [
+                'id' => 'radit-123456',
+                'name' => 'radit',
+                'email' => 'radit@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 4 bulan kemarin
+            [
+                'id' => 'simon-123456',
+                'name' => 'simon',
+                'email' => 'simon@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'josh-123456',
+                'name' => 'josh',
+                'email' => 'josh@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 5 bulan kemarin
+            [
+                'id' => 'farel-123456',
+                'name' => 'farel',
+                'email' => 'farel@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'ilham-123456',
+                'name' => 'ilham',
+                'email' => 'ilham@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'ridwan-123456',
+                'name' => 'ridwan',
+                'email' => 'ridwan@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'penumpang',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // === supir ===
+            // bulan ini
             [
                 'id' => 'supir-123456',
                 'name' => 'supir',
@@ -238,6 +374,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'id' => 'dayat-123456',
@@ -247,7 +385,203 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
+            [
+                'id' => 'kusnandar-123456',
+                'name' => 'kusnandar',
+                'email' => 'kusnandar@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'dwi-123456',
+                'name' => 'dwi',
+                'email' => 'dwi@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'rizad-123456',
+                'name' => 'rizad',
+                'email' => 'rizad@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'ramli-123456',
+                'name' => 'ramli',
+                'email' => 'ramli@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'luhut-123456',
+                'name' => 'luhut',
+                'email' => 'luhut@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            // 1 bulan kemarin
+            [
+                'id' => 'lanang-123456',
+                'name' => 'lanang',
+                'email' => 'lanang@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'roy-123456',
+                'name' => 'roy',
+                'email' => 'roy@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'william-123456',
+                'name' => 'william',
+                'email' => 'william@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'agung-123456',
+                'name' => 'agung',
+                'email' => 'agung@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'hercules-123456',
+                'name' => 'hercules',
+                'email' => 'hercules@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 2 bulan kemarin
+            [
+                'id' => 'tigor-123456',
+                'name' => 'tigor',
+                'email' => 'tigor@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'rizky-123456',
+                'name' => 'rizky',
+                'email' => 'rizky@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'azzam-123456',
+                'name' => 'azzam',
+                'email' => 'azzam@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 3 bulan kemarin
+            [
+                'id' => 'rohmat-123456',
+                'name' => 'rohmat',
+                'email' => 'rohmat@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 4 bulan kemarin
+            [
+                'id' => 'amil-123456',
+                'name' => 'amil',
+                'email' => 'amil@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            [
+                'id' => 'surya-123456',
+                'name' => 'surya',
+                'email' => 'surya@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // 5 bulan kemarin
+            [
+                'id' => 'nendy-123456',
+                'name' => 'nendy',
+                'email' => 'nendy@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
+            // === owner ===
+            // bulan ini
             [
                 'id' => 'owner-123456',
                 'name' => 'owner',
@@ -256,7 +590,81 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
+            [
+                'id' => 'ummah-123456',
+                'name' => 'ummah',
+                'email' => 'ummah@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            // 1 bulan kemarin
+            [
+                'id' => 'ryan-123456',
+                'name' => 'ryan',
+                'email' => 'ryan@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'windah-123456',
+                'name' => 'windah',
+                'email' => 'windah@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 'basudara-123456',
+                'name' => 'basudara',
+                'email' => 'basudara@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            // 2 bulan kemarin
+            // 3 bulan kemarin
+            // 4 bulan kemarin
+            [
+                'id' => 'pangestu-123456',
+                'name' => 'pangestu',
+                'email' => 'pangestu@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            // 5 bulan kemarin
+            [
+                'id' => 'abdul-123456',
+                'name' => 'abdul',
+                'email' => 'abdul@kiri.id',
+                'birthdate' => '2017-06-15',
+                'role' => 'owner',
+                'phone_number' => '081234567891',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            // === admin ===
             [
                 'id' => 'admin-123456',
                 'name' => 'admin',
@@ -265,36 +673,14 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
 
         foreach ($user as $key => $value) {
             User::create($value);
         }
-
-        DB::table('users')->insert([
-            'id' => 'wahyu-123456',
-            'name' => 'wahyu',
-            'email' => 'wahyu@gmail.com',
-            'birthdate' => '2017-06-15',
-            'role' => 'penumpang',
-            'phone_number' => '081234567890',
-            'password' => bcrypt('password'),
-            'created_at' => Carbon::now()->subMonth(),
-            'updated_at' => Carbon::now()->subMonth(),
-        ]);
-
-        DB::table('users')->insert([
-            'id' => 'lanang-123456',
-            'name' => 'lanang',
-            'email' => 'lanang@gmail.com',
-            'birthdate' => '2017-06-15',
-            'role' => 'supir',
-            'phone_number' => '081234567890',
-            'password' => bcrypt('password'),
-            'created_at' => Carbon::now()->subMonth(),
-            'updated_at' => Carbon::now()->subMonth(),
-        ]);
 
         // ========================================================
         // ==================== Seeder Angkot =====================
@@ -571,7 +957,7 @@ class DatabaseSeeder extends Seeder
             'nama_tempat_turun' => 'Depan PBB',
             'jarak' => '20',
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
-            'is_done' => 0,
+            'is_done' => 1,
             'is_connected_with_driver' => 1,
             'created_at' => Carbon::now()->subMonth(),
             'updated_at' => Carbon::now()->subMonth(),
@@ -657,7 +1043,7 @@ class DatabaseSeeder extends Seeder
             'nama_tempat_turun' => 'Depan PBB',
             'jarak' => '20',
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
-            'is_done' => 0,
+            'is_done' => 1,
             'is_connected_with_driver' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -785,7 +1171,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('targets')->insert([
             'name' => 'pengeluaran',
-            'input' => 0,
+            'input' => 233500,
             'target' => 500000,
         ]);
 
@@ -859,12 +1245,11 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        // pending
         DB::table('feedback_app')->insert([
             'user_id' => 'user-123456',
             'review' => 'happy',
             'tanggapan' => 'selama ini saya nyaman menggunakan aplikasi, sangat membantu sekali',
-            'status' => 'pending',
+            'status' => 'submitted',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -873,11 +1258,93 @@ class DatabaseSeeder extends Seeder
             'user_id' => 'komeng-123456',
             'review' => 'excellent',
             'tanggapan' => 'aplikasinya sangat membantu saya dalam menggunakan transportasi umum',
-            'status' => 'pending',
+            'status' => 'submitted',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'saya sangat nyaman ketika naik angkot',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'menurut saya udh bagus banget dan sangat membantu',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'overall sudah bagus, tetapi masih banyak bug',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'sangat lemot',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'gabisa dibuka aplikasinya',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'membantu saya ketika berangkat kerja',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'sangat inovatif dan membantu',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'user-123456',
+            'review' => 'happy',
+            'tanggapan' => 'bikin saya aman ketika naik angkot di malam hari',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'komeng-123456',
+            'review' => 'excellent',
+            'tanggapan' => 'saya jadi mau naik angkot lagi',
+            'status' => 'submitted',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // pending
         DB::table('feedback_app')->insert([
             'user_id' => 'supir-123456',
             'review' => 'neutral',
@@ -900,6 +1367,42 @@ class DatabaseSeeder extends Seeder
             'user_id' => 'wahyu-123456',
             'review' => 'awful',
             'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'supir-123456',
+            'review' => 'neutral',
+            'tanggapan' => 'tambahin payment online dong',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'sad',
+            'tanggapan' => 'bikin hp saya lemot',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'saya gabisa nyalain maps',
+            'status' => 'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('feedback_app')->insert([
+            'user_id' => 'wahyu-123456',
+            'review' => 'awful',
+            'tanggapan' => 'rekomendasi biayanya terlalu mahal',
             'status' => 'pending',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -942,15 +1445,6 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('feedback_app')->insert([
-            'user_id' => 'wahyu-123456',
-            'review' => 'awful',
-            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
-            'status' => 'processed',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
         // cancelled
         DB::table('feedback_app')->insert([
             'user_id' => 'user-123456',
@@ -979,34 +1473,17 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('feedback_app')->insert([
-            'user_id' => 'wahyu-123456',
-            'review' => 'sad',
-            'tanggapan' => 'aplikasinya lemot banget',
-            'status' => 'cancelled',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        DB::table('feedback_app')->insert([
-            'user_id' => 'wahyu-123456',
-            'review' => 'awful',
-            'tanggapan' => 'aplikasinya sering tertutup tiba-tiba',
-            'status' => 'cancelled',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
 
         // ================================================================
         // ======================= Premium User ===========================
         // ================================================================
 
+        // bulan ini
         DB::table('premium_users')->insert([
             'user_id' => 'supir-123456',
             'payment_date' => '2022-07-01',
             'from' => '2022-07-01',
-            'to' => '2022-08-01',
+            'to' => '2022-09-01',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -1021,10 +1498,128 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('premium_users')->insert([
-            'user_id' => 'dayat-123456',
+            'user_id' => 'kusnandar-123456',
             'payment_date' => '2022-06-01',
             'from' => '2022-06-01',
-            'to' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'dwi-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'rizad-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'ramli-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'luhut-123456',
+            'payment_date' => '2022-06-01',
+            'from' => '2022-06-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'lanang-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'roy-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'william-123456',
+            'payment_date' => '2022-07-01',
+            'from' => '2022-07-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'agung-123456',
+            'payment_date' => '2022-06-01',
+            'from' => '2022-06-01',
+            'to' => '2022-09-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // 1 bulan kemarin
+        DB::table('premium_users')->insert([
+            'user_id' => 'hercules-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'agung-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'tigor-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'rizky-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'azzam-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -1037,5 +1632,118 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'roy-123456',
+            'payment_date' => '2022-05-01',
+            'from' => '2022-05-01',
+            'to' => '2022-06-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // 2 bulan kemarin
+        DB::table('premium_users')->insert([
+            'user_id' => 'tigor-123456',
+            'payment_date' => '2022-04-01',
+            'from' => '2022-04-01',
+            'to' => '2022-05-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'rizky-123456',
+            'payment_date' => '2022-04-01',
+            'from' => '2022-04-01',
+            'to' => '2022-05-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'azzam-123456',
+            'payment_date' => '2022-04-01',
+            'from' => '2022-04-01',
+            'to' => '2022-05-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'rohmat-123456',
+            'payment_date' => '2022-04-01',
+            'from' => '2022-04-01',
+            'to' => '2022-05-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // 3 bulan kemarin
+        DB::table('premium_users')->insert([
+            'user_id' => 'rohmat-123456',
+            'payment_date' => '2022-03-01',
+            'from' => '2022-03-01',
+            'to' => '2022-04-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'amil-123456',
+            'payment_date' => '2022-03-01',
+            'from' => '2022-03-01',
+            'to' => '2022-04-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'surya-123456',
+            'payment_date' => '2022-03-01',
+            'from' => '2022-03-01',
+            'to' => '2022-04-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // 4 bulan kemarin
+        DB::table('premium_users')->insert([
+            'user_id' => 'amil-123456',
+            'payment_date' => '2022-02-01',
+            'from' => '2022-02-01',
+            'to' => '2022-03-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'surya-123456',
+            'payment_date' => '2022-02-01',
+            'from' => '2022-02-01',
+            'to' => '2022-03-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('premium_users')->insert([
+            'user_id' => 'nendy-123456',
+            'payment_date' => '2022-02-01',
+            'from' => '2022-02-01',
+            'to' => '2022-03-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // 5 bulan kemarin
+        DB::table('premium_users')->insert([
+            'user_id' => 'nendy-123456',
+            'payment_date' => '2022-01-01',
+            'from' => '2022-01-01',
+            'to' => '2022-02-01',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
     }
 }
