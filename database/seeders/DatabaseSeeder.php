@@ -281,8 +281,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(2),
+                'updated_at' => Carbon::now()->subMonth(2),
             ],
             [
                 'id' => 'rahma-123456',
@@ -292,8 +292,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(2),
+                'updated_at' => Carbon::now()->subMonth(2),
             ],
             // 3 bulan kemarin
             [
@@ -304,8 +304,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(3),
+                'updated_at' => Carbon::now()->subMonth(3),
             ],
             // 4 bulan kemarin
             [
@@ -316,8 +316,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(4),
+                'updated_at' => Carbon::now()->subMonth(4),
             ],
             [
                 'id' => 'josh-123456',
@@ -327,8 +327,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(4),
+                'updated_at' => Carbon::now()->subMonth(4),
             ],
             // 5 bulan kemarin
             [
@@ -339,8 +339,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(5),
+                'updated_at' => Carbon::now()->subMonth(5),
             ],
             [
                 'id' => 'ilham-123456',
@@ -350,8 +350,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(5),
+                'updated_at' => Carbon::now()->subMonth(5),
             ],
             [
                 'id' => 'ridwan-123456',
@@ -361,8 +361,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'penumpang',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(5),
+                'updated_at' => Carbon::now()->subMonth(5),
             ],
             // === supir ===
             // bulan ini
@@ -499,6 +499,17 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now()->subMonth(),
                 'updated_at' => Carbon::now()->subMonth(),
             ],
+            [
+                'id' => 'martial-123456',
+                'name' => 'martial',
+                'email' => 'martial@gmail.com',
+                'birthdate' => '2017-06-15',
+                'role' => 'supir',
+                'phone_number' => '081234567890',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
+            ],
             // 2 bulan kemarin
             [
                 'id' => 'tigor-123456',
@@ -508,8 +519,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(2),
+                'updated_at' => Carbon::now()->subMonth(2),
             ],
             [
                 'id' => 'rizky-123456',
@@ -519,8 +530,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(2),
+                'updated_at' => Carbon::now()->subMonth(2),
             ],
             [
                 'id' => 'azzam-123456',
@@ -530,8 +541,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(2),
+                'updated_at' => Carbon::now()->subMonth(2),
             ],
             // 3 bulan kemarin
             [
@@ -542,8 +553,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(3),
+                'updated_at' => Carbon::now()->subMonth(3),
             ],
             // 4 bulan kemarin
             [
@@ -554,8 +565,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(4),
+                'updated_at' => Carbon::now()->subMonth(4),
             ],
             [
                 'id' => 'surya-123456',
@@ -565,8 +576,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(4),
+                'updated_at' => Carbon::now()->subMonth(4),
             ],
             // 5 bulan kemarin
             [
@@ -577,8 +588,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'supir',
                 'phone_number' => '081234567890',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now()->subMonth(),
-                'updated_at' => Carbon::now()->subMonth(),
+                'created_at' => Carbon::now()->subMonth(5),
+                'updated_at' => Carbon::now()->subMonth(5),
             ],
             // === owner ===
             // bulan ini
@@ -613,8 +624,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
             ],
             [
                 'id' => 'windah-123456',
@@ -624,8 +635,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
             ],
             [
                 'id' => 'basudara-123456',
@@ -635,8 +646,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonth(),
+                'updated_at' => Carbon::now()->subMonth(),
             ],
             // 2 bulan kemarin
             // 3 bulan kemarin
@@ -649,8 +660,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonth(4),
+                'updated_at' => Carbon::now()->subMonth(4),
             ],
             // 5 bulan kemarin
             [
@@ -661,8 +672,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'owner',
                 'phone_number' => '081234567891',
                 'password' => bcrypt('password'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonth(5),
+                'updated_at' => Carbon::now()->subMonth(5),
             ],
             // === admin ===
             [

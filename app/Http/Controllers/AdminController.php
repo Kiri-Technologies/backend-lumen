@@ -847,13 +847,17 @@ class AdminController  extends Controller
         $thisYear = Carbon::now()->year;
 
 
-        $ownerThisMonth = User::where('role', 'owner')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
-        $penumpangThisMonth = User::where('role', 'penumpang')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
-        $supirThisMonth = User::where('role', 'supir')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        // $ownerThisMonth = User::where('role', 'owner')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        // $penumpangThisMonth = User::where('role', 'penumpang')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
+        // $supirThisMonth = User::where('role', 'supir')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->count();
 
-        $ownerLastMonth = User::where('role', 'owner')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
-        $penumpangLastMonth = User::where('role', 'penumpang')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
-        $supirLastMonth = User::where('role', 'supir')->whereMonth('created_at', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $ownerThisMonth = User::where('role', 'owner')->count();
+        $penumpangThisMonth = User::where('role', 'penumpang')->count();
+        $supirThisMonth = User::where('role', 'supir')->count();
+
+        $ownerLastMonth = User::where('role', 'owner')->whereMonth('created_at', '<=', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $penumpangLastMonth = User::where('role', 'penumpang')->whereMonth('created_at', '<=', $lastMonth)->whereYear('created_at', $thisYear)->count();
+        $supirLastMonth = User::where('role', 'supir')->whereMonth('created_at', '<=', $lastMonth)->whereYear('created_at', $thisYear)->count();
 
         $total_user = [
             'owner' => [
