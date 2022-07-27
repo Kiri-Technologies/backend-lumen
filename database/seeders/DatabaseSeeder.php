@@ -1126,22 +1126,6 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('trips')->insert([
-            'penumpang_id' => 'user-123456',
-            'angkot_id' => 1,
-            'supir_id' => 'supir-123456',
-            'history_id' => 1,
-            'tempat_naik_id' => 1,
-            'tempat_turun_id' => 3,
-            'nama_tempat_naik' => 'Pasar Kordon',
-            'nama_tempat_turun' => 'Depan PBB',
-            'jarak' => '20',
-            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
-            'is_done' => 0,
-            'is_connected_with_driver' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
 
         DB::table('trips')->insert([
             'penumpang_id' => 'komeng-123456',
@@ -1206,6 +1190,23 @@ class DatabaseSeeder extends Seeder
             'jarak' => '20',
             'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
             'is_done' => 1,
+            'is_connected_with_driver' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        DB::table('trips')->insert([
+            'penumpang_id' => 'user-123456',
+            'angkot_id' => 1,
+            'supir_id' => 'supir-123456',
+            'history_id' => 1,
+            'tempat_naik_id' => 1,
+            'tempat_turun_id' => 3,
+            'nama_tempat_naik' => 'Pasar Kordon',
+            'nama_tempat_turun' => 'Depan PBB',
+            'jarak' => '20',
+            'rekomendasi_harga' => $faker->numberBetween($min = 3000, $max = 7000),
+            'is_done' => 0,
             'is_connected_with_driver' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
