@@ -800,6 +800,14 @@ class DatabaseSeeder extends Seeder
             'updated_at' => $faker->dateTime,
         ]);
 
+        DB::table('list_drivers')->insert([
+            'supir_id' => 'supir-123456',
+            'angkot_id' => 3,
+            'is_confirmed' => 1,
+            'created_at' => $faker->dateTime,
+            'updated_at' => $faker->dateTime,
+        ]);
+
 
         // ========================================================
         // ==================== Seeder History =======================
