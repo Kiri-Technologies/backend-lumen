@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use App\Models\ListDriver;
 use App\Models\History;
+use App\Models\PremiumUser;
 use App\Models\Trip;
+use Carbon\Carbon;
 
 class SupirController  extends Controller
 {
@@ -234,6 +236,59 @@ class SupirController  extends Controller
                     'data' => [],
                 ], 409);
             }
+        }
+    }
+
+    //  ===================================================================================
+    //  ================================== PREMIUM USER ===================================
+    //  ===================================================================================
+
+    public function checkPremiumUser(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+
+        if ($validator->fails()) {
+            //return failed response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        }
+
+        try {
+            $user_id = $request->input('user_id');
+            $thisDate = Carbon::now();
+            $premium = PremiumUser::where('user_id', $user_id)->whereDate('to', '>', $thisDate)->first();
+
+            if ($premium) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Checked',
+                    'data' => [
+                        'is_premium' => true,
+                        'user' => $premium,
+                    ],
+                ], 200);
+            }else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Premium User Checked',
+                    'data' => [
+                        'is_premium' => false,
+                        'user' => [],
+                    ],
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            //return error message
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e,
+                'data' => [],
+            ], 409);
         }
     }
 }

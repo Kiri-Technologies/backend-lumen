@@ -62,6 +62,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 // Function : Confirm driver
                 $router->post('/{id}/confirm', 'SupirController@confirmSupir');
             });
+
+            //  ====================== PREMIUM USER ============================
+            $router->group(["prefix" => 'premiumuser'], function () use ($router) {
+
+                // Matches /api/supir/driver/{id}/confirm
+                // Function : Confirm driver
+                $router->post('/check', 'SupirController@checkPremiumUser');
+            });
         });
 
         // ==============================================================
