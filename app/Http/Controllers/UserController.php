@@ -19,6 +19,7 @@ use App\Models\FeedbackApplication;
 use App\Models\History;
 use App\Models\Routes;
 use App\Models\Setpoints;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserController extends Controller
 {
@@ -385,11 +386,29 @@ class UserController extends Controller
             return $query->where('angkot_id', $angkot_id);
         })->when($request->supir_id, function ($query, $supir_id) {
             return $query->where('supir_id', $supir_id);
-        })->when($request->is_connected_with_driver, function ($query, $is_connected_with_driver) {
-            return $query->where('is_connected_with_driver', $is_connected_with_driver);
-        })->when($request->is_done, function ($query, $is_done) {
-            return $query->where('is_done', $is_done);
         })->get();
+
+        $respond = $trip;
+        $new_trip = new Collection();
+        if (isset($request->is_connected_with_driver)) {
+            foreach ($respond as $tr) {
+                if ($tr->is_connected_with_driver == $request->is_connected_with_driver) {
+                    $new_trip->push($tr);
+                }
+            }
+            $respond = $new_trip;
+        }
+
+        $new_trip2 = new Collection();
+        if (isset($request->is_done)) {
+            foreach ($respond as $tr) {
+                if ($tr->is_done == $request->is_done) {
+                    $new_trip2->push($tr);
+                }
+            }
+            $respond = $new_trip2;
+        }
+
 
 
 
@@ -403,7 +422,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Trip Requested !',
-            'data' => $trip,
+            'data' => $respond,
         ], 200);
     }
 
